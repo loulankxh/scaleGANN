@@ -1,0 +1,68 @@
+## common
+__pycache__
+*.pyc
+*~
+\#*
+.#*
+*.o
+*.so
+*.dylib
+.cache
+.coverage
+.vscode
+*.swp
+*.pytest_cache
+htmlcov
+log
+.ipynb_checkpoints
+.DS_Store
+*.bin
+
+## scikit-build
+_skbuild
+
+## eclipse
+.project
+.cproject
+.settings
+.ptp-sync-folder
+
+## Pycharm
+.idea
+
+## ccls
+.ccls-cache
+.ccls
+
+## profiling
+*.qdrep
+*.qdrep.cache
+*.qdstrm
+*.nvprof
+
+## doxygen build check inside ci/checks/style.sh
+doxygen_check/
+
+## cibuildwheel
+/wheelhouse
+
+# doxygen
+_xml
+
+# sphinx
+_html
+_text
+
+# clang tooling
+compile_commands.json
+.clangd/
+
+
+# Dataset files
+*.fbin
+*.u8bin
+*.ibin
+*.bvecs
+*.ivecs
+*.fvecs
+dataset/
