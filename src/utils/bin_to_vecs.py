@@ -37,15 +37,15 @@ def fbin_to_fvecs(input_file, output_file):
             vec.tofile(f)
 
 if __name__ == "__main__":
-    input_base = "/home/lanlu/raft/scaleGANN/dataset/simSearchNet1M/base.1M.u8bin"
+    input_base = "/home/lanlu/scaleGANN/dataset/simSearchNet1M/base.1M.u8bin"
     output_base = "/home/lanlu/ggnn/data/simSearchNet1M/base.bvecs"
     u8bin_to_bvecs(input_base, output_base)
 
-    input_query = "/home/lanlu/raft/scaleGANN/dataset/simSearchNet1M/FB_ssnpp_public_queries.u8bin"
+    input_query = "/home/lanlu/scaleGANN/dataset/simSearchNet1M/FB_ssnpp_public_queries.u8bin"
     output_query = "/home/lanlu/ggnn/data/simSearchNet1M/query.bvecs"
     u8bin_to_bvecs(input_query, output_query)
 
-    input_groundtruth = "/home/lanlu/raft/scaleGANN/dataset/simSearchNet1M/groundtruth.neighbors.ibin"
+    input_groundtruth = "/home/lanlu/scaleGANN/dataset/simSearchNet1M/groundtruth.neighbors.ibin"
     output_groundtruth = "/home/lanlu/ggnn/data/simSearchNet1M/groundtruth.ivecs"
     ibin_to_ivecs(input_groundtruth, output_groundtruth)
 

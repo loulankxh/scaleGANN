@@ -30,7 +30,7 @@ size_t estimate_memory_consumption(size_t npts, uint32_t ndim, uint32_t degree){
     size_t memData = npts * ndim * sizeof(T);
     size_t memIndex =  npts * degree * sizeof(uint32_t); // GPU can hold npts < uint32_t
     // Lan: Todo: other data like locks
-    size_t memOther = npts * sizeof(uint32_t);
+    size_t memOther = 10 * npts * sizeof(uint32_t); // locks, ptrs
     size_t estimatedConsumption = memData + memIndex + memOther;
     printf("Estimated memory consumption: %zu Bytes\n", estimatedConsumption);
     return estimatedConsumption;
@@ -41,7 +41,7 @@ template <typename T>
 uint32_t get_partition_num(uint32_t memGPU, size_t npts, uint32_t ndim, uint32_t degree, uint32_t dumplicate_factor){
     size_t memConsumption = estimate_memory_consumption<T>(npts, ndim, degree);
     uint32_t partition_num;
-    if (( (size_t) memGPU * 1024 * 1024 * 1024) > memConsumption) {
+    if (( (size_t) memGPU * 1024 * 1024 * 1024) > SLACK_FACTOR * memConsumption) {
         partition_num = 1;
     } else {
         partition_num = (uint32_t)(((double) SLACK_FACTOR * dumplicate_factor * memConsumption - 1) / ( (size_t) memGPU * 1024 * 1024 * 1024)) + 1; 

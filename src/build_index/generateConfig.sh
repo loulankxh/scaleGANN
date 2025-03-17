@@ -1,11 +1,11 @@
-DataPath="/home/lanlu/raft/scaleGANN/dataset/"
+DataPath="/home/lanlu/scaleGANN/dataset/"
 DATASET="SimSearchNet100M"
 SHARD_FOLDER="D64_N40"
 DIM=256
 SHARD_NUM=10
 
-QueryFile="/home/lanlu/raft/scaleGANN/dataset/simSearchNet100M/FB_ssnpp_public_queries.u8bin"
-GTFile="/home/lanlu/raft/scaleGANN/dataset/simSearchNet100M/groundtruth.neighbors.ibin"
+QueryFile="/home/lanlu/scaleGANN/dataset/simSearchNet100M/FB_ssnpp_public_queries.u8bin"
+GTFile="/home/lanlu/scaleGANN/dataset/simSearchNet100M/groundtruth.neighbors.ibin"
 
 BUILD_DEG=(32 64)
 BUILD_INTERMEDIATE_DEG=(32 64)

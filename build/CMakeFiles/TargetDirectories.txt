@@ -1,0 +1,3 @@
+/home/lanlu/scaleGANN/build/CMakeFiles/testPartition.dir
+/home/lanlu/scaleGANN/build/CMakeFiles/edit_cache.dir
+/home/lanlu/scaleGANN/build/CMakeFiles/rebuild_cache.dir

@@ -5,27 +5,46 @@
 #include <iostream>
 #include <algorithm>
 #include <variant>
-#include <omp.h>
 #include <cassert>
+#include <omp.h>
+// #include <boost/program_options.hpp>
+#include <mkl.h>
 
 #include "../partition/partition.h"
-#include "../partition/partition_disk.h"
+#include "../partition/disk_partition.h"
 #include "../merge/merge.hpp"
 #include "../utils/fileUtils.h"
 #include "gpuManagement.h"
+
 
 #define DUPLICATION_FACTOR 2
 #define PARTITION_NUM 10
 #define MAX_DEG 64
 
 
-void partitionDisk_kmeans(){
-    
+// namespace po = boost::program_options;
+
+void partitionDisk_kmeans(const std::string file_path, std::string baseFolder){
+    uint32_t num_threads = omp_get_num_procs();
+    printf("Using %d threads\n", num_threads);
+    omp_set_num_threads(num_threads);
+    mkl_set_num_threads(num_threads);
+    auto startTime = std::chrono::high_resolution_clock::now();
+    uint32_t memGPU = 16;
+    uint32_t degree = 32;
+    uint32_t max_iters = 15; // Vamana is 10
+    double sampling_rate = 0.05;
+    size_t k_base = 2;
+    scaleGANN_partitions_with_ram_budget<uint8_t>(file_path, sampling_rate, memGPU,
+    degree, baseFolder, k_base);
+    auto endTime = std::chrono::high_resolution_clock::now();
+    auto overallDuration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
+    printf("Disk partition duration: %lld milliseconds\n", overallDuration.count());
 }
 
 
 
-void partitionDataset_kmeans(std::string file_path, std::string baseFolder){
+void partitionDataset_kmeans(const std::string file_path, std::string baseFolder){
     auto startTime = std::chrono::high_resolution_clock::now();
 
     // std::string file_path = "../../../python/raft-ann-bench/src/datasets/deep-image-96-inner/base_base.fbin";
@@ -402,20 +421,22 @@ void mergeAllIndexInFolder(std::string baseFolder,
 
 
 int main() {
-    // nvcc ../partition/partition.cpp ../partition/kmeans.cpp ../partition/kmeans.cu ../build_index/build.cpp ../build_index/merge.cpp ../build_index/merge.cu ../utils/indexIO.cpp ../utils/datasetIO.cpp ../utils/distance.cpp scheduler.cpp gpuManagement.cpp -I/home/lanlu/raft/cpp/include/ -I/home/lanlu/miniconda3/envs/rapids_raft/targets/x86_64-linux/include -I/home/lanlu/miniconda3/envs/rapids_raft/include -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids/libcudacxx -I/home/lanlu/raft/cpp/build/_deps/nlohmann_json-src/include -I/home/lanlu/raft/cpp/build/_deps/benchmark-src/include -lcudart -ldl -lbenchmark -lpthread -lfmt -L/home/lanlu/raft/cpp/build/_deps/benchmark-build/src -Xcompiler -fopenmp -o testPartition
-    std::string file_path = "/home/lanlu/raft/scaleGANN/dataset/sift100M/base.100M.u8bin";
-    std::string baseFolder = "/home/lanlu/raft/scaleGANN/dataset/sift100M/D64_N10";
-    // std::string file_path = "/home/lanlu/raft/scaleGANN/dataset/simSearchNet100M/base.100M.u8bin";
-    // std::string baseFolder = "/home/lanlu/raft/scaleGANN/dataset/simSearchNet100M/D64_N20";
-    partitionDataset_kmeans(file_path, baseFolder);
+    // nvcc ../partition/partition.cpp ../partition/disk_partition.cpp ../partition/kmeans.cpp ../partition/kmeans.cu ../merge/merge.cpp ../merge/merge.cu ../utils/indexIO.cpp ../utils/datasetIO.cpp ../utils/distance.cpp scheduler.cpp gpuManagement.cpp -I/home/lanlu/raft/cpp/include/ -I/home/lanlu/miniconda3/envs/rapids_raft/targets/x86_64-linux/include -I/home/lanlu/miniconda3/envs/rapids_raft/include -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids/libcudacxx -I/home/lanlu/raft/cpp/build/_deps/nlohmann_json-src/include -I/home/lanlu/raft/cpp/build/_deps/benchmark-src/include -lcudart -ldl -lbenchmark -lpthread -lfmt -L/home/lanlu/raft/cpp/build/_deps/benchmark-build/src -Xcompiler -fopenmp -o testPartition
+    std::string file_path = "/home/lanlu/scaleGANN/dataset/sift100M/base.100M.u8bin";
+    std::string baseFolder = "/home/lanlu/scaleGANN/dataset/sift100M/D64_N10";
+    // std::string file_path = "/home/lanlu/scaleGANN/dataset/simSearchNet100M/base.100M.u8bin";
+    // std::string baseFolder = "/home/lanlu/scaleGANN/dataset/simSearchNet100M/D64_N20";
+    // partitionDataset_kmeans(file_path, baseFolder);
+
+    partitionDisk_kmeans(file_path, baseFolder);
     // // std::string baseFolder = "../../dataset/sift100M/partitionDirect/";
     // // partitionDataset_direct(file_path, baseFolder);
 
-    // nvcc ../partition/partition.cpp ../partition/kmeans.cpp ../partition/kmeans.cu ../build_index/build.cpp ../build_index/merge.cpp ../build_index/merge.cu ../utils/indexIO.cpp ../utils/datasetIO.cpp ../utils/distance.cpp gpuManagement.cpp scheduler.cpp -I/home/lanlu/raft/cpp/include/ -I/home/lanlu/miniconda3/envs/rapids_raft/targets/x86_64-linux/include -I/home/lanlu/miniconda3/envs/rapids_raft/include -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids/libcudacxx -I/home/lanlu/raft/cpp/build/_deps/nlohmann_json-src/include -I/home/lanlu/raft/cpp/build/_deps/benchmark-src/include -lcudart -ldl -lbenchmark -lpthread -lfmt -L/home/lanlu/raft/cpp/build/_deps/benchmark-build/src -Xcompiler -fopenmp -o testMerge
-    // // std::string indexFolder = "/home/lanlu/raft/python/raft-ann-bench/src/datasets/sift100M/index21deg-20shards/";
-    // // std::string idxMapFolder = "/home/lanlu/raft/scaleGANN/dataset/sift100M/partitions21deg-20shards/";
+    // nvcc ../partition/partition.cpp ../partition/disk_partition.cpp ../partition/kmeans.cpp ../partition/kmeans.cu ../merge/merge.cpp ../merge/merge.cu ../utils/indexIO.cpp ../utils/datasetIO.cpp ../utils/distance.cpp gpuManagement.cpp scheduler.cpp -I/home/lanlu/raft/cpp/include/ -I/home/lanlu/miniconda3/envs/rapids_raft/targets/x86_64-linux/include -I/home/lanlu/miniconda3/envs/rapids_raft/include -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids/libcudacxx -I/home/lanlu/raft/cpp/build/_deps/nlohmann_json-src/include -I/home/lanlu/raft/cpp/build/_deps/benchmark-src/include -lcudart -ldl -lbenchmark -lpthread -lfmt -L/home/lanlu/raft/cpp/build/_deps/benchmark-build/src -Xcompiler -fopenmp -o testMerge
+    // // std::string indexFolder = "/home/lanlu/python/raft-ann-bench/src/datasets/sift100M/index21deg-20shards/";
+    // // std::string idxMapFolder = "/home/lanlu/scaleGANN/dataset/sift100M/partitions21deg-20shards/";
     // std::string baseFolder = "../../dataset/sift100M/test/";
-    // std::string datasetPath = "/home/lanlu/raft/python/raft-ann-bench/src/datasets/sift100M/base.100M.u8bin";
+    // std::string datasetPath = "/home/lanlu/python/raft-ann-bench/src/datasets/sift100M/base.100M.u8bin";
     // mergeAllIndexInFolder(baseFolder, datasetPath);
     return 0;
 }

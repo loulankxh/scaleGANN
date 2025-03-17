@@ -26,6 +26,6 @@ if __name__ == "__main__":
     #     sys.exit(1)
 
     # npy_to_fbin(sys.argv[1], sys.argv[2])
-    npy_file="/home/lanlu/raft/scaleGANN/dataset/laion1M/img_emb_1.npy"
-    fbin_file="/home/lanlu/raft/scaleGANN/dataset/laion1M/base.fbin"
+    npy_file="/home/lanlu/scaleGANN/dataset/laion1M/img_emb_1.npy"
+    fbin_file="/home/lanlu/scaleGANN/dataset/laion1M/base.fbin"
     npy_to_fbin(npy_file,fbin_file)

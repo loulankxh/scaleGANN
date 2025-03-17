@@ -144,16 +144,16 @@ void resize(std::string filename, uint32_t memGPU, uint32_t ndim, uint32_t degre
 
 }
 
-// nvcc resize.cpp partition.cpp kmeans.cpp kmeans.cu ../build_index/build.cpp ../build_index/merge.cpp ../utils/indexIO.cpp ../utils/datasetIO.cpp ../utils/distance.cpp -I/home/lanlu/raft/cpp/include/ -I/home/lanlu/miniconda3/envs/rapids_raft/targets/x86_64-linux/include -I/home/lanlu/miniconda3/envs/rapids_raft/include -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids/libcudacxx -I/home/lanlu/raft/cpp/build/_deps/nlohmann_json-src/include -I/home/lanlu/raft/cpp/build/_deps/benchmark-src/include -lcudart -ldl -lbenchmark -lpthread -lfmt -L/home/lanlu/raft/cpp/build/_deps/benchmark-build/src -Xcompiler -fopenmp -o testSplit
+// nvcc resize.cpp partition.cpp kmeans.cpp kmeans.cu ../merge/merge.cpp ../utils/indexIO.cpp ../utils/datasetIO.cpp ../utils/distance.cpp -I/home/lanlu/raft/cpp/include/ -I/home/lanlu/miniconda3/envs/rapids_raft/targets/x86_64-linux/include -I/home/lanlu/miniconda3/envs/rapids_raft/include -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids/libcudacxx -I/home/lanlu/raft/cpp/build/_deps/nlohmann_json-src/include -I/home/lanlu/raft/cpp/build/_deps/benchmark-src/include -lcudart -ldl -lbenchmark -lpthread -lfmt -L/home/lanlu/raft/cpp/build/_deps/benchmark-build/src -Xcompiler -fopenmp -o testSplit
 int main(){
     auto startTime = std::chrono::high_resolution_clock::now();
-    std::string filename = "/home/lanlu/raft/scaleGANN/dataset/sift100M/partitions32deg/partition8.u8bin";
+    std::string filename = "/home/lanlu/scaleGANN/dataset/sift100M/partitions32deg/partition8.u8bin";
     uint32_t memGPU = 16;
     uint32_t ndim = 128;
     uint32_t degree = 32;
     uint32_t max_iters = 15; // Vamana is 10
-    std::string idxMapFolder = "/home/lanlu/raft/scaleGANN/dataset/sift100M/partitions32deg/";
-    std::string baseFolder = "/home/lanlu/raft/scaleGANN/dataset/sift100M/partitions32deg/";
+    std::string idxMapFolder = "/home/lanlu/scaleGANN/dataset/sift100M/partitions32deg/";
+    std::string baseFolder = "/home/lanlu/scaleGANN/dataset/sift100M/partitions32deg/";
 
     resize<uint8_t>(filename, memGPU, ndim, degree, max_iters, idxMapFolder, baseFolder);
 

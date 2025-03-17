@@ -2,7 +2,7 @@
 
 N=10
 NUM_GPUS=4
-DatasetPath="/home/lanlu/raft/scaleGANN/dataset/sift100M"
+DatasetPath="/home/lanlu/scaleGANN/dataset/sift100M"
 DATASET="sift100M"
 SHARD_FOLDER="test"
 declare -A GPU_PIDS

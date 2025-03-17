@@ -108,8 +108,8 @@ def shuffle_bvecs(input_file, output_file, num_rows, dim):
 
 
 if __name__ == "__main__":
-    input_file = "/home/lanlu/raft/scaleGANN/dataset/deep350M/learn.350M.fbin"
-    output_file = "/home/lanlu/raft/scaleGANN/dataset/deep1M//base.1M.fbin"
+    input_file = "/home/lanlu/scaleGANN/dataset/deep350M/learn.350M.fbin"
+    output_file = "/home/lanlu/scaleGANN/dataset/deep1M//base.1M.fbin"
     million = 1000000
     num_rows_to_extract = 1 * million
     

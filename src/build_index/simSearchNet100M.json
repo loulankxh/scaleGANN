@@ -20,7 +20,7 @@
           "graph_build_algo": "NN_DESCENT"
         },
         "name": "raft_cagra.graph_degree32.intermediate_graph_degree32.graph_build_algoNN_DESCENT",
-        "file": "/home/lanlu/raft/scaleGANN/dataset/sift100M/test/partition0/index/raft_cagra.graph_degree21.intermediate_graph_degree21.graph_build_algoNN_DESCENT",
+        "file": "/home/lanlu/scaleGANN/dataset/sift100M/test/partition0/index/raft_cagra.graph_degree21.intermediate_graph_degree21.graph_build_algoNN_DESCENT",
         "search_params": [
         ]
       },
@@ -32,7 +32,7 @@
           "graph_build_algo": "NN_DESCENT"
         },
         "name": "raft_cagra.graph_degree32.intermediate_graph_degree64.graph_build_algoNN_DESCENT",
-        "file": "/home/lanlu/raft/scaleGANN/dataset/sift100M/test/partition0/index/raft_cagra.graph_degree21.intermediate_graph_degree32.graph_build_algoNN_DESCENT",
+        "file": "/home/lanlu/scaleGANN/dataset/sift100M/test/partition0/index/raft_cagra.graph_degree21.intermediate_graph_degree32.graph_build_algoNN_DESCENT",
         "search_params": [
         ]
       },
@@ -44,7 +44,7 @@
           "graph_build_algo": "NN_DESCENT"
         },
         "name": "raft_cagra.graph_degree64.intermediate_graph_degree64.graph_build_algoNN_DESCENT",
-        "file": "/home/lanlu/raft/scaleGANN/dataset/sift100M/test/partition0/index/raft_cagra.graph_degree32.intermediate_graph_degree32.graph_build_algoNN_DESCENT",
+        "file": "/home/lanlu/scaleGANN/dataset/sift100M/test/partition0/index/raft_cagra.graph_degree32.intermediate_graph_degree32.graph_build_algoNN_DESCENT",
         "search_params": [
         ]
       }

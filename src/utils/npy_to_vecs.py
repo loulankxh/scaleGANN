@@ -27,6 +27,6 @@ if __name__ == "__main__":
     #     sys.exit(1)
 
     # npy_to_fvecs(sys.argv[1], sys.argv[2])
-    npy_file="/home/lanlu/raft/scaleGANN/dataset/laion1M/text_emb_1.npy"
-    fvecs_file="/home/lanlu/raft/scaleGANN/dataset/laion1M/query.fvecs"
+    npy_file="/home/lanlu/scaleGANN/dataset/laion1M/text_emb_1.npy"
+    fvecs_file="/home/lanlu/scaleGANN/dataset/laion1M/query.fvecs"
     npy_to_fvecs(npy_file,fvecs_file)
