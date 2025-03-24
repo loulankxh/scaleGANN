@@ -38,13 +38,13 @@ size_t estimate_memory_consumption(size_t npts, uint32_t ndim, uint32_t degree){
 
 
 template <typename T>
-uint32_t get_partition_num(uint32_t memGPU, size_t npts, uint32_t ndim, uint32_t degree, uint32_t dumplicate_factor){
+uint32_t get_partition_num(uint32_t memGPU, size_t npts, uint32_t ndim, uint32_t degree, uint32_t duplicate_factor){
     size_t memConsumption = estimate_memory_consumption<T>(npts, ndim, degree);
     uint32_t partition_num;
     if (( (size_t) memGPU * 1024 * 1024 * 1024) > SLACK_FACTOR * memConsumption) {
         partition_num = 1;
     } else {
-        partition_num = (uint32_t)(((double) SLACK_FACTOR * dumplicate_factor * memConsumption - 1) / ( (size_t) memGPU * 1024 * 1024 * 1024)) + 1; 
+        partition_num = (uint32_t)(((double) SLACK_FACTOR * duplicate_factor * memConsumption - 1) / ( (size_t) memGPU * 1024 * 1024 * 1024)) + 1; 
     }
     printf("Partition number has lower bound %d\n", partition_num);
     return partition_num;

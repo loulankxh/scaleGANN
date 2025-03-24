@@ -7,6 +7,7 @@
 #include <type_traits>
 #include <cmath>
 #include <cassert>
+#include <filesystem>
 
 
 
@@ -137,7 +138,7 @@ void write_neighborLists(std::ostream& os, std::vector<std::vector<uint32_t>>& v
     write_header<uint32_t>(os, false, rows, deg);
 
     for(int i = 0; i < rows; i++){
-        os.write(reinterpret_cast<const char*>(values[i].data()), deg * sizeof(uint32_t));
+        os.write(reinterpret_cast<const char*>(values[i].data()), values[i].size() * sizeof(uint32_t));
         if (!os) {
             throw std::runtime_error("Failed to write the dataset to the output stream.");
         }
@@ -209,10 +210,21 @@ void readIndex(const std::string index_file,
 
 void writeIndexMerged(
     const std::string index_file, std::vector<std::vector<uint32_t>>& index){
+    std::filesystem::path index_path(index_file);
+    std::string dirPath = index_path.parent_path();
+    if (!std::filesystem::exists(dirPath)) {
+        if (std::filesystem::create_directories(dirPath)) {
+            std::cout << "Dir doesn't exists but success to create such dir: " << dirPath << std::endl;
+        } else {
+            std::cerr << "Dir doesn't exists and fail to create such dir: " << dirPath << std::endl;
+        }
+    }
+
     std::ofstream os(index_file, std::ios::out | std::ios::binary);
     if (!os) {
         throw std::runtime_error("Failed to open file for writing.");
     }
+    printf("Starting writing index\n");
 
     // std::string dtype_string = raft::detail::numpy_serializer::get_numpy_dtype<T>().to_string();
     std::string dtype_string = "<f4";
@@ -229,9 +241,12 @@ void writeIndexMerged(
     write_once<std::uint32_t>(os, deg);
     unsigned short metric = 0;
     write_once<unsigned short>(os, metric);
+    printf("Finishing writing headers\n");
 
     write_neighborLists(os, index);
     printf("Write index dimension is: %d * %d\n", index.size(), index[0].size());
+
+    printf("Finishing writing neighbors\n");
 
     bool has_dataset = 0;
     write_once<bool>(os, has_dataset);

@@ -132,7 +132,8 @@ void diskANN_shard_data_into_clusters_with_ram_budget(const std::string data_fil
 
 template <typename T>
 void scaleGANN_shard_data_into_clusters_with_ram_budget(const std::string data_file, float *pivots, const size_t num_centers,
-    const size_t dim, const size_t k_base, uint32_t size_limit, std::string prefix_path){
+    const size_t dim, const size_t k_base, uint32_t size_limit, std::string prefix_path,
+    float epsilon){
     size_t read_blk_size = 64 * 1024 * 1024;
     //  uint64_t write_blk_size = 64 * 1024 * 1024;
     // create cached reader + writer
@@ -168,7 +169,7 @@ void scaleGANN_shard_data_into_clusters_with_ram_budget(const std::string data_f
         shard_data_writer[i].write((char *)&dummy_size, sizeof(uint32_t));
         shard_data_writer[i].write((char *)&basedim32, sizeof(uint32_t));
         shard_idmap_writer[i].write((char *)&dummy_size, sizeof(uint32_t));
-        shard_idmap_writer[i].write((char *)&const_one, sizeof(uint32_t));
+        // shard_idmap_writer[i].write((char *)&const_one, sizeof(uint32_t));
         shard_counts[i].store(0);
     }
 
@@ -180,11 +181,32 @@ void scaleGANN_shard_data_into_clusters_with_ram_budget(const std::string data_f
     size_t num_blocks = DIV_ROUND_UP(num_points, block_size);
 
     // To parallel the node assignment and reduction, extra data structures are used for maintain the results for final write (which can not be parallelled)
+    // std::unique_ptr<float[]> distance_matrix = std::make_unique<float[]>(num_centers, );
+    float *distance_matrix = new float[num_centers * block_size]; // row: num points, col: num centers
     std::vector<std::unique_ptr<uint32_t[]>> shard_to_ids(num_centers);
     std::unique_ptr<uint32_t[]> shard_counts_until_this_block = std::make_unique<uint32_t[]>(num_centers);
+    std::unique_ptr<AtomicWrapper<uint32_t>[]> shard_counts_first_round = std::make_unique<AtomicWrapper<uint32_t>[]>(num_centers);
+    std::unique_ptr<uint32_t[]> shard_counts_first_round_until_this_block = std::make_unique<uint32_t[]>(num_centers);
+    std::unique_ptr<AtomicWrapper<uint32_t>[]> shard_counts_second_round = std::make_unique<AtomicWrapper<uint32_t>[]>(num_centers);
+    uint32_t size_limit_first_round = (uint32_t)(size_limit * 0.8); // 0.8: bound proportion, a cluster should contain at most 80% points whose nearest center is in this cluster
+    std::unique_ptr<float[]> data_distribution_first_round = std::make_unique<float[]>(num_centers);
+    uint32_t size_lower_bound_second_round = size_limit - size_limit_first_round;
+    std::unique_ptr<uint32_t[]> size_limit_second_round = std::make_unique<uint32_t[]>(num_centers);
+    std::unique_ptr<uint32_t[]> first_round_assignment = std::make_unique<uint32_t[]>(block_size);
+    std::unique_ptr<float[]> shard_radius = std::make_unique<float[]>(num_centers);
     for (size_t i = 0; i < num_centers; i++) {
         shard_to_ids[i] = std::make_unique<uint32_t[]>(block_size);
         shard_counts_until_this_block[i] = 0;
+
+        shard_counts_first_round[i].store(0);
+        shard_counts_first_round_until_this_block[i] = 0;
+        shard_counts_second_round[i].store(0);
+        data_distribution_first_round[i] = 1/(float)num_centers;
+        size_limit_second_round[i] = 0;
+        shard_radius[i] = 0.0;
+    }
+    for (size_t i = 0; i < block_size; i++){
+        first_round_assignment[i] = num_centers; // initial: unassiged value
     }
 
     for (size_t block = 0; block < num_blocks; block++)
@@ -197,33 +219,109 @@ void scaleGANN_shard_data_into_clusters_with_ram_budget(const std::string data_f
         diskann::convert_types<T, float>(block_data_T.get(), block_data_float.get(), cur_blk_size, dim);
 
 
-        math_utils::compute_closest_centers(block_data_float.get(), cur_blk_size, dim, pivots, num_centers, num_centers,
-                                            block_closest_centers.get());
-        // Lan: todo: use GPU Kmeans clustering
+        // math_utils::compute_closest_centers(block_data_float.get(), cur_blk_size, dim, pivots, num_centers, num_centers,
+        //                                     block_closest_centers.get());
+        math_utils::compute_closest_centers_return_distance(block_data_float.get(), cur_blk_size, dim, pivots, num_centers, num_centers,
+                                            block_closest_centers.get(), distance_matrix, NULL, NULL);
 
+        // #pragma omp parallel for schedule(static)
+        // for (size_t p = 0; p < cur_blk_size; p++)
+        // {   
+        //     uint32_t assigned_count = 0;
+        //     for (size_t p1 = 0; p1 < num_centers; p1++)
+        //     {   
+        //         // balance the size of each cluster
+        //         if (assigned_count >= k_base) {
+        //             break;
+        //         }
+
+        //         size_t shard_id = block_closest_centers[p * num_centers + p1];
+        //         uint32_t original_point_map_id = (uint32_t)(start_id + p);
+
+        //         uint32_t partition_size_id = shard_counts[shard_id].load(); // omp_get_num_procs: inaccuracy upper bound by concurrency after pragma & atomic
+        //         if ((partition_size_id >= size_limit) && ((num_centers - p1) > (k_base - assigned_count))) {
+        //             continue;
+        //         }
+
+        //         // Lan: todo: reduce duplication
+        //         uint32_t current_id = (shard_counts[shard_id]++) - shard_counts_until_this_block[shard_id];
+        //         shard_to_ids[shard_id][current_id] = original_point_map_id; 
+        //         assigned_count++;
+        //     }
+        // }
+
+        // Round 1 assignment: assign a point to its closest center
         #pragma omp parallel for schedule(static)
         for (size_t p = 0; p < cur_blk_size; p++)
         {   
-            uint32_t assigned_count = 0;
             for (size_t p1 = 0; p1 < num_centers; p1++)
             {   
-                // balance the size of each cluster
-                if (assigned_count >= k_base) {
-                    break;
-                }
-
                 size_t shard_id = block_closest_centers[p * num_centers + p1];
-                uint32_t original_point_map_id = (uint32_t)(start_id + p);
-
-                uint32_t partition_size_id = shard_counts[shard_id].load(); // omp_get_num_procs: inaccuracy upper bound by concurrency after pragma & atomic
-                if ((partition_size_id >= size_limit) && ((num_centers - p1) > (k_base - assigned_count))) {
+                uint32_t current_r1_size = shard_counts_first_round[shard_id].load(); // omp_get_num_procs: inaccuracy upper bound by concurrency after pragma & atomic
+                uint32_t curret_size = shard_counts[shard_id].load();
+                if ((current_r1_size > size_limit_first_round) || (curret_size > size_limit)){
                     continue;
                 }
 
-                // Lan: todo: reduce duplication
+                shard_counts_first_round[shard_id]++;
+                first_round_assignment[p] = shard_id;
+                uint32_t original_point_map_id = (uint32_t)(start_id + p);
                 uint32_t current_id = (shard_counts[shard_id]++) - shard_counts_until_this_block[shard_id];
-                shard_to_ids[shard_id][current_id] = original_point_map_id; 
-                assigned_count++;
+                shard_to_ids[shard_id][current_id] = original_point_map_id;
+                if (distance_matrix[p * num_centers + p1] > shard_radius[shard_id]){
+                    shard_radius[shard_id] = distance_matrix[p * num_centers + p1];
+                }
+                break;
+            }
+        }
+
+        // Update data distribution based on round 1, update round 2 size limit
+        #pragma omp parallel for schedule(static)
+        for (size_t cluster = 0; cluster < num_centers; cluster++){
+            data_distribution_first_round[cluster] = (data_distribution_first_round[cluster] * (block + 1) + 
+                                                        ((shard_counts_first_round[cluster].load() - shard_counts_first_round_until_this_block[cluster])/((float)cur_blk_size))) 
+                                                    / ((float)(block + 2));
+            
+            uint32_t size_remain_after_first_round = 0;
+            if ((uint32_t)(data_distribution_first_round[cluster] * npts32) < size_limit){
+                size_remain_after_first_round = size_limit - (uint32_t)(data_distribution_first_round[cluster] * npts32);
+            }
+            if (size_remain_after_first_round > size_lower_bound_second_round) size_limit_second_round[cluster] = size_remain_after_first_round;
+            else size_limit_second_round[cluster] = size_lower_bound_second_round;
+            if (block == num_centers -1){
+                size_limit_second_round[cluster] = size_limit - shard_counts_first_round[cluster].load();
+            }
+        }
+
+        // Round 2 assignment: assign points to other centers for duplication, while under reduction rules
+        #pragma omp parallel for schedule(static)
+        for (size_t p = 0; p < cur_blk_size; p++)
+        {   
+            uint32_t assigned_count = 1;
+            for (size_t p1 = 0; p1 < num_centers; p1++)
+            {   
+                if (assigned_count >= k_base)
+                    break;
+                uint32_t first_round_center = first_round_assignment[p];
+                if (p1 == first_round_center) 
+                    continue;
+                size_t shard_id = block_closest_centers[p * num_centers + p1];
+                uint32_t current_r2_size = shard_counts_second_round[shard_id].load(); // omp_get_num_procs: inaccuracy upper bound by concurrency after pragma & atomic
+                uint32_t curret_size = shard_counts[shard_id].load();
+                if ((current_r2_size > size_limit_second_round[shard_id]) || (curret_size > size_limit)){
+                    continue;
+                }
+
+                if ((distance_matrix[p * num_centers + p1] < epsilon * distance_matrix[p * num_centers + first_round_center]) 
+                    || (distance_matrix[p * num_centers + p1] < epsilon * (1 + (float)1 / (block + 1)) * shard_radius[shard_id])){
+                        shard_counts_second_round[shard_id]++;
+                        uint32_t original_point_map_id = (uint32_t)(start_id + p);
+                        uint32_t current_id = (shard_counts[shard_id]++) - shard_counts_until_this_block[shard_id];
+                        shard_to_ids[shard_id][current_id] = original_point_map_id;
+                        assigned_count++;
+                } else{
+                    break;
+                }
             }
         }
 
@@ -257,6 +355,7 @@ void scaleGANN_shard_data_into_clusters_with_ram_budget(const std::string data_f
 
     diskann::cout << "\n Partitioned " << num_points << " with replication factor " << k_base << " to get "
                   << total_count << " points across " << num_centers << " shards " << std::endl;
+    delete[] distance_matrix;
 }
 
 
@@ -303,7 +402,6 @@ void diskANN_partitions_with_ram_budget(const std::string data_file, const doubl
         // Process Global k-means for kmeans_partitioning Step
         diskann::cout << "Processing global k-means (kmeans_partitioning Step)" << std::endl;
         kmeans::kmeanspp_selecting_pivots(train_data_float, num_train, train_dim, pivot_data, num_parts);
-
         kmeans::run_lloyds(train_data_float, num_train, train_dim, pivot_data, num_parts, max_k_means_reps, NULL, NULL);
 
         // now pivots are ready. need to stream base points and assign them to
@@ -346,7 +444,7 @@ void diskANN_partitions_with_ram_budget(const std::string data_file, const doubl
 
 template <typename T>
 void scaleGANN_partitions_with_ram_budget(const std::string data_file, const double sampling_rate, double ram_budget,
-    size_t graph_degree, const std::string prefix_path, size_t k_base, uint32_t num_parts = 0){
+    size_t graph_degree, const std::string prefix_path, size_t k_base, uint32_t num_parts = 0, uint32_t epsilon=2){
     size_t train_dim;
     size_t num_train;
     float *train_data_float;
@@ -361,6 +459,7 @@ void scaleGANN_partitions_with_ram_budget(const std::string data_file, const dou
     base_reader.read((char *)&npts32, sizeof(uint32_t));
     base_reader.read((char *)&basedim32, sizeof(uint32_t));
 
+    // Lan: todo: if partition-num == 1
     uint32_t partition_lower_bound = get_partition_num<T>(ram_budget, npts32, basedim32, graph_degree, k_base);
     uint32_t size_limit = (uint32_t) (1 + k_base * npts32 / partition_lower_bound);
     printf("Size limit is: %d\n", size_limit);
@@ -370,6 +469,7 @@ void scaleGANN_partitions_with_ram_budget(const std::string data_file, const dou
     pivot_data = new float[num_parts * train_dim];
     // Process Global k-means for kmeans_partitioning Step
     diskann::cout << "Processing global k-means (kmeans_partitioning Step)" << std::endl;
+    // Lan: todo: use GPU Kmeans clustering
     kmeans::kmeanspp_selecting_pivots(train_data_float, num_train, train_dim, pivot_data, num_parts);
     kmeans::run_lloyds(train_data_float, num_train, train_dim, pivot_data, num_parts, max_k_means_reps, NULL, NULL);
 
@@ -388,7 +488,7 @@ void scaleGANN_partitions_with_ram_budget(const std::string data_file, const dou
     diskann::cout << "Saving global k-center pivots" << std::endl;
     diskann::save_bin<float>(output_file.c_str(), pivot_data, (size_t)num_parts, train_dim);
 
-    scaleGANN_shard_data_into_clusters_with_ram_budget<T>(data_file, pivot_data, num_parts, train_dim, k_base, size_limit, prefix_path);
+    scaleGANN_shard_data_into_clusters_with_ram_budget<T>(data_file, pivot_data, num_parts, train_dim, k_base, size_limit, prefix_path, epsilon);
     delete[] pivot_data;
     delete[] train_data_float;
 }
@@ -410,6 +510,6 @@ template void diskANN_partitions_with_ram_budget<uint8_t>(const std::string data
 
 
 template void scaleGANN_partitions_with_ram_budget<float>(const std::string data_file, const double sampling_rate, double ram_budget,
-    size_t graph_degree, const std::string prefix_path, size_t k_base, uint32_t num_parts = 0);
+    size_t graph_degree, const std::string prefix_path, size_t k_base, uint32_t num_parts = 0, uint32_t epsilon = 2);
 template void scaleGANN_partitions_with_ram_budget<uint8_t>(const std::string data_file, const double sampling_rate, double ram_budget,
-    size_t graph_degree, const std::string prefix_path, size_t k_base, uint32_t num_parts = 0);
+    size_t graph_degree, const std::string prefix_path, size_t k_base, uint32_t num_parts = 0, uint32_t epsilon = 2);

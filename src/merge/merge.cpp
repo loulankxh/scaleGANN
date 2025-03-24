@@ -60,8 +60,8 @@ void select_random_neighbors(std::vector<std::vector<uint32_t>>& grouped, size_t
         std::mt19937 gen(rd());
         
         auto& group = grouped[i];
-        if (group.size() > 1) { 
-            std::vector<uint32_t> values(group.begin() + 1, group.end());
+        if (group.size() > num_values) { 
+            std::vector<uint32_t> values(group.begin(), group.end());
             if (values.size() > num_values) {
                 std::shuffle(values.begin(), values.end(), gen);
                 values.resize(num_values);

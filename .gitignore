@@ -66,3 +66,6 @@ compile_commands.json
 *.ivecs
 *.fvecs
 dataset/
+
+# Build files
+build/

@@ -37,26 +37,49 @@ pq_flash_index.cpp scratch.cpp logger.cpp utils.cpp filter_utils.cpp index_facto
 list(TRANSFORM DISKANN_SOURCES PREPEND ${DISKANN_SRC_PATH}/)
 
 set(SCALEGANN_SRC_PATH ${CMAKE_CURRENT_SOURCE_DIR}/src)
-set(SCALEGANN_SOURCES 
+set(PARTITION_SOURCES 
     partition/partition.cpp partition/disk_partition.cpp partition/kmeans.cpp partition/kmeans.cu
     merge/merge.cpp merge/merge.cu
     utils/indexIO.cpp utils/datasetIO.cpp utils/distance.cpp
     scheduler/scheduler.cpp scheduler/gpuManagement.cpp)
-list(TRANSFORM SCALEGANN_SOURCES  PREPEND ${SCALEGANN_SRC_PATH}/)
+list(TRANSFORM PARTITION_SOURCES  PREPEND ${SCALEGANN_SRC_PATH}/)
 
-# find_package(CUDA REQUIRED)
 
-# set(SOURCES main.cpp helper.cpp kernel.cu)
+set(MERGE_SOURCES 
+    partition/partition.cpp partition/disk_partition.cpp partition/kmeans.cpp partition/kmeans.cu
+    merge/merge.cpp merge/merge.cu
+    utils/indexIO.cpp utils/datasetIO.cpp utils/distance.cpp
+    scheduler/scheduler.cpp scheduler/gpuManagement.cpp)
+list(TRANSFORM MERGE_SOURCES  PREPEND ${SCALEGANN_SRC_PATH}/)
 
-add_executable(testPartition ${SCALEGANN_SOURCES} ${DISKANN_SOURCES})
+
+set(SEARCH_SCALEGANN_SOURCES 
+    search/searchScaleGANN.cpp search/search.cpp 
+    utils/indexIO.cpp utils/datasetIO.cpp utils/distance.cpp
+)
+list(TRANSFORM SEARCH_SCALEGANN_SOURCES  PREPEND ${SCALEGANN_SRC_PATH}/)
+
+add_executable(executePartition ${PARTITION_SOURCES} ${DISKANN_SOURCES})
+add_executable(executeMerge ${MERGE_SOURCES} ${DISKANN_SOURCES})
+add_executable(searchScaleGANN ${SEARCH_SCALEGANN_SOURCES})
 
 # set_target_properties(my_program PROPERTIES
 #     CUDA_SEPARABLE_COMPILATION ON
 #     CUDA_ARCHITECTURES "60"  # 设置 GPU 架构，例如 60 表示 sm_60
 # )
 
-target_link_libraries(testPartition
-    PRIVATE
+
+# target_link_libraries(executePartition
+#     PRIVATE
+#     cudart
+#     dl
+#     benchmark
+#     pthread
+#     fmt
+#     mkl_rt
+#     m
+# )
+set(COMMON_LIBS
     cudart
     dl
     benchmark
@@ -65,3 +88,6 @@ target_link_libraries(testPartition
     mkl_rt
     m
 )
+foreach(target IN LISTS executePartition executeMerge searchScaleGANN)
+    target_link_libraries(${target} PRIVATE ${COMMON_LIBS})
+endforeach()
