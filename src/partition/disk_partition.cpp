@@ -444,11 +444,10 @@ void diskANN_partitions_with_ram_budget(const std::string data_file, const doubl
 
 template <typename T>
 void scaleGANN_partitions_with_ram_budget(const std::string data_file, const double sampling_rate, double ram_budget,
-    size_t graph_degree, const std::string prefix_path, size_t k_base, uint32_t num_parts = 0, uint32_t epsilon=2){
+    size_t graph_degree, const std::string prefix_path, size_t k_base, uint32_t num_parts = 0, uint32_t epsilon=2, size_t max_k_means_reps = 15){
     size_t train_dim;
     size_t num_train;
     float *train_data_float;
-    size_t max_k_means_reps = 15;
 
     gen_random_slice<T>(data_file, sampling_rate, train_data_float, num_train, train_dim);
     
@@ -510,6 +509,6 @@ template void diskANN_partitions_with_ram_budget<uint8_t>(const std::string data
 
 
 template void scaleGANN_partitions_with_ram_budget<float>(const std::string data_file, const double sampling_rate, double ram_budget,
-    size_t graph_degree, const std::string prefix_path, size_t k_base, uint32_t num_parts = 0, uint32_t epsilon = 2);
+    size_t graph_degree, const std::string prefix_path, size_t k_base, uint32_t num_parts = 0, uint32_t epsilon = 2, size_t max_k_means_reps = 15);
 template void scaleGANN_partitions_with_ram_budget<uint8_t>(const std::string data_file, const double sampling_rate, double ram_budget,
-    size_t graph_degree, const std::string prefix_path, size_t k_base, uint32_t num_parts = 0, uint32_t epsilon = 2);
+    size_t graph_degree, const std::string prefix_path, size_t k_base, uint32_t num_parts = 0, uint32_t epsilon = 2, size_t max_k_means_reps = 15);

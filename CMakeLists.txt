@@ -37,19 +37,17 @@ pq_flash_index.cpp scratch.cpp logger.cpp utils.cpp filter_utils.cpp index_facto
 list(TRANSFORM DISKANN_SOURCES PREPEND ${DISKANN_SRC_PATH}/)
 
 set(SCALEGANN_SRC_PATH ${CMAKE_CURRENT_SOURCE_DIR}/src)
-set(PARTITION_SOURCES 
+set(DISK_PARTITION_SOURCES 
     partition/partition.cpp partition/disk_partition.cpp partition/kmeans.cpp partition/kmeans.cu
-    merge/merge.cpp merge/merge.cu
     utils/indexIO.cpp utils/datasetIO.cpp utils/distance.cpp
-    scheduler/scheduler.cpp scheduler/gpuManagement.cpp)
-list(TRANSFORM PARTITION_SOURCES  PREPEND ${SCALEGANN_SRC_PATH}/)
+    taskScheduler/executeDiskPartition.cpp taskScheduler/gpuManagement.cpp)
+list(TRANSFORM DISK_PARTITION_SOURCES  PREPEND ${SCALEGANN_SRC_PATH}/)
 
 
 set(MERGE_SOURCES 
-    partition/partition.cpp partition/disk_partition.cpp partition/kmeans.cpp partition/kmeans.cu
     merge/merge.cpp merge/merge.cu
     utils/indexIO.cpp utils/datasetIO.cpp utils/distance.cpp
-    scheduler/scheduler.cpp scheduler/gpuManagement.cpp)
+    taskScheduler/executeMemoryMerge.cpp taskScheduler/gpuManagement.cpp)
 list(TRANSFORM MERGE_SOURCES  PREPEND ${SCALEGANN_SRC_PATH}/)
 
 
@@ -59,7 +57,7 @@ set(SEARCH_SCALEGANN_SOURCES
 )
 list(TRANSFORM SEARCH_SCALEGANN_SOURCES  PREPEND ${SCALEGANN_SRC_PATH}/)
 
-add_executable(executePartition ${PARTITION_SOURCES} ${DISKANN_SOURCES})
+add_executable(executeDiskPartition ${DISK_PARTITION_SOURCES} ${DISKANN_SOURCES})
 add_executable(executeMerge ${MERGE_SOURCES} ${DISKANN_SOURCES})
 add_executable(searchScaleGANN ${SEARCH_SCALEGANN_SOURCES})
 
@@ -69,17 +67,8 @@ add_executable(searchScaleGANN ${SEARCH_SCALEGANN_SOURCES})
 # )
 
 
-# target_link_libraries(executePartition
-#     PRIVATE
-#     cudart
-#     dl
-#     benchmark
-#     pthread
-#     fmt
-#     mkl_rt
-#     m
-# )
-set(COMMON_LIBS
+target_link_libraries(executeDiskPartition
+    PRIVATE
     cudart
     dl
     benchmark
@@ -88,6 +77,35 @@ set(COMMON_LIBS
     mkl_rt
     m
 )
-foreach(target IN LISTS executePartition executeMerge searchScaleGANN)
-    target_link_libraries(${target} PRIVATE ${COMMON_LIBS})
-endforeach()
+target_link_libraries(executeMerge
+    PRIVATE
+    cudart
+    dl
+    benchmark
+    pthread
+    fmt
+    mkl_rt
+    m
+)
+target_link_libraries(searchScaleGANN
+    PRIVATE
+    cudart
+    dl
+    benchmark
+    pthread
+    fmt
+    mkl_rt
+    m
+)
+# set(COMMON_LIBS
+#     cudart
+#     dl
+#     benchmark
+#     pthread
+#     fmt
+#     mkl_rt
+#     m
+# )
+# foreach(target IN LISTS executeDiskPartition executeMerge searchScaleGANN)
+#     target_link_libraries(${target} PRIVATE ${COMMON_LIBS})
+# endforeach()

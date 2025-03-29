@@ -9,7 +9,7 @@
 #include <chrono>
 
 #include "merge.cuh"
-#include "../scheduler/gpuManagement.h"
+#include "../taskScheduler/gpuManagement.h"
 
 __global__ void translateShardKernel(
     uint32_t* translated_data,

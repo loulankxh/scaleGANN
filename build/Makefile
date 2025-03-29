@@ -117,17 +117,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named executePartition
+# Target rules for targets named executeDiskPartition
 
 # Build rule for target.
-executePartition: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 executePartition
-.PHONY : executePartition
+executeDiskPartition: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 executeDiskPartition
+.PHONY : executeDiskPartition
 
 # fast build rule for target.
-executePartition/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/build
-.PHONY : executePartition/fast
+executeDiskPartition/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/build
+.PHONY : executeDiskPartition/fast
 
 #=============================================================================
 # Target rules for targets named executeMerge
@@ -160,7 +160,7 @@ DiskANN/src/abstract_data_store.o: DiskANN/src/abstract_data_store.cpp.o
 
 # target to build an object file
 DiskANN/src/abstract_data_store.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/abstract_data_store.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/abstract_data_store.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/abstract_data_store.cpp.o
 .PHONY : DiskANN/src/abstract_data_store.cpp.o
 
@@ -169,7 +169,7 @@ DiskANN/src/abstract_data_store.i: DiskANN/src/abstract_data_store.cpp.i
 
 # target to preprocess a source file
 DiskANN/src/abstract_data_store.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/abstract_data_store.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/abstract_data_store.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/abstract_data_store.cpp.i
 .PHONY : DiskANN/src/abstract_data_store.cpp.i
 
@@ -178,7 +178,7 @@ DiskANN/src/abstract_data_store.s: DiskANN/src/abstract_data_store.cpp.s
 
 # target to generate assembly for a file
 DiskANN/src/abstract_data_store.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/abstract_data_store.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/abstract_data_store.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/abstract_data_store.cpp.s
 .PHONY : DiskANN/src/abstract_data_store.cpp.s
 
@@ -187,7 +187,7 @@ DiskANN/src/abstract_index.o: DiskANN/src/abstract_index.cpp.o
 
 # target to build an object file
 DiskANN/src/abstract_index.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/abstract_index.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/abstract_index.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/abstract_index.cpp.o
 .PHONY : DiskANN/src/abstract_index.cpp.o
 
@@ -196,7 +196,7 @@ DiskANN/src/abstract_index.i: DiskANN/src/abstract_index.cpp.i
 
 # target to preprocess a source file
 DiskANN/src/abstract_index.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/abstract_index.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/abstract_index.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/abstract_index.cpp.i
 .PHONY : DiskANN/src/abstract_index.cpp.i
 
@@ -205,7 +205,7 @@ DiskANN/src/abstract_index.s: DiskANN/src/abstract_index.cpp.s
 
 # target to generate assembly for a file
 DiskANN/src/abstract_index.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/abstract_index.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/abstract_index.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/abstract_index.cpp.s
 .PHONY : DiskANN/src/abstract_index.cpp.s
 
@@ -214,7 +214,7 @@ DiskANN/src/ann_exception.o: DiskANN/src/ann_exception.cpp.o
 
 # target to build an object file
 DiskANN/src/ann_exception.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/ann_exception.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/ann_exception.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/ann_exception.cpp.o
 .PHONY : DiskANN/src/ann_exception.cpp.o
 
@@ -223,7 +223,7 @@ DiskANN/src/ann_exception.i: DiskANN/src/ann_exception.cpp.i
 
 # target to preprocess a source file
 DiskANN/src/ann_exception.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/ann_exception.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/ann_exception.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/ann_exception.cpp.i
 .PHONY : DiskANN/src/ann_exception.cpp.i
 
@@ -232,7 +232,7 @@ DiskANN/src/ann_exception.s: DiskANN/src/ann_exception.cpp.s
 
 # target to generate assembly for a file
 DiskANN/src/ann_exception.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/ann_exception.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/ann_exception.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/ann_exception.cpp.s
 .PHONY : DiskANN/src/ann_exception.cpp.s
 
@@ -241,7 +241,7 @@ DiskANN/src/disk_utils.o: DiskANN/src/disk_utils.cpp.o
 
 # target to build an object file
 DiskANN/src/disk_utils.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/disk_utils.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/disk_utils.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/disk_utils.cpp.o
 .PHONY : DiskANN/src/disk_utils.cpp.o
 
@@ -250,7 +250,7 @@ DiskANN/src/disk_utils.i: DiskANN/src/disk_utils.cpp.i
 
 # target to preprocess a source file
 DiskANN/src/disk_utils.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/disk_utils.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/disk_utils.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/disk_utils.cpp.i
 .PHONY : DiskANN/src/disk_utils.cpp.i
 
@@ -259,7 +259,7 @@ DiskANN/src/disk_utils.s: DiskANN/src/disk_utils.cpp.s
 
 # target to generate assembly for a file
 DiskANN/src/disk_utils.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/disk_utils.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/disk_utils.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/disk_utils.cpp.s
 .PHONY : DiskANN/src/disk_utils.cpp.s
 
@@ -268,7 +268,7 @@ DiskANN/src/distance.o: DiskANN/src/distance.cpp.o
 
 # target to build an object file
 DiskANN/src/distance.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/distance.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/distance.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/distance.cpp.o
 .PHONY : DiskANN/src/distance.cpp.o
 
@@ -277,7 +277,7 @@ DiskANN/src/distance.i: DiskANN/src/distance.cpp.i
 
 # target to preprocess a source file
 DiskANN/src/distance.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/distance.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/distance.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/distance.cpp.i
 .PHONY : DiskANN/src/distance.cpp.i
 
@@ -286,7 +286,7 @@ DiskANN/src/distance.s: DiskANN/src/distance.cpp.s
 
 # target to generate assembly for a file
 DiskANN/src/distance.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/distance.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/distance.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/distance.cpp.s
 .PHONY : DiskANN/src/distance.cpp.s
 
@@ -295,7 +295,7 @@ DiskANN/src/filter_utils.o: DiskANN/src/filter_utils.cpp.o
 
 # target to build an object file
 DiskANN/src/filter_utils.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/filter_utils.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/filter_utils.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/filter_utils.cpp.o
 .PHONY : DiskANN/src/filter_utils.cpp.o
 
@@ -304,7 +304,7 @@ DiskANN/src/filter_utils.i: DiskANN/src/filter_utils.cpp.i
 
 # target to preprocess a source file
 DiskANN/src/filter_utils.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/filter_utils.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/filter_utils.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/filter_utils.cpp.i
 .PHONY : DiskANN/src/filter_utils.cpp.i
 
@@ -313,7 +313,7 @@ DiskANN/src/filter_utils.s: DiskANN/src/filter_utils.cpp.s
 
 # target to generate assembly for a file
 DiskANN/src/filter_utils.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/filter_utils.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/filter_utils.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/filter_utils.cpp.s
 .PHONY : DiskANN/src/filter_utils.cpp.s
 
@@ -322,7 +322,7 @@ DiskANN/src/in_mem_data_store.o: DiskANN/src/in_mem_data_store.cpp.o
 
 # target to build an object file
 DiskANN/src/in_mem_data_store.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/in_mem_data_store.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/in_mem_data_store.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/in_mem_data_store.cpp.o
 .PHONY : DiskANN/src/in_mem_data_store.cpp.o
 
@@ -331,7 +331,7 @@ DiskANN/src/in_mem_data_store.i: DiskANN/src/in_mem_data_store.cpp.i
 
 # target to preprocess a source file
 DiskANN/src/in_mem_data_store.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/in_mem_data_store.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/in_mem_data_store.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/in_mem_data_store.cpp.i
 .PHONY : DiskANN/src/in_mem_data_store.cpp.i
 
@@ -340,7 +340,7 @@ DiskANN/src/in_mem_data_store.s: DiskANN/src/in_mem_data_store.cpp.s
 
 # target to generate assembly for a file
 DiskANN/src/in_mem_data_store.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/in_mem_data_store.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/in_mem_data_store.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/in_mem_data_store.cpp.s
 .PHONY : DiskANN/src/in_mem_data_store.cpp.s
 
@@ -349,7 +349,7 @@ DiskANN/src/in_mem_graph_store.o: DiskANN/src/in_mem_graph_store.cpp.o
 
 # target to build an object file
 DiskANN/src/in_mem_graph_store.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/in_mem_graph_store.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/in_mem_graph_store.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/in_mem_graph_store.cpp.o
 .PHONY : DiskANN/src/in_mem_graph_store.cpp.o
 
@@ -358,7 +358,7 @@ DiskANN/src/in_mem_graph_store.i: DiskANN/src/in_mem_graph_store.cpp.i
 
 # target to preprocess a source file
 DiskANN/src/in_mem_graph_store.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/in_mem_graph_store.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/in_mem_graph_store.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/in_mem_graph_store.cpp.i
 .PHONY : DiskANN/src/in_mem_graph_store.cpp.i
 
@@ -367,7 +367,7 @@ DiskANN/src/in_mem_graph_store.s: DiskANN/src/in_mem_graph_store.cpp.s
 
 # target to generate assembly for a file
 DiskANN/src/in_mem_graph_store.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/in_mem_graph_store.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/in_mem_graph_store.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/in_mem_graph_store.cpp.s
 .PHONY : DiskANN/src/in_mem_graph_store.cpp.s
 
@@ -376,7 +376,7 @@ DiskANN/src/index.o: DiskANN/src/index.cpp.o
 
 # target to build an object file
 DiskANN/src/index.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/index.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/index.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/index.cpp.o
 .PHONY : DiskANN/src/index.cpp.o
 
@@ -385,7 +385,7 @@ DiskANN/src/index.i: DiskANN/src/index.cpp.i
 
 # target to preprocess a source file
 DiskANN/src/index.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/index.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/index.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/index.cpp.i
 .PHONY : DiskANN/src/index.cpp.i
 
@@ -394,7 +394,7 @@ DiskANN/src/index.s: DiskANN/src/index.cpp.s
 
 # target to generate assembly for a file
 DiskANN/src/index.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/index.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/index.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/index.cpp.s
 .PHONY : DiskANN/src/index.cpp.s
 
@@ -403,7 +403,7 @@ DiskANN/src/index_factory.o: DiskANN/src/index_factory.cpp.o
 
 # target to build an object file
 DiskANN/src/index_factory.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/index_factory.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/index_factory.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/index_factory.cpp.o
 .PHONY : DiskANN/src/index_factory.cpp.o
 
@@ -412,7 +412,7 @@ DiskANN/src/index_factory.i: DiskANN/src/index_factory.cpp.i
 
 # target to preprocess a source file
 DiskANN/src/index_factory.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/index_factory.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/index_factory.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/index_factory.cpp.i
 .PHONY : DiskANN/src/index_factory.cpp.i
 
@@ -421,7 +421,7 @@ DiskANN/src/index_factory.s: DiskANN/src/index_factory.cpp.s
 
 # target to generate assembly for a file
 DiskANN/src/index_factory.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/index_factory.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/index_factory.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/index_factory.cpp.s
 .PHONY : DiskANN/src/index_factory.cpp.s
 
@@ -430,7 +430,7 @@ DiskANN/src/linux_aligned_file_reader.o: DiskANN/src/linux_aligned_file_reader.c
 
 # target to build an object file
 DiskANN/src/linux_aligned_file_reader.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/linux_aligned_file_reader.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/linux_aligned_file_reader.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/linux_aligned_file_reader.cpp.o
 .PHONY : DiskANN/src/linux_aligned_file_reader.cpp.o
 
@@ -439,7 +439,7 @@ DiskANN/src/linux_aligned_file_reader.i: DiskANN/src/linux_aligned_file_reader.c
 
 # target to preprocess a source file
 DiskANN/src/linux_aligned_file_reader.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/linux_aligned_file_reader.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/linux_aligned_file_reader.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/linux_aligned_file_reader.cpp.i
 .PHONY : DiskANN/src/linux_aligned_file_reader.cpp.i
 
@@ -448,7 +448,7 @@ DiskANN/src/linux_aligned_file_reader.s: DiskANN/src/linux_aligned_file_reader.c
 
 # target to generate assembly for a file
 DiskANN/src/linux_aligned_file_reader.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/linux_aligned_file_reader.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/linux_aligned_file_reader.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/linux_aligned_file_reader.cpp.s
 .PHONY : DiskANN/src/linux_aligned_file_reader.cpp.s
 
@@ -457,7 +457,7 @@ DiskANN/src/logger.o: DiskANN/src/logger.cpp.o
 
 # target to build an object file
 DiskANN/src/logger.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/logger.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/logger.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/logger.cpp.o
 .PHONY : DiskANN/src/logger.cpp.o
 
@@ -466,7 +466,7 @@ DiskANN/src/logger.i: DiskANN/src/logger.cpp.i
 
 # target to preprocess a source file
 DiskANN/src/logger.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/logger.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/logger.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/logger.cpp.i
 .PHONY : DiskANN/src/logger.cpp.i
 
@@ -475,7 +475,7 @@ DiskANN/src/logger.s: DiskANN/src/logger.cpp.s
 
 # target to generate assembly for a file
 DiskANN/src/logger.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/logger.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/logger.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/logger.cpp.s
 .PHONY : DiskANN/src/logger.cpp.s
 
@@ -484,7 +484,7 @@ DiskANN/src/math_utils.o: DiskANN/src/math_utils.cpp.o
 
 # target to build an object file
 DiskANN/src/math_utils.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/math_utils.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/math_utils.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/math_utils.cpp.o
 .PHONY : DiskANN/src/math_utils.cpp.o
 
@@ -493,7 +493,7 @@ DiskANN/src/math_utils.i: DiskANN/src/math_utils.cpp.i
 
 # target to preprocess a source file
 DiskANN/src/math_utils.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/math_utils.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/math_utils.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/math_utils.cpp.i
 .PHONY : DiskANN/src/math_utils.cpp.i
 
@@ -502,7 +502,7 @@ DiskANN/src/math_utils.s: DiskANN/src/math_utils.cpp.s
 
 # target to generate assembly for a file
 DiskANN/src/math_utils.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/math_utils.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/math_utils.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/math_utils.cpp.s
 .PHONY : DiskANN/src/math_utils.cpp.s
 
@@ -511,7 +511,7 @@ DiskANN/src/memory_mapper.o: DiskANN/src/memory_mapper.cpp.o
 
 # target to build an object file
 DiskANN/src/memory_mapper.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/memory_mapper.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/memory_mapper.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/memory_mapper.cpp.o
 .PHONY : DiskANN/src/memory_mapper.cpp.o
 
@@ -520,7 +520,7 @@ DiskANN/src/memory_mapper.i: DiskANN/src/memory_mapper.cpp.i
 
 # target to preprocess a source file
 DiskANN/src/memory_mapper.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/memory_mapper.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/memory_mapper.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/memory_mapper.cpp.i
 .PHONY : DiskANN/src/memory_mapper.cpp.i
 
@@ -529,7 +529,7 @@ DiskANN/src/memory_mapper.s: DiskANN/src/memory_mapper.cpp.s
 
 # target to generate assembly for a file
 DiskANN/src/memory_mapper.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/memory_mapper.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/memory_mapper.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/memory_mapper.cpp.s
 .PHONY : DiskANN/src/memory_mapper.cpp.s
 
@@ -538,7 +538,7 @@ DiskANN/src/natural_number_map.o: DiskANN/src/natural_number_map.cpp.o
 
 # target to build an object file
 DiskANN/src/natural_number_map.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/natural_number_map.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/natural_number_map.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/natural_number_map.cpp.o
 .PHONY : DiskANN/src/natural_number_map.cpp.o
 
@@ -547,7 +547,7 @@ DiskANN/src/natural_number_map.i: DiskANN/src/natural_number_map.cpp.i
 
 # target to preprocess a source file
 DiskANN/src/natural_number_map.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/natural_number_map.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/natural_number_map.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/natural_number_map.cpp.i
 .PHONY : DiskANN/src/natural_number_map.cpp.i
 
@@ -556,7 +556,7 @@ DiskANN/src/natural_number_map.s: DiskANN/src/natural_number_map.cpp.s
 
 # target to generate assembly for a file
 DiskANN/src/natural_number_map.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/natural_number_map.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/natural_number_map.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/natural_number_map.cpp.s
 .PHONY : DiskANN/src/natural_number_map.cpp.s
 
@@ -565,7 +565,7 @@ DiskANN/src/natural_number_set.o: DiskANN/src/natural_number_set.cpp.o
 
 # target to build an object file
 DiskANN/src/natural_number_set.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/natural_number_set.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/natural_number_set.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/natural_number_set.cpp.o
 .PHONY : DiskANN/src/natural_number_set.cpp.o
 
@@ -574,7 +574,7 @@ DiskANN/src/natural_number_set.i: DiskANN/src/natural_number_set.cpp.i
 
 # target to preprocess a source file
 DiskANN/src/natural_number_set.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/natural_number_set.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/natural_number_set.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/natural_number_set.cpp.i
 .PHONY : DiskANN/src/natural_number_set.cpp.i
 
@@ -583,7 +583,7 @@ DiskANN/src/natural_number_set.s: DiskANN/src/natural_number_set.cpp.s
 
 # target to generate assembly for a file
 DiskANN/src/natural_number_set.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/natural_number_set.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/natural_number_set.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/natural_number_set.cpp.s
 .PHONY : DiskANN/src/natural_number_set.cpp.s
 
@@ -592,7 +592,7 @@ DiskANN/src/partition.o: DiskANN/src/partition.cpp.o
 
 # target to build an object file
 DiskANN/src/partition.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/partition.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/partition.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/partition.cpp.o
 .PHONY : DiskANN/src/partition.cpp.o
 
@@ -601,7 +601,7 @@ DiskANN/src/partition.i: DiskANN/src/partition.cpp.i
 
 # target to preprocess a source file
 DiskANN/src/partition.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/partition.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/partition.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/partition.cpp.i
 .PHONY : DiskANN/src/partition.cpp.i
 
@@ -610,7 +610,7 @@ DiskANN/src/partition.s: DiskANN/src/partition.cpp.s
 
 # target to generate assembly for a file
 DiskANN/src/partition.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/partition.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/partition.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/partition.cpp.s
 .PHONY : DiskANN/src/partition.cpp.s
 
@@ -619,7 +619,7 @@ DiskANN/src/pq.o: DiskANN/src/pq.cpp.o
 
 # target to build an object file
 DiskANN/src/pq.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/pq.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/pq.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/pq.cpp.o
 .PHONY : DiskANN/src/pq.cpp.o
 
@@ -628,7 +628,7 @@ DiskANN/src/pq.i: DiskANN/src/pq.cpp.i
 
 # target to preprocess a source file
 DiskANN/src/pq.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/pq.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/pq.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/pq.cpp.i
 .PHONY : DiskANN/src/pq.cpp.i
 
@@ -637,7 +637,7 @@ DiskANN/src/pq.s: DiskANN/src/pq.cpp.s
 
 # target to generate assembly for a file
 DiskANN/src/pq.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/pq.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/pq.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/pq.cpp.s
 .PHONY : DiskANN/src/pq.cpp.s
 
@@ -646,7 +646,7 @@ DiskANN/src/pq_data_store.o: DiskANN/src/pq_data_store.cpp.o
 
 # target to build an object file
 DiskANN/src/pq_data_store.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/pq_data_store.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/pq_data_store.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/pq_data_store.cpp.o
 .PHONY : DiskANN/src/pq_data_store.cpp.o
 
@@ -655,7 +655,7 @@ DiskANN/src/pq_data_store.i: DiskANN/src/pq_data_store.cpp.i
 
 # target to preprocess a source file
 DiskANN/src/pq_data_store.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/pq_data_store.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/pq_data_store.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/pq_data_store.cpp.i
 .PHONY : DiskANN/src/pq_data_store.cpp.i
 
@@ -664,7 +664,7 @@ DiskANN/src/pq_data_store.s: DiskANN/src/pq_data_store.cpp.s
 
 # target to generate assembly for a file
 DiskANN/src/pq_data_store.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/pq_data_store.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/pq_data_store.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/pq_data_store.cpp.s
 .PHONY : DiskANN/src/pq_data_store.cpp.s
 
@@ -673,7 +673,7 @@ DiskANN/src/pq_flash_index.o: DiskANN/src/pq_flash_index.cpp.o
 
 # target to build an object file
 DiskANN/src/pq_flash_index.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/pq_flash_index.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/pq_flash_index.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/pq_flash_index.cpp.o
 .PHONY : DiskANN/src/pq_flash_index.cpp.o
 
@@ -682,7 +682,7 @@ DiskANN/src/pq_flash_index.i: DiskANN/src/pq_flash_index.cpp.i
 
 # target to preprocess a source file
 DiskANN/src/pq_flash_index.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/pq_flash_index.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/pq_flash_index.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/pq_flash_index.cpp.i
 .PHONY : DiskANN/src/pq_flash_index.cpp.i
 
@@ -691,7 +691,7 @@ DiskANN/src/pq_flash_index.s: DiskANN/src/pq_flash_index.cpp.s
 
 # target to generate assembly for a file
 DiskANN/src/pq_flash_index.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/pq_flash_index.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/pq_flash_index.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/pq_flash_index.cpp.s
 .PHONY : DiskANN/src/pq_flash_index.cpp.s
 
@@ -700,7 +700,7 @@ DiskANN/src/pq_l2_distance.o: DiskANN/src/pq_l2_distance.cpp.o
 
 # target to build an object file
 DiskANN/src/pq_l2_distance.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/pq_l2_distance.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/pq_l2_distance.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/pq_l2_distance.cpp.o
 .PHONY : DiskANN/src/pq_l2_distance.cpp.o
 
@@ -709,7 +709,7 @@ DiskANN/src/pq_l2_distance.i: DiskANN/src/pq_l2_distance.cpp.i
 
 # target to preprocess a source file
 DiskANN/src/pq_l2_distance.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/pq_l2_distance.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/pq_l2_distance.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/pq_l2_distance.cpp.i
 .PHONY : DiskANN/src/pq_l2_distance.cpp.i
 
@@ -718,7 +718,7 @@ DiskANN/src/pq_l2_distance.s: DiskANN/src/pq_l2_distance.cpp.s
 
 # target to generate assembly for a file
 DiskANN/src/pq_l2_distance.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/pq_l2_distance.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/pq_l2_distance.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/pq_l2_distance.cpp.s
 .PHONY : DiskANN/src/pq_l2_distance.cpp.s
 
@@ -727,7 +727,7 @@ DiskANN/src/scratch.o: DiskANN/src/scratch.cpp.o
 
 # target to build an object file
 DiskANN/src/scratch.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/scratch.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/scratch.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/scratch.cpp.o
 .PHONY : DiskANN/src/scratch.cpp.o
 
@@ -736,7 +736,7 @@ DiskANN/src/scratch.i: DiskANN/src/scratch.cpp.i
 
 # target to preprocess a source file
 DiskANN/src/scratch.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/scratch.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/scratch.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/scratch.cpp.i
 .PHONY : DiskANN/src/scratch.cpp.i
 
@@ -745,7 +745,7 @@ DiskANN/src/scratch.s: DiskANN/src/scratch.cpp.s
 
 # target to generate assembly for a file
 DiskANN/src/scratch.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/scratch.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/scratch.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/scratch.cpp.s
 .PHONY : DiskANN/src/scratch.cpp.s
 
@@ -754,7 +754,7 @@ DiskANN/src/utils.o: DiskANN/src/utils.cpp.o
 
 # target to build an object file
 DiskANN/src/utils.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/utils.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/utils.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/utils.cpp.o
 .PHONY : DiskANN/src/utils.cpp.o
 
@@ -763,7 +763,7 @@ DiskANN/src/utils.i: DiskANN/src/utils.cpp.i
 
 # target to preprocess a source file
 DiskANN/src/utils.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/utils.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/utils.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/utils.cpp.i
 .PHONY : DiskANN/src/utils.cpp.i
 
@@ -772,7 +772,7 @@ DiskANN/src/utils.s: DiskANN/src/utils.cpp.s
 
 # target to generate assembly for a file
 DiskANN/src/utils.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/DiskANN/src/utils.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/utils.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/DiskANN/src/utils.cpp.s
 .PHONY : DiskANN/src/utils.cpp.s
 
@@ -781,7 +781,6 @@ src/merge/merge.o: src/merge/merge.cpp.o
 
 # target to build an object file
 src/merge/merge.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/merge/merge.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/merge/merge.cpp.o
 .PHONY : src/merge/merge.cpp.o
 
@@ -790,7 +789,6 @@ src/merge/merge.i: src/merge/merge.cpp.i
 
 # target to preprocess a source file
 src/merge/merge.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/merge/merge.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/merge/merge.cpp.i
 .PHONY : src/merge/merge.cpp.i
 
@@ -799,7 +797,6 @@ src/merge/merge.s: src/merge/merge.cpp.s
 
 # target to generate assembly for a file
 src/merge/merge.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/merge/merge.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/merge/merge.cpp.s
 .PHONY : src/merge/merge.cpp.s
 
@@ -808,7 +805,6 @@ src/merge/merge.o: src/merge/merge.cu.o
 
 # target to build an object file
 src/merge/merge.cu.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/merge/merge.cu.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/merge/merge.cu.o
 .PHONY : src/merge/merge.cu.o
 
@@ -817,7 +813,6 @@ src/merge/merge.i: src/merge/merge.cu.i
 
 # target to preprocess a source file
 src/merge/merge.cu.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/merge/merge.cu.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/merge/merge.cu.i
 .PHONY : src/merge/merge.cu.i
 
@@ -826,7 +821,6 @@ src/merge/merge.s: src/merge/merge.cu.s
 
 # target to generate assembly for a file
 src/merge/merge.cu.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/merge/merge.cu.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/merge/merge.cu.s
 .PHONY : src/merge/merge.cu.s
 
@@ -835,8 +829,7 @@ src/partition/disk_partition.o: src/partition/disk_partition.cpp.o
 
 # target to build an object file
 src/partition/disk_partition.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/partition/disk_partition.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/partition/disk_partition.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/partition/disk_partition.cpp.o
 .PHONY : src/partition/disk_partition.cpp.o
 
 src/partition/disk_partition.i: src/partition/disk_partition.cpp.i
@@ -844,8 +837,7 @@ src/partition/disk_partition.i: src/partition/disk_partition.cpp.i
 
 # target to preprocess a source file
 src/partition/disk_partition.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/partition/disk_partition.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/partition/disk_partition.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/partition/disk_partition.cpp.i
 .PHONY : src/partition/disk_partition.cpp.i
 
 src/partition/disk_partition.s: src/partition/disk_partition.cpp.s
@@ -853,8 +845,7 @@ src/partition/disk_partition.s: src/partition/disk_partition.cpp.s
 
 # target to generate assembly for a file
 src/partition/disk_partition.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/partition/disk_partition.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/partition/disk_partition.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/partition/disk_partition.cpp.s
 .PHONY : src/partition/disk_partition.cpp.s
 
 src/partition/kmeans.o: src/partition/kmeans.cpp.o
@@ -862,8 +853,7 @@ src/partition/kmeans.o: src/partition/kmeans.cpp.o
 
 # target to build an object file
 src/partition/kmeans.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/partition/kmeans.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/partition/kmeans.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/partition/kmeans.cpp.o
 .PHONY : src/partition/kmeans.cpp.o
 
 src/partition/kmeans.i: src/partition/kmeans.cpp.i
@@ -871,8 +861,7 @@ src/partition/kmeans.i: src/partition/kmeans.cpp.i
 
 # target to preprocess a source file
 src/partition/kmeans.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/partition/kmeans.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/partition/kmeans.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/partition/kmeans.cpp.i
 .PHONY : src/partition/kmeans.cpp.i
 
 src/partition/kmeans.s: src/partition/kmeans.cpp.s
@@ -880,8 +869,7 @@ src/partition/kmeans.s: src/partition/kmeans.cpp.s
 
 # target to generate assembly for a file
 src/partition/kmeans.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/partition/kmeans.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/partition/kmeans.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/partition/kmeans.cpp.s
 .PHONY : src/partition/kmeans.cpp.s
 
 src/partition/kmeans.o: src/partition/kmeans.cu.o
@@ -889,8 +877,7 @@ src/partition/kmeans.o: src/partition/kmeans.cu.o
 
 # target to build an object file
 src/partition/kmeans.cu.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/partition/kmeans.cu.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/partition/kmeans.cu.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/partition/kmeans.cu.o
 .PHONY : src/partition/kmeans.cu.o
 
 src/partition/kmeans.i: src/partition/kmeans.cu.i
@@ -898,8 +885,7 @@ src/partition/kmeans.i: src/partition/kmeans.cu.i
 
 # target to preprocess a source file
 src/partition/kmeans.cu.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/partition/kmeans.cu.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/partition/kmeans.cu.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/partition/kmeans.cu.i
 .PHONY : src/partition/kmeans.cu.i
 
 src/partition/kmeans.s: src/partition/kmeans.cu.s
@@ -907,8 +893,7 @@ src/partition/kmeans.s: src/partition/kmeans.cu.s
 
 # target to generate assembly for a file
 src/partition/kmeans.cu.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/partition/kmeans.cu.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/partition/kmeans.cu.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/partition/kmeans.cu.s
 .PHONY : src/partition/kmeans.cu.s
 
 src/partition/partition.o: src/partition/partition.cpp.o
@@ -916,8 +901,7 @@ src/partition/partition.o: src/partition/partition.cpp.o
 
 # target to build an object file
 src/partition/partition.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/partition/partition.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/partition/partition.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/partition/partition.cpp.o
 .PHONY : src/partition/partition.cpp.o
 
 src/partition/partition.i: src/partition/partition.cpp.i
@@ -925,8 +909,7 @@ src/partition/partition.i: src/partition/partition.cpp.i
 
 # target to preprocess a source file
 src/partition/partition.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/partition/partition.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/partition/partition.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/partition/partition.cpp.i
 .PHONY : src/partition/partition.cpp.i
 
 src/partition/partition.s: src/partition/partition.cpp.s
@@ -934,63 +917,8 @@ src/partition/partition.s: src/partition/partition.cpp.s
 
 # target to generate assembly for a file
 src/partition/partition.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/partition/partition.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/partition/partition.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/partition/partition.cpp.s
 .PHONY : src/partition/partition.cpp.s
-
-src/scheduler/gpuManagement.o: src/scheduler/gpuManagement.cpp.o
-.PHONY : src/scheduler/gpuManagement.o
-
-# target to build an object file
-src/scheduler/gpuManagement.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/scheduler/gpuManagement.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/scheduler/gpuManagement.cpp.o
-.PHONY : src/scheduler/gpuManagement.cpp.o
-
-src/scheduler/gpuManagement.i: src/scheduler/gpuManagement.cpp.i
-.PHONY : src/scheduler/gpuManagement.i
-
-# target to preprocess a source file
-src/scheduler/gpuManagement.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/scheduler/gpuManagement.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/scheduler/gpuManagement.cpp.i
-.PHONY : src/scheduler/gpuManagement.cpp.i
-
-src/scheduler/gpuManagement.s: src/scheduler/gpuManagement.cpp.s
-.PHONY : src/scheduler/gpuManagement.s
-
-# target to generate assembly for a file
-src/scheduler/gpuManagement.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/scheduler/gpuManagement.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/scheduler/gpuManagement.cpp.s
-.PHONY : src/scheduler/gpuManagement.cpp.s
-
-src/scheduler/scheduler.o: src/scheduler/scheduler.cpp.o
-.PHONY : src/scheduler/scheduler.o
-
-# target to build an object file
-src/scheduler/scheduler.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/scheduler/scheduler.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/scheduler/scheduler.cpp.o
-.PHONY : src/scheduler/scheduler.cpp.o
-
-src/scheduler/scheduler.i: src/scheduler/scheduler.cpp.i
-.PHONY : src/scheduler/scheduler.i
-
-# target to preprocess a source file
-src/scheduler/scheduler.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/scheduler/scheduler.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/scheduler/scheduler.cpp.i
-.PHONY : src/scheduler/scheduler.cpp.i
-
-src/scheduler/scheduler.s: src/scheduler/scheduler.cpp.s
-.PHONY : src/scheduler/scheduler.s
-
-# target to generate assembly for a file
-src/scheduler/scheduler.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/scheduler/scheduler.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/scheduler/scheduler.cpp.s
-.PHONY : src/scheduler/scheduler.cpp.s
 
 src/search/search.o: src/search/search.cpp.o
 .PHONY : src/search/search.o
@@ -1040,12 +968,87 @@ src/search/searchScaleGANN.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/src/search/searchScaleGANN.cpp.s
 .PHONY : src/search/searchScaleGANN.cpp.s
 
+src/taskScheduler/executeDiskPartition.o: src/taskScheduler/executeDiskPartition.cpp.o
+.PHONY : src/taskScheduler/executeDiskPartition.o
+
+# target to build an object file
+src/taskScheduler/executeDiskPartition.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/taskScheduler/executeDiskPartition.cpp.o
+.PHONY : src/taskScheduler/executeDiskPartition.cpp.o
+
+src/taskScheduler/executeDiskPartition.i: src/taskScheduler/executeDiskPartition.cpp.i
+.PHONY : src/taskScheduler/executeDiskPartition.i
+
+# target to preprocess a source file
+src/taskScheduler/executeDiskPartition.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/taskScheduler/executeDiskPartition.cpp.i
+.PHONY : src/taskScheduler/executeDiskPartition.cpp.i
+
+src/taskScheduler/executeDiskPartition.s: src/taskScheduler/executeDiskPartition.cpp.s
+.PHONY : src/taskScheduler/executeDiskPartition.s
+
+# target to generate assembly for a file
+src/taskScheduler/executeDiskPartition.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/taskScheduler/executeDiskPartition.cpp.s
+.PHONY : src/taskScheduler/executeDiskPartition.cpp.s
+
+src/taskScheduler/executeMemoryMerge.o: src/taskScheduler/executeMemoryMerge.cpp.o
+.PHONY : src/taskScheduler/executeMemoryMerge.o
+
+# target to build an object file
+src/taskScheduler/executeMemoryMerge.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/taskScheduler/executeMemoryMerge.cpp.o
+.PHONY : src/taskScheduler/executeMemoryMerge.cpp.o
+
+src/taskScheduler/executeMemoryMerge.i: src/taskScheduler/executeMemoryMerge.cpp.i
+.PHONY : src/taskScheduler/executeMemoryMerge.i
+
+# target to preprocess a source file
+src/taskScheduler/executeMemoryMerge.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/taskScheduler/executeMemoryMerge.cpp.i
+.PHONY : src/taskScheduler/executeMemoryMerge.cpp.i
+
+src/taskScheduler/executeMemoryMerge.s: src/taskScheduler/executeMemoryMerge.cpp.s
+.PHONY : src/taskScheduler/executeMemoryMerge.s
+
+# target to generate assembly for a file
+src/taskScheduler/executeMemoryMerge.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/taskScheduler/executeMemoryMerge.cpp.s
+.PHONY : src/taskScheduler/executeMemoryMerge.cpp.s
+
+src/taskScheduler/gpuManagement.o: src/taskScheduler/gpuManagement.cpp.o
+.PHONY : src/taskScheduler/gpuManagement.o
+
+# target to build an object file
+src/taskScheduler/gpuManagement.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/taskScheduler/gpuManagement.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/taskScheduler/gpuManagement.cpp.o
+.PHONY : src/taskScheduler/gpuManagement.cpp.o
+
+src/taskScheduler/gpuManagement.i: src/taskScheduler/gpuManagement.cpp.i
+.PHONY : src/taskScheduler/gpuManagement.i
+
+# target to preprocess a source file
+src/taskScheduler/gpuManagement.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/taskScheduler/gpuManagement.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/taskScheduler/gpuManagement.cpp.i
+.PHONY : src/taskScheduler/gpuManagement.cpp.i
+
+src/taskScheduler/gpuManagement.s: src/taskScheduler/gpuManagement.cpp.s
+.PHONY : src/taskScheduler/gpuManagement.s
+
+# target to generate assembly for a file
+src/taskScheduler/gpuManagement.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/taskScheduler/gpuManagement.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/taskScheduler/gpuManagement.cpp.s
+.PHONY : src/taskScheduler/gpuManagement.cpp.s
+
 src/utils/datasetIO.o: src/utils/datasetIO.cpp.o
 .PHONY : src/utils/datasetIO.o
 
 # target to build an object file
 src/utils/datasetIO.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/utils/datasetIO.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/utils/datasetIO.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/utils/datasetIO.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/src/utils/datasetIO.cpp.o
 .PHONY : src/utils/datasetIO.cpp.o
@@ -1055,7 +1058,7 @@ src/utils/datasetIO.i: src/utils/datasetIO.cpp.i
 
 # target to preprocess a source file
 src/utils/datasetIO.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/utils/datasetIO.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/utils/datasetIO.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/utils/datasetIO.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/src/utils/datasetIO.cpp.i
 .PHONY : src/utils/datasetIO.cpp.i
@@ -1065,7 +1068,7 @@ src/utils/datasetIO.s: src/utils/datasetIO.cpp.s
 
 # target to generate assembly for a file
 src/utils/datasetIO.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/utils/datasetIO.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/utils/datasetIO.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/utils/datasetIO.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/src/utils/datasetIO.cpp.s
 .PHONY : src/utils/datasetIO.cpp.s
@@ -1075,7 +1078,7 @@ src/utils/distance.o: src/utils/distance.cpp.o
 
 # target to build an object file
 src/utils/distance.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/utils/distance.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/utils/distance.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/utils/distance.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/src/utils/distance.cpp.o
 .PHONY : src/utils/distance.cpp.o
@@ -1085,7 +1088,7 @@ src/utils/distance.i: src/utils/distance.cpp.i
 
 # target to preprocess a source file
 src/utils/distance.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/utils/distance.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/utils/distance.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/utils/distance.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/src/utils/distance.cpp.i
 .PHONY : src/utils/distance.cpp.i
@@ -1095,7 +1098,7 @@ src/utils/distance.s: src/utils/distance.cpp.s
 
 # target to generate assembly for a file
 src/utils/distance.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/utils/distance.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/utils/distance.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/utils/distance.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/src/utils/distance.cpp.s
 .PHONY : src/utils/distance.cpp.s
@@ -1105,7 +1108,7 @@ src/utils/indexIO.o: src/utils/indexIO.cpp.o
 
 # target to build an object file
 src/utils/indexIO.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/utils/indexIO.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/utils/indexIO.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/utils/indexIO.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/src/utils/indexIO.cpp.o
 .PHONY : src/utils/indexIO.cpp.o
@@ -1115,7 +1118,7 @@ src/utils/indexIO.i: src/utils/indexIO.cpp.i
 
 # target to preprocess a source file
 src/utils/indexIO.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/utils/indexIO.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/utils/indexIO.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/utils/indexIO.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/src/utils/indexIO.cpp.i
 .PHONY : src/utils/indexIO.cpp.i
@@ -1125,7 +1128,7 @@ src/utils/indexIO.s: src/utils/indexIO.cpp.s
 
 # target to generate assembly for a file
 src/utils/indexIO.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executePartition.dir/build.make CMakeFiles/executePartition.dir/src/utils/indexIO.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/utils/indexIO.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/src/utils/indexIO.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/src/utils/indexIO.cpp.s
 .PHONY : src/utils/indexIO.cpp.s
@@ -1138,8 +1141,8 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... executeDiskPartition"
 	@echo "... executeMerge"
-	@echo "... executePartition"
 	@echo "... searchScaleGANN"
 	@echo "... DiskANN/src/abstract_data_store.o"
 	@echo "... DiskANN/src/abstract_data_store.i"
@@ -1228,18 +1231,21 @@ help:
 	@echo "... src/partition/partition.o"
 	@echo "... src/partition/partition.i"
 	@echo "... src/partition/partition.s"
-	@echo "... src/scheduler/gpuManagement.o"
-	@echo "... src/scheduler/gpuManagement.i"
-	@echo "... src/scheduler/gpuManagement.s"
-	@echo "... src/scheduler/scheduler.o"
-	@echo "... src/scheduler/scheduler.i"
-	@echo "... src/scheduler/scheduler.s"
 	@echo "... src/search/search.o"
 	@echo "... src/search/search.i"
 	@echo "... src/search/search.s"
 	@echo "... src/search/searchScaleGANN.o"
 	@echo "... src/search/searchScaleGANN.i"
 	@echo "... src/search/searchScaleGANN.s"
+	@echo "... src/taskScheduler/executeDiskPartition.o"
+	@echo "... src/taskScheduler/executeDiskPartition.i"
+	@echo "... src/taskScheduler/executeDiskPartition.s"
+	@echo "... src/taskScheduler/executeMemoryMerge.o"
+	@echo "... src/taskScheduler/executeMemoryMerge.i"
+	@echo "... src/taskScheduler/executeMemoryMerge.s"
+	@echo "... src/taskScheduler/gpuManagement.o"
+	@echo "... src/taskScheduler/gpuManagement.i"
+	@echo "... src/taskScheduler/gpuManagement.s"
 	@echo "... src/utils/datasetIO.o"
 	@echo "... src/utils/datasetIO.i"
 	@echo "... src/utils/datasetIO.s"
