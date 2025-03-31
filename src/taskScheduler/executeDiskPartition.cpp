@@ -36,9 +36,8 @@ void partitionDisk_kmeans(const std::string file_path, std::string baseFolder){
     uint32_t degree = BUILD_DEG;
     size_t k_base = DUPLICATION_FACTOR;
     uint32_t partition_number = PARTITION_NUM;
-    uint32_t epsilon = EPSILON;
+    float epsilon = EPSILON;
     uint32_t max_iters = MAX_ITERATION; // Vamana is 1
-
 
     uint32_t suffixType = suffixToType(file_path);
     if(suffixType == 0){ // float
@@ -52,6 +51,7 @@ void partitionDisk_kmeans(const std::string file_path, std::string baseFolder){
     auto endTime = std::chrono::high_resolution_clock::now();
     auto overallDuration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
 
+    printf("Prune factor epsilon is: %f\n", epsilon);
     printf("Disk partition duration: %lld milliseconds\n", overallDuration.count());
 }
 
@@ -59,7 +59,8 @@ void partitionDisk_kmeans(const std::string file_path, std::string baseFolder){
 int main() {
     // nvcc ../partition/partition.cpp ../partition/disk_partition.cpp ../partition/kmeans.cpp ../partition/kmeans.cu ../merge/merge.cpp ../merge/merge.cu ../utils/indexIO.cpp ../utils/datasetIO.cpp ../utils/distance.cpp scheduler.cpp gpuManagement.cpp -I/home/lanlu/raft/cpp/include/ -I/home/lanlu/miniconda3/envs/rapids_raft/targets/x86_64-linux/include -I/home/lanlu/miniconda3/envs/rapids_raft/include -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids/libcudacxx -I/home/lanlu/raft/cpp/build/_deps/nlohmann_json-src/include -I/home/lanlu/raft/cpp/build/_deps/benchmark-src/include -lcudart -ldl -lbenchmark -lpthread -lfmt -L/home/lanlu/raft/cpp/build/_deps/benchmark-build/src -Xcompiler -fopenmp -o testPartition
     std::string file_path = "/home/lanlu/scaleGANN/dataset/sift100M/base.100M.u8bin";
-    std::string baseFolder = "/home/lanlu/scaleGANN/dataset/sift100M/D64_N8";
+    // _SOGAIC
+    std::string baseFolder = "/home/lanlu/scaleGANN/dataset/sift100M/D32_N8_SOGAIC";
     partitionDisk_kmeans(file_path, baseFolder);
     return 0;
 }

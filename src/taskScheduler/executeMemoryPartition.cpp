@@ -160,7 +160,9 @@ void partitionDataset_direct(std::string file_path, std::string baseFolder){
         std::vector<std::vector<float>> dataVec(npts, std::vector<float>(ndim));
         readFile<float>(file_path, dataVec);
 
-        uint32_t partition_lower_bound = get_partition_num<float>(memGPU, npts, ndim, degree, 1);
+        uint32_t partition_lower_bound = 0;
+        uint32_t size_limit = 0;
+        get_partition_num<float>(memGPU, npts, ndim, degree, 1, &partition_lower_bound, &size_limit);
         if (partition_lower_bound > partition_num) {
             printf("Needing %d partitions at least, change given partition number %d to %d\n", partition_lower_bound, partition_num, partition_lower_bound);
             partition_num = partition_lower_bound;
@@ -187,7 +189,9 @@ void partitionDataset_direct(std::string file_path, std::string baseFolder){
         std::vector<std::vector<uint32_t>> dataVec(npts, std::vector<uint32_t>(ndim));
         readFile<uint32_t>(file_path, dataVec);
 
-        uint32_t partition_lower_bound = get_partition_num<uint32_t>(memGPU, npts, ndim, degree, 1);
+        uint32_t partition_lower_bound = 0;
+        uint32_t size_limit = 0;
+        get_partition_num<uint32_t>(memGPU, npts, ndim, degree, 1, &partition_lower_bound, &size_limit);
         if (partition_lower_bound > partition_num) {
             printf("Needing %d partitions at least, change given partition number %d to %d\n", partition_lower_bound, partition_num, partition_lower_bound);
             partition_num = partition_lower_bound;
@@ -213,7 +217,9 @@ void partitionDataset_direct(std::string file_path, std::string baseFolder){
         std::vector<std::vector<uint8_t>> dataVec(npts, std::vector<uint8_t>(ndim));
         readFile<uint8_t>(file_path, dataVec);
 
-        uint32_t partition_lower_bound = get_partition_num<uint8_t>(memGPU, npts, ndim, degree, 1);
+        int32_t partition_lower_bound = 0;
+        uint32_t size_limit = 0;
+        get_partition_num<uint8_t>(memGPU, npts, ndim, degree, 1, &partition_lower_bound, &size_limit);
         if (partition_lower_bound > partition_num) {
             printf("Needing %d partitions at least, change given partition number %d to %d\n", partition_lower_bound, partition_num, partition_lower_bound);
             partition_num = partition_lower_bound;

@@ -12,7 +12,7 @@ template <typename T>
 void testOurDesign(){
     std::string data_file = "/home/lanlu/raft/python/raft-ann-bench/src/datasets/sift100M/base.100M.u8bin";
     std::vector<std::vector<T>> data;
-    std::string index_file = "/home/lanlu/scaleGANN/dataset/sift100M/D64_N8/mergedIndex/raft_cagra.graph_degree32.intermediate_graph_degree32.graph_build_algoNN_DESCENT";
+    std::string index_file = "/home/lanlu/scaleGANN/dataset/sift100M/D32_N8_SOGAIC_epsilon1.2/mergedIndex/raft_cagra.graph_degree32.intermediate_graph_degree32.graph_build_algoNN_DESCENT";
     std::vector<std::vector<uint32_t>> index;
     std::string query_file = "/home/lanlu/raft/python/raft-ann-bench/src/datasets/sift100M/query.public.10K.u8bin";
     std::vector<std::vector<T>> query;

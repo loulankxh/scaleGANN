@@ -7,6 +7,7 @@
 #include <string>
 #include <omp.h>
 #include <vector>
+#include <cfloat>
 
 #include "../../DiskANN/include/partition.h"
 #include "../../DiskANN/include/utils.h"
@@ -15,7 +16,7 @@
 #include "partition.h"
 #include "AtomicWrapper.hpp"
 
-#define SLACK_FACTOR 1.2
+#define SLACK_FACTOR 1.1
 #define MAX_SAMPLE 8388608 // 1 << 23
 // Lan: todo: add a sample maximum upper bound
 #define SAMPLE_RATE 0.005
@@ -268,8 +269,9 @@ void scaleGANN_shard_data_into_clusters_with_ram_budget(const std::string data_f
                 uint32_t original_point_map_id = (uint32_t)(start_id + p);
                 uint32_t current_id = (shard_counts[shard_id]++) - shard_counts_until_this_block[shard_id];
                 shard_to_ids[shard_id][current_id] = original_point_map_id;
-                if (distance_matrix[p * num_centers + p1] > shard_radius[shard_id]){
-                    shard_radius[shard_id] = distance_matrix[p * num_centers + p1];
+                float dist = distance_matrix[p * num_centers + (uint32_t)shard_id];
+                if (dist > shard_radius[shard_id]){
+                    shard_radius[shard_id] = dist;
                 }
                 break;
             }
@@ -288,7 +290,7 @@ void scaleGANN_shard_data_into_clusters_with_ram_budget(const std::string data_f
             }
             if (size_remain_after_first_round > size_lower_bound_second_round) size_limit_second_round[cluster] = size_remain_after_first_round;
             else size_limit_second_round[cluster] = size_lower_bound_second_round;
-            if (block == num_centers -1){
+            if (block == num_blocks - 1){
                 size_limit_second_round[cluster] = size_limit - shard_counts_first_round[cluster].load();
             }
         }
@@ -303,25 +305,174 @@ void scaleGANN_shard_data_into_clusters_with_ram_budget(const std::string data_f
                 if (assigned_count >= k_base)
                     break;
                 uint32_t first_round_center = first_round_assignment[p];
-                if (p1 == first_round_center) 
-                    continue;
                 size_t shard_id = block_closest_centers[p * num_centers + p1];
+                if (shard_id == first_round_center) 
+                    continue;
                 uint32_t current_r2_size = shard_counts_second_round[shard_id].load(); // omp_get_num_procs: inaccuracy upper bound by concurrency after pragma & atomic
                 uint32_t curret_size = shard_counts[shard_id].load();
                 if ((current_r2_size > size_limit_second_round[shard_id]) || (curret_size > size_limit)){
                     continue;
                 }
 
-                if ((distance_matrix[p * num_centers + p1] < epsilon * distance_matrix[p * num_centers + first_round_center]) 
-                    || (distance_matrix[p * num_centers + p1] < epsilon * (1 + (float)1 / (block + 1)) * shard_radius[shard_id])){
+                float dist = distance_matrix[p * num_centers + (uint32_t)shard_id];
+                // printf("node id: %d, block id: %d, firstRoundDsit: %f, cur dist: %f, epsilon: %f\n", p, block, distance_matrix[p * num_centers + first_round_center], dist, epsilon);
+                // if ((dist < epsilon * distance_matrix[p * num_centers + first_round_center]) 
+                //     || (dist < epsilon * (1 + (float)1 / (block + 1)) * shard_radius[shard_id])){
+                if (dist < epsilon * distance_matrix[p * num_centers + first_round_center]){
                         shard_counts_second_round[shard_id]++;
                         uint32_t original_point_map_id = (uint32_t)(start_id + p);
                         uint32_t current_id = (shard_counts[shard_id]++) - shard_counts_until_this_block[shard_id];
                         shard_to_ids[shard_id][current_id] = original_point_map_id;
                         assigned_count++;
                 } else{
+                    // printf("node id: %d, block id: %d, firstRoundDsit: %f, cur dist: %f, epsilon: %f\n", p, block, distance_matrix[p * num_centers + first_round_center], dist, epsilon);
                     break;
                 }
+            }
+        }
+
+        #pragma omp parallel for schedule(static)
+        for (size_t shard_id = 0; shard_id < num_centers; shard_id ++){
+            uint32_t shard_size_this_block = (uint32_t)(shard_counts[shard_id].load() - shard_counts_until_this_block[shard_id]);
+            shard_counts_until_this_block[shard_id] = (uint32_t)(shard_counts[shard_id].load());
+            shard_counts_first_round_until_this_block[shard_id] = (uint32_t)(shard_counts_first_round[shard_id].load());
+            for (uint32_t i = 0; i < shard_size_this_block; i++){
+                uint32_t original_point_map_id = shard_to_ids[shard_id][i];
+                uint32_t p = original_point_map_id - (uint32_t)start_id;
+                shard_data_writer[shard_id].write((char *)(block_data_T.get() + p * dim), sizeof(T) * dim);
+                shard_idmap_writer[shard_id].write((char *)&original_point_map_id, sizeof(uint32_t));
+            }
+        }
+    }
+
+    size_t total_count = 0;
+    diskann::cout << "Actual shard sizes: " << std::flush;
+    for (size_t i = 0; i < num_centers; i++)
+    {
+        uint32_t cur_shard_count = (uint32_t)shard_counts[i].load();
+        total_count += cur_shard_count;
+        diskann::cout << cur_shard_count << " ";
+        shard_data_writer[i].seekp(0);
+        shard_data_writer[i].write((char *)&cur_shard_count, sizeof(uint32_t));
+        shard_data_writer[i].close();
+        shard_idmap_writer[i].seekp(0);
+        shard_idmap_writer[i].write((char *)&cur_shard_count, sizeof(uint32_t));
+        shard_idmap_writer[i].close();
+    }
+
+    diskann::cout << "\n (ScaleGANN) Partitioned " << num_points << " with replication factor " << k_base << " to get "
+                  << total_count << " points across " << num_centers << " shards " << std::endl;
+    delete[] distance_matrix;
+}
+
+template <typename T>
+void SOGAIC_shard_data_into_clusters_with_ram_budget(const std::string data_file, float *pivots, const size_t num_centers,
+    const size_t dim, const size_t k_base, uint32_t size_limit, std::string prefix_path,
+    float epsilon){
+    size_t read_blk_size = 64 * 1024 * 1024;
+    //  uint64_t write_blk_size = 64 * 1024 * 1024;
+    // create cached reader + writer
+    cached_ifstream base_reader(data_file, read_blk_size);
+    uint32_t npts32;
+    uint32_t basedim32;
+    base_reader.read((char *)&npts32, sizeof(uint32_t));
+    base_reader.read((char *)&basedim32, sizeof(uint32_t));
+    size_t num_points = npts32;
+    if (basedim32 != dim)
+    {
+        diskann::cout << "Error. dimensions dont match for train set and base set" << std::endl;
+        // return -1;
+        return;
+    }
+
+    // use atomic for parallelism
+    std::unique_ptr<AtomicWrapper<size_t>[]> shard_counts = std::make_unique<AtomicWrapper<size_t>[]>(num_centers);
+    std::vector<std::ofstream> shard_data_writer(num_centers);
+    std::vector<std::ofstream> shard_idmap_writer(num_centers);
+    uint32_t dummy_size = 0;
+    uint32_t const_one = 1;
+
+    for (size_t i = 0; i < num_centers; i++)
+    {   
+        std::string partition_dir = prefix_path + "/partition" + std::to_string(i);
+        ensure_directory_exists(partition_dir);
+        // Lan: Todo: auto data file postfix
+        std::string data_filename = partition_dir + "/data" + ".u8bin";
+        std::string idmap_filename = partition_dir + "/idmap.ibin";
+        shard_data_writer[i] = std::ofstream(data_filename.c_str(), std::ios::binary);
+        shard_idmap_writer[i] = std::ofstream(idmap_filename.c_str(), std::ios::binary);
+        shard_data_writer[i].write((char *)&dummy_size, sizeof(uint32_t));
+        shard_data_writer[i].write((char *)&basedim32, sizeof(uint32_t));
+        shard_idmap_writer[i].write((char *)&dummy_size, sizeof(uint32_t));
+        // shard_idmap_writer[i].write((char *)&const_one, sizeof(uint32_t));
+        shard_counts[i].store(0);
+    }
+
+    size_t block_size = num_points <= BLOCK_SIZE ? num_points : BLOCK_SIZE;
+    std::unique_ptr<uint32_t[]> block_closest_centers = std::make_unique<uint32_t[]>(block_size * num_centers);
+    std::unique_ptr<T[]> block_data_T = std::make_unique<T[]>(block_size * dim);
+    std::unique_ptr<float[]> block_data_float = std::make_unique<float[]>(block_size * dim);
+
+    size_t num_blocks = DIV_ROUND_UP(num_points, block_size);
+
+    // To parallel the node assignment and reduction, extra data structures are used for maintain the results for final write (which can not be parallelled)
+    // std::unique_ptr<float[]> distance_matrix = std::make_unique<float[]>(num_centers, );
+    float *distance_matrix = new float[num_centers * block_size]; // row: num points, col: num centers
+    std::vector<std::unique_ptr<uint32_t[]>> shard_to_ids(num_centers);
+    std::unique_ptr<uint32_t[]> shard_counts_until_this_block = std::make_unique<uint32_t[]>(num_centers);
+    for (size_t i = 0; i < num_centers; i++) {
+        shard_to_ids[i] = std::make_unique<uint32_t[]>(block_size);
+        shard_counts_until_this_block[i] = 0;
+    }
+
+    for (size_t block = 0; block < num_blocks; block++)
+    {
+        size_t start_id = block * block_size;
+        size_t end_id = (std::min)((block + 1) * block_size, num_points);
+        size_t cur_blk_size = end_id - start_id;
+
+        base_reader.read((char *)block_data_T.get(), sizeof(T) * (cur_blk_size * dim));
+        diskann::convert_types<T, float>(block_data_T.get(), block_data_float.get(), cur_blk_size, dim);
+
+
+        // math_utils::compute_closest_centers(block_data_float.get(), cur_blk_size, dim, pivots, num_centers, num_centers,
+        //                                     block_closest_centers.get());
+        math_utils::compute_closest_centers_return_distance(block_data_float.get(), cur_blk_size, dim, pivots, num_centers, num_centers,
+                                            block_closest_centers.get(), distance_matrix, NULL, NULL);
+
+        #pragma omp parallel for schedule(static)
+        for (size_t p = 0; p < cur_blk_size; p++)
+        {   
+            uint32_t curOLPcnt = 0;
+            uint32_t curOLPFactor = 0;
+            float accDist = 0;
+            float curAVGDist = FLT_MAX;
+
+            for (size_t p1 = 0; p1 < num_centers; p1++)
+            {   
+                if (curOLPcnt >= k_base)
+                    break;
+
+                size_t shard_id = block_closest_centers[p * num_centers + p1];
+                float dist = distance_matrix[p * num_centers + (uint32_t)shard_id];
+                
+                // printf("curAVGDsit: %f, cur dist: %f, epsilon: %f\n", curAVGDist, dist, epsilon);
+                if(dist <= (double) epsilon * curAVGDist){
+                    curOLPFactor = curOLPFactor + 1;
+                    accDist = accDist + dist;
+                    curAVGDist = accDist / curOLPFactor;
+
+                    uint32_t current_size = shard_counts[shard_id].load();
+                    if (current_size < size_limit){
+                        curOLPcnt += 1;
+                        uint32_t original_point_map_id = (uint32_t)(start_id + p);
+                        uint32_t current_id = (shard_counts[shard_id]++) - shard_counts_until_this_block[shard_id];
+                        shard_to_ids[shard_id][current_id] = original_point_map_id;
+                    } else {
+                        curAVGDist = FLT_MAX;
+                    }
+                }
+
             }
         }
 
@@ -353,11 +504,10 @@ void scaleGANN_shard_data_into_clusters_with_ram_budget(const std::string data_f
         shard_idmap_writer[i].close();
     }
 
-    diskann::cout << "\n Partitioned " << num_points << " with replication factor " << k_base << " to get "
+    diskann::cout << "\n (SOGAIC) Partitioned " << num_points << " with replication factor " << k_base << " to get "
                   << total_count << " points across " << num_centers << " shards " << std::endl;
     delete[] distance_matrix;
 }
-
 
 
 template <typename T>
@@ -444,7 +594,7 @@ void diskANN_partitions_with_ram_budget(const std::string data_file, const doubl
 
 template <typename T>
 void scaleGANN_partitions_with_ram_budget(const std::string data_file, const double sampling_rate, double ram_budget,
-    size_t graph_degree, const std::string prefix_path, size_t k_base, uint32_t num_parts = 0, uint32_t epsilon=2, size_t max_k_means_reps = 15){
+    size_t graph_degree, const std::string prefix_path, size_t k_base, uint32_t num_parts = 0, float epsilon=2, size_t max_k_means_reps = 15){
     size_t train_dim;
     size_t num_train;
     float *train_data_float;
@@ -459,9 +609,10 @@ void scaleGANN_partitions_with_ram_budget(const std::string data_file, const dou
     base_reader.read((char *)&basedim32, sizeof(uint32_t));
 
     // Lan: todo: if partition-num == 1
-    uint32_t partition_lower_bound = get_partition_num<T>(ram_budget, npts32, basedim32, graph_degree, k_base);
-    uint32_t size_limit = (uint32_t) (1 + k_base * npts32 / partition_lower_bound);
-    printf("Size limit is: %d\n", size_limit);
+    uint32_t partition_lower_bound = 0;
+    uint32_t size_limit = 0;
+    get_partition_num<T>(ram_budget, npts32, basedim32, graph_degree, k_base, &partition_lower_bound, &size_limit);
+    // uint32_t size_limit = (uint32_t) (1 + k_base * npts32 / partition_lower_bound);
     num_parts = partition_lower_bound > num_parts ? partition_lower_bound : num_parts;
 
     float *pivot_data = nullptr;
@@ -487,7 +638,8 @@ void scaleGANN_partitions_with_ram_budget(const std::string data_file, const dou
     diskann::cout << "Saving global k-center pivots" << std::endl;
     diskann::save_bin<float>(output_file.c_str(), pivot_data, (size_t)num_parts, train_dim);
 
-    scaleGANN_shard_data_into_clusters_with_ram_budget<T>(data_file, pivot_data, num_parts, train_dim, k_base, size_limit, prefix_path, epsilon);
+    // scaleGANN_shard_data_into_clusters_with_ram_budget<T>(data_file, pivot_data, num_parts, train_dim, k_base, size_limit, prefix_path, epsilon);
+    SOGAIC_shard_data_into_clusters_with_ram_budget<T>(data_file, pivot_data, num_parts, train_dim, k_base, size_limit, prefix_path, epsilon);
     delete[] pivot_data;
     delete[] train_data_float;
 }
@@ -509,6 +661,6 @@ template void diskANN_partitions_with_ram_budget<uint8_t>(const std::string data
 
 
 template void scaleGANN_partitions_with_ram_budget<float>(const std::string data_file, const double sampling_rate, double ram_budget,
-    size_t graph_degree, const std::string prefix_path, size_t k_base, uint32_t num_parts = 0, uint32_t epsilon = 2, size_t max_k_means_reps = 15);
+    size_t graph_degree, const std::string prefix_path, size_t k_base, uint32_t num_parts = 0, float epsilon = 2, size_t max_k_means_reps = 15);
 template void scaleGANN_partitions_with_ram_budget<uint8_t>(const std::string data_file, const double sampling_rate, double ram_budget,
-    size_t graph_degree, const std::string prefix_path, size_t k_base, uint32_t num_parts = 0, uint32_t epsilon = 2, size_t max_k_means_reps = 15);
+    size_t graph_degree, const std::string prefix_path, size_t k_base, uint32_t num_parts = 0, float epsilon = 2, size_t max_k_means_reps = 15);
