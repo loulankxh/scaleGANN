@@ -10,9 +10,8 @@
 #include <mkl.h>
 
 
-#include "../merge/merge.hpp"
-#include "../utils/fileUtils.h"
-#include "gpuManagement.h"
+#include "../src/merge/merge.hpp"
+#include "../src/utils/fileUtils.h"
 
 
 #define DUPLICATION_FACTOR 2

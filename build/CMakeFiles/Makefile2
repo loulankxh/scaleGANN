@@ -64,8 +64,10 @@ CMAKE_BINARY_DIR = /home/lanlu/scaleGANN/build
 
 # The main recursive "all" target.
 all: CMakeFiles/executeDiskPartition.dir/all
-all: CMakeFiles/executeMerge.dir/all
+all: CMakeFiles/executeDiskMerge.dir/all
 all: CMakeFiles/searchScaleGANN.dir/all
+all: CMakeFiles/searchCAGRA.dir/all
+all: CMakeFiles/searchGGNN.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -74,8 +76,10 @@ preinstall:
 
 # The main recursive "clean" target.
 clean: CMakeFiles/executeDiskPartition.dir/clean
-clean: CMakeFiles/executeMerge.dir/clean
+clean: CMakeFiles/executeDiskMerge.dir/clean
 clean: CMakeFiles/searchScaleGANN.dir/clean
+clean: CMakeFiles/searchCAGRA.dir/clean
+clean: CMakeFiles/searchGGNN.dir/clean
 .PHONY : clean
 
 #=============================================================================
@@ -85,12 +89,12 @@ clean: CMakeFiles/searchScaleGANN.dir/clean
 CMakeFiles/executeDiskPartition.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/lanlu/scaleGANN/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33 "Built target executeDiskPartition"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/lanlu/scaleGANN/build/CMakeFiles --progress-num=29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60 "Built target executeDiskPartition"
 .PHONY : CMakeFiles/executeDiskPartition.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/executeDiskPartition.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lanlu/scaleGANN/build/CMakeFiles 33
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lanlu/scaleGANN/build/CMakeFiles 32
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/executeDiskPartition.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lanlu/scaleGANN/build/CMakeFiles 0
 .PHONY : CMakeFiles/executeDiskPartition.dir/rule
@@ -105,30 +109,30 @@ CMakeFiles/executeDiskPartition.dir/clean:
 .PHONY : CMakeFiles/executeDiskPartition.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/executeMerge.dir
+# Target rules for target CMakeFiles/executeDiskMerge.dir
 
 # All Build rule for target.
-CMakeFiles/executeMerge.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/lanlu/scaleGANN/build/CMakeFiles --progress-num=34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64 "Built target executeMerge"
-.PHONY : CMakeFiles/executeMerge.dir/all
+CMakeFiles/executeDiskMerge.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/lanlu/scaleGANN/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28 "Built target executeDiskMerge"
+.PHONY : CMakeFiles/executeDiskMerge.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/executeMerge.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lanlu/scaleGANN/build/CMakeFiles 31
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/executeMerge.dir/all
+CMakeFiles/executeDiskMerge.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lanlu/scaleGANN/build/CMakeFiles 28
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/executeDiskMerge.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lanlu/scaleGANN/build/CMakeFiles 0
-.PHONY : CMakeFiles/executeMerge.dir/rule
+.PHONY : CMakeFiles/executeDiskMerge.dir/rule
 
 # Convenience name for target.
-executeMerge: CMakeFiles/executeMerge.dir/rule
-.PHONY : executeMerge
+executeDiskMerge: CMakeFiles/executeDiskMerge.dir/rule
+.PHONY : executeDiskMerge
 
 # clean rule for target.
-CMakeFiles/executeMerge.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeMerge.dir/build.make CMakeFiles/executeMerge.dir/clean
-.PHONY : CMakeFiles/executeMerge.dir/clean
+CMakeFiles/executeDiskMerge.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/clean
+.PHONY : CMakeFiles/executeDiskMerge.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/searchScaleGANN.dir
@@ -137,7 +141,7 @@ CMakeFiles/executeMerge.dir/clean:
 CMakeFiles/searchScaleGANN.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/lanlu/scaleGANN/build/CMakeFiles --progress-num=65,66,67,68,69,70 "Built target searchScaleGANN"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/lanlu/scaleGANN/build/CMakeFiles --progress-num=73,74,75,76,77,78 "Built target searchScaleGANN"
 .PHONY : CMakeFiles/searchScaleGANN.dir/all
 
 # Build rule for subdir invocation for target.
@@ -155,6 +159,58 @@ searchScaleGANN: CMakeFiles/searchScaleGANN.dir/rule
 CMakeFiles/searchScaleGANN.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/clean
 .PHONY : CMakeFiles/searchScaleGANN.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/searchCAGRA.dir
+
+# All Build rule for target.
+CMakeFiles/searchCAGRA.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchCAGRA.dir/build.make CMakeFiles/searchCAGRA.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchCAGRA.dir/build.make CMakeFiles/searchCAGRA.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/lanlu/scaleGANN/build/CMakeFiles --progress-num=61,62,63,64,65,66 "Built target searchCAGRA"
+.PHONY : CMakeFiles/searchCAGRA.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/searchCAGRA.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lanlu/scaleGANN/build/CMakeFiles 6
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/searchCAGRA.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lanlu/scaleGANN/build/CMakeFiles 0
+.PHONY : CMakeFiles/searchCAGRA.dir/rule
+
+# Convenience name for target.
+searchCAGRA: CMakeFiles/searchCAGRA.dir/rule
+.PHONY : searchCAGRA
+
+# clean rule for target.
+CMakeFiles/searchCAGRA.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchCAGRA.dir/build.make CMakeFiles/searchCAGRA.dir/clean
+.PHONY : CMakeFiles/searchCAGRA.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/searchGGNN.dir
+
+# All Build rule for target.
+CMakeFiles/searchGGNN.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchGGNN.dir/build.make CMakeFiles/searchGGNN.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchGGNN.dir/build.make CMakeFiles/searchGGNN.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/lanlu/scaleGANN/build/CMakeFiles --progress-num=67,68,69,70,71,72 "Built target searchGGNN"
+.PHONY : CMakeFiles/searchGGNN.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/searchGGNN.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lanlu/scaleGANN/build/CMakeFiles 6
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/searchGGNN.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lanlu/scaleGANN/build/CMakeFiles 0
+.PHONY : CMakeFiles/searchGGNN.dir/rule
+
+# Convenience name for target.
+searchGGNN: CMakeFiles/searchGGNN.dir/rule
+.PHONY : searchGGNN
+
+# clean rule for target.
+CMakeFiles/searchGGNN.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchGGNN.dir/build.make CMakeFiles/searchGGNN.dir/clean
+.PHONY : CMakeFiles/searchGGNN.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

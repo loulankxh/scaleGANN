@@ -9,10 +9,9 @@
 #include <omp.h>
 #include <mkl.h>
 
-#include "../partition/partition.h"
-#include "../partition/disk_partition.h"
-#include "../utils/fileUtils.h"
-#include "gpuManagement.h"
+#include "../src/partition/partition.h"
+#include "../src/partition/disk_partition.h"
+#include "../src/utils/fileUtils.h"
 
 
 #define GPU_MEMORY 16

@@ -14,11 +14,11 @@
 #include <set>
 #include <map>
 
-#include "../utils/fileUtils.h"
-#include "search.hpp"
-#include "priorityList.hpp"
+#include "../src/utils/fileUtils.h"
+#include "../src/search/search.hpp"
+#include "../DiskANN/include/neighbor.h"
 
-void mergeResultGGNN(std::vector<NeighborPriorityQueue>& mergedResult,
+void mergeResultGGNN(std::vector<diskann::NeighborPriorityQueue>& mergedResult,
         std::vector<std::vector<uint32_t>>& result,
         std::vector<std::vector<float>>& distances,
         uint32_t offset){
@@ -34,14 +34,14 @@ void mergeResultGGNN(std::vector<NeighborPriorityQueue>& mergedResult,
         // if(i == 9999) printf("Query %d merge: ");
         for (uint32_t j = 0; j < resNum; j++){
             // if(i == 9999)  printf("%d--%f ", result[i][j]+offset, distances[i][j]);
-            mergedResult[i].insert(Neighbor((result[i][j]+offset), distances[i][j]));
+            mergedResult[i].insert(diskann::Neighbor((result[i][j]+offset), distances[i][j]));
         }
         // if(i == 9999) printf("\n");
     }
 }
 
 
-void getResultId(std::vector<NeighborPriorityQueue>& mergedResult,
+void getResultId(std::vector<diskann::NeighborPriorityQueue>& mergedResult,
         std::vector<std::vector<uint32_t>>& result,
         uint32_t k){
     
@@ -94,7 +94,7 @@ void testGGNN(){
     long long totalSearchDuration = 0;
     long long totalMergeDuration = 0;
     uint32_t n_queries = query.size();
-    std::vector<NeighborPriorityQueue> mergedResult(n_queries, NeighborPriorityQueue(k));
+    std::vector<diskann::NeighborPriorityQueue> mergedResult(n_queries, diskann::NeighborPriorityQueue(k));
     std::vector<std::vector<uint32_t>> final_result(n_queries);
     for (uint32_t iter = 0 ; iter < shard_num; iter++){
         std::string test_file = test_dir + "part_" + std::to_string(iter) + ".ggnn";
@@ -121,7 +121,8 @@ void testGGNN(){
         std::vector<std::vector<float>> distances;
         printf("Starting search\n");
 
-        search<T>(k, L, segmentedData, index, query, result, distances, 0, 1000000);
+        search<T>(k, L, segmentedData, index, query, result, distances, 
+                &total_visited, &total_distance_cmp, &totalLatency, 0, 1000000);
         // hierarchicalSearch<T>(N_all, ST_all, Ns, Ns_offsets, STs_offsets, translation,
         //             k, L, segmentedData, index, query, result, distances,
         //             &total_visited, &total_distance_cmp, &totalLatency);

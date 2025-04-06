@@ -14,11 +14,11 @@
 #include <set>
 #include <map>
 
-#include "../utils/fileUtils.h"
-#include "search.hpp"
-#include "priorityList.hpp"
+#include "../src/utils/fileUtils.h"
+#include "../src/search/search.hpp"
+#include "../DiskANN/include/neighbor.h"
 
-void mergeResultCAGRA(std::vector<NeighborPriorityQueue>& mergedResult,
+void mergeResultCAGRA(std::vector<diskann::NeighborPriorityQueue>& mergedResult,
         std::vector<std::vector<uint32_t>>& result,
         std::vector<std::vector<float>>& distances){
 
@@ -31,13 +31,13 @@ void mergeResultCAGRA(std::vector<NeighborPriorityQueue>& mergedResult,
         assert(resNum == distances[i].size());
 
         for (uint32_t j = 0; j < resNum; j++){
-            mergedResult[i].insert(Neighbor((result[i][j]), distances[i][j]));
+            mergedResult[i].insert(diskann::Neighbor((result[i][j]), distances[i][j]));
         }
     }
 }
 
 
-void getResultId(std::vector<NeighborPriorityQueue>& mergedResult,
+void getResultId(std::vector<diskann::NeighborPriorityQueue>& mergedResult,
         std::vector<std::vector<uint32_t>>& result,
         uint32_t k){
     
@@ -83,7 +83,7 @@ void testNaiveCAGRA(){
     long long totalSearchDuration = 0;
     long long totalMergeDuration = 0;
     uint32_t n_queries = query.size();
-    std::vector<NeighborPriorityQueue> mergedResult(n_queries, NeighborPriorityQueue(k));
+    std::vector<diskann::NeighborPriorityQueue> mergedResult(n_queries, diskann::NeighborPriorityQueue(k));
     std::vector<std::vector<uint32_t>> final_result(n_queries);
     for (uint32_t iter = 0 ; iter < shard_num; iter++){
         std::string index_file = index_dir + "index" + std::to_string(iter) + "/raft_cagra.graph_degree32.intermediate_graph_degree32.graph_build_algoNN_DESCENT";
@@ -161,7 +161,7 @@ void testCAGRA(){
     long long totalSearchDuration = 0;
     long long totalMergeDuration = 0;
     uint32_t n_queries = query.size();
-    std::vector<NeighborPriorityQueue> mergedResult(n_queries, NeighborPriorityQueue(k));
+    std::vector<diskann::NeighborPriorityQueue> mergedResult(n_queries, diskann::NeighborPriorityQueue(k));
     std::vector<std::vector<uint32_t>> final_result(n_queries);
     for (uint32_t iter = 0 ; iter < shard_num; iter++){
         std::string index_file = index_dir + "index" + std::to_string(iter) + "/raft_cagra.graph_degree21.intermediate_graph_degree21.graph_build_algoNN_DESCENT";

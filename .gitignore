@@ -69,3 +69,6 @@ dataset/
 
 # Build files
 build/
+
+# other files
+DiskANN_mainRepo/

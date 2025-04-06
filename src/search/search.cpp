@@ -16,7 +16,7 @@
 
 #include "../utils/fileUtils.h"
 #include "../utils/distance.h"
-#include "priorityList.hpp"
+#include "../../DiskANN/include/neighbor.h"
 
 template <typename T>
 void read(
@@ -108,8 +108,8 @@ void search(const uint32_t k, const uint32_t L,
         result[num_q].resize(k);
         distances[num_q].resize(k);
         std::vector<T> cur_query = query[num_q];
-        NeighborPriorityQueue L_list(L);
-        std::vector<Neighbor> expanded_nodes(0);
+        diskann::NeighborPriorityQueue L_list(L);
+        std::vector<diskann::Neighbor> expanded_nodes(0);
         std::unordered_map<uint32_t, bool> visited;
 
 
@@ -121,7 +121,7 @@ void search(const uint32_t k, const uint32_t L,
             std::vector<T> node = data[id];
             float dist = l2_distance_square<T>(cur_query, node);
             count_distances[num_q] ++;
-            Neighbor nn = Neighbor(id, dist);
+            diskann::Neighbor nn = diskann::Neighbor(id, dist);
             L_list.insert(nn);
         }
 
@@ -146,7 +146,7 @@ void search(const uint32_t k, const uint32_t L,
                     float dist = l2_distance_square<T>(cur_query, node);
                     count_distances[num_q] ++;
                     
-                    L_list.insert(Neighbor(nb_id, dist));
+                    L_list.insert(diskann::Neighbor(nb_id, dist));
                 }
 
             }
@@ -191,7 +191,7 @@ void searchFromLastLayer(const uint32_t k, const uint32_t L,
     std::vector<std::vector<uint32_t>>& index, 
     std::vector<uint32_t>& translation,
     std::vector<std::vector<T>>& query,
-    std::vector<NeighborPriorityQueue>& intermediate_result,
+    std::vector<diskann::NeighborPriorityQueue>& intermediate_result,
     uint32_t* total_visited,
     uint32_t* total_distance_cmp,
     long long* total_latency){
@@ -213,8 +213,8 @@ void searchFromLastLayer(const uint32_t k, const uint32_t L,
         auto startTime = std::chrono::high_resolution_clock::now();
 
         std::vector<T> cur_query = query[num_q];
-        NeighborPriorityQueue L_list(L);
-        std::vector<Neighbor> expanded_nodes(0);
+        diskann::NeighborPriorityQueue L_list(L);
+        std::vector<diskann::Neighbor> expanded_nodes(0);
         std::unordered_map<uint32_t, bool> visited;
 
         std::vector<uint32_t> start = startNodes[num_q];
@@ -222,7 +222,7 @@ void searchFromLastLayer(const uint32_t k, const uint32_t L,
             std::vector<T> node = data[translation[id]];
             float dist = l2_distance_square<T>(cur_query, node);
             count_distances[num_q] ++;
-            Neighbor nn = Neighbor(id, dist);
+            diskann::Neighbor nn = diskann::Neighbor(id, dist);
             L_list.insert(nn);
         }
 
@@ -247,7 +247,7 @@ void searchFromLastLayer(const uint32_t k, const uint32_t L,
                     float dist = l2_distance_square<T>(cur_query, node);
                     count_distances[num_q] ++;
                     
-                    L_list.insert(Neighbor(nb_id, dist));
+                    L_list.insert(diskann::Neighbor(nb_id, dist));
                 }
 
             }
@@ -282,7 +282,7 @@ void searchBottomLayer(const uint32_t k, const uint32_t L,
     std::vector<std::vector<T>>& data,
     std::vector<std::vector<uint32_t>>& index, 
     std::vector<std::vector<T>>& query,
-    std::vector<NeighborPriorityQueue>& intermediate_result,
+    std::vector<diskann::NeighborPriorityQueue>& intermediate_result,
     uint32_t* total_visited,
     uint32_t* total_distance_cmp,
     long long* total_latency){
@@ -304,8 +304,8 @@ void searchBottomLayer(const uint32_t k, const uint32_t L,
         auto startTime = std::chrono::high_resolution_clock::now();
 
         std::vector<T> cur_query = query[num_q];
-        NeighborPriorityQueue L_list(L);
-        std::vector<Neighbor> expanded_nodes(0);
+        diskann::NeighborPriorityQueue L_list(L);
+        std::vector<diskann::Neighbor> expanded_nodes(0);
         std::unordered_map<uint32_t, bool> visited;
 
         std::vector<uint32_t> start = startNodes[num_q];
@@ -313,7 +313,7 @@ void searchBottomLayer(const uint32_t k, const uint32_t L,
             std::vector<T> node = data[id];
             float dist = l2_distance_square<T>(cur_query, node);
             count_distances[num_q] ++;
-            Neighbor nn = Neighbor(id, dist);
+            diskann::Neighbor nn = diskann::Neighbor(id, dist);
             L_list.insert(nn);
         }
 
@@ -338,7 +338,7 @@ void searchBottomLayer(const uint32_t k, const uint32_t L,
                     float dist = l2_distance_square<T>(cur_query, node);
                     count_distances[num_q] ++;
                     
-                    L_list.insert(Neighbor(nb_id, dist));
+                    L_list.insert(diskann::Neighbor(nb_id, dist));
                 }
 
             }
@@ -379,7 +379,7 @@ void hierarchicalSearch(uint32_t N_all, uint32_t ST_all,
     uint32_t num_queries = query.size();
 
     std::vector<std::vector<uint32_t>> startNodes(num_queries);
-    std::vector<NeighborPriorityQueue> intermediate_result;
+    std::vector<diskann::NeighborPriorityQueue> intermediate_result;
 
     std::vector<uint32_t> count_visited(num_queries);
     std::vector<uint32_t> count_distances(num_queries);
@@ -423,7 +423,7 @@ void hierarchicalSearch(uint32_t N_all, uint32_t ST_all,
             #pragma omp parallel for schedule(static)
             for(uint32_t num_q = 0; num_q < num_queries; num_q ++){
                 startNodes[num_q].resize(nextStartNodeNum);
-                NeighborPriorityQueue inter_q = intermediate_result[num_q];
+                diskann::NeighborPriorityQueue inter_q = intermediate_result[num_q];
                 assert (inter_q.size() >= nextStartNodeNum);
             
                 for(uint32_t iter = 0; iter < nextStartNodeNum; iter ++){
@@ -467,7 +467,7 @@ void hierarchicalSearch(uint32_t N_all, uint32_t ST_all,
         distances[num_q].resize(k);
 
         uint32_t pos = 0;
-        NeighborPriorityQueue inter_q = intermediate_result[num_q];
+        diskann::NeighborPriorityQueue inter_q = intermediate_result[num_q];
         // printf("intermediate size: %d\n", inter_q.size());
         for (uint32_t i = 0; i < inter_q.size(); ++i)
         {   
@@ -524,8 +524,8 @@ void searchNaiveCAGRA(const uint32_t k, const uint32_t L, uint32_t offset,
         distances[num_q].resize(k);
 
         std::vector<T> cur_query = query[num_q];
-        NeighborPriorityQueue L_list(L);
-        std::vector<Neighbor> expanded_nodes(0);
+        diskann::NeighborPriorityQueue L_list(L);
+        std::vector<diskann::Neighbor> expanded_nodes(0);
         std::unordered_map<uint32_t, bool> visited;
 
         std::vector<uint32_t> start(L);
@@ -534,7 +534,7 @@ void searchNaiveCAGRA(const uint32_t k, const uint32_t L, uint32_t offset,
             std::vector<T> node = data[id + offset];
             float dist = l2_distance_square<T>(cur_query, node);
             count_distances[num_q] ++;
-            Neighbor nn = Neighbor(id, dist);
+            diskann::Neighbor nn = diskann::Neighbor(id, dist);
             L_list.insert(nn);
         }
 
@@ -559,7 +559,7 @@ void searchNaiveCAGRA(const uint32_t k, const uint32_t L, uint32_t offset,
                     float dist = l2_distance_square<T>(cur_query, node);
                     count_distances[num_q] ++;
                     
-                    L_list.insert(Neighbor(nb_id, dist));
+                    L_list.insert(diskann::Neighbor(nb_id, dist));
                 }
 
             }
@@ -632,8 +632,8 @@ void searchTranslatedCAGRA(const uint32_t k, const uint32_t L,
         distances[num_q].resize(k);
 
         std::vector<T> cur_query = query[num_q];
-        NeighborPriorityQueue L_list(L);
-        std::vector<Neighbor> expanded_nodes(0);
+        diskann::NeighborPriorityQueue L_list(L);
+        std::vector<diskann::Neighbor> expanded_nodes(0);
         std::unordered_map<uint32_t, bool> visited;
 
         std::vector<uint32_t> start(L);
@@ -642,7 +642,7 @@ void searchTranslatedCAGRA(const uint32_t k, const uint32_t L,
             std::vector<T> node = data[translation[id][1]];
             float dist = l2_distance_square<T>(cur_query, node);
             count_distances[num_q] ++;
-            Neighbor nn = Neighbor(id, dist);
+            diskann::Neighbor nn = diskann::Neighbor(id, dist);
             L_list.insert(nn);
         }
 
@@ -667,7 +667,7 @@ void searchTranslatedCAGRA(const uint32_t k, const uint32_t L,
                     float dist = l2_distance_square<T>(cur_query, node);
                     count_distances[num_q] ++;
                     
-                    L_list.insert(Neighbor(nb_id, dist));
+                    L_list.insert(diskann::Neighbor(nb_id, dist));
                 }
 
             }

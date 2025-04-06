@@ -37,29 +37,51 @@ pq_flash_index.cpp scratch.cpp logger.cpp utils.cpp filter_utils.cpp index_facto
 list(TRANSFORM DISKANN_SOURCES PREPEND ${DISKANN_SRC_PATH}/)
 
 set(SCALEGANN_SRC_PATH ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(SCALEGANN_APP_PATH ${CMAKE_CURRENT_SOURCE_DIR}/apps)
+
 set(DISK_PARTITION_SOURCES 
     partition/partition.cpp partition/disk_partition.cpp partition/kmeans.cpp partition/kmeans.cu
-    utils/indexIO.cpp utils/datasetIO.cpp utils/distance.cpp
-    taskScheduler/executeDiskPartition.cpp taskScheduler/gpuManagement.cpp)
+    utils/indexIO.cpp utils/datasetIO.cpp utils/distance.cpp)
 list(TRANSFORM DISK_PARTITION_SOURCES  PREPEND ${SCALEGANN_SRC_PATH}/)
+set(DISK_PARTITION_APP
+    executeDiskPartition.cpp)
+list(TRANSFORM DISK_PARTITION_APP  PREPEND ${SCALEGANN_APP_PATH}/)
+
+set(DISK_MERGE_SOURCES 
+    merge/disk_merge.cpp
+    utils/indexIO.cpp utils/datasetIO.cpp)
+list(TRANSFORM DISK_MERGE_SOURCES  PREPEND ${SCALEGANN_SRC_PATH}/)
+set(DISK_MERGE_APP
+    executeDiskMerge.cpp)
+list(TRANSFORM DISK_MERGE_APP  PREPEND ${SCALEGANN_APP_PATH}/)
+
+# set(MERGE_SOURCES 
+#     merge/merge.cpp merge/merge.cu
+#     utils/indexIO.cpp utils/datasetIO.cpp utils/distance.cpp
+#     taskScheduler/executeMemoryMerge.cpp taskScheduler/gpuManagement.cpp)
+# list(TRANSFORM MERGE_SOURCES  PREPEND ${SCALEGANN_SRC_PATH}/)
 
 
-set(MERGE_SOURCES 
-    merge/merge.cpp merge/merge.cu
-    utils/indexIO.cpp utils/datasetIO.cpp utils/distance.cpp
-    taskScheduler/executeMemoryMerge.cpp taskScheduler/gpuManagement.cpp)
-list(TRANSFORM MERGE_SOURCES  PREPEND ${SCALEGANN_SRC_PATH}/)
+set(SEARCH_SOURCES 
+    search/search.cpp 
+    utils/indexIO.cpp utils/datasetIO.cpp utils/distance.cpp)
+list(TRANSFORM SEARCH_SOURCES  PREPEND ${SCALEGANN_SRC_PATH}/)
+set(SEARCH_SCALEGANN_APP
+    searchScaleGANN.cpp)
+list(TRANSFORM SEARCH_SCALEGANN_APP  PREPEND ${SCALEGANN_APP_PATH}/)
+set(SEARCH_CAGRA_APP
+    searchCAGRA.cpp)
+list(TRANSFORM SEARCH_CAGRA_APP  PREPEND ${SCALEGANN_APP_PATH}/)
+set(SEARCH_GGNN_APP
+    searchGGNN.cpp)
+list(TRANSFORM SEARCH_GGNN_APP  PREPEND ${SCALEGANN_APP_PATH}/)
 
-
-set(SEARCH_SCALEGANN_SOURCES 
-    search/searchScaleGANN.cpp search/search.cpp 
-    utils/indexIO.cpp utils/datasetIO.cpp utils/distance.cpp
-)
-list(TRANSFORM SEARCH_SCALEGANN_SOURCES  PREPEND ${SCALEGANN_SRC_PATH}/)
-
-add_executable(executeDiskPartition ${DISK_PARTITION_SOURCES} ${DISKANN_SOURCES})
-add_executable(executeMerge ${MERGE_SOURCES} ${DISKANN_SOURCES})
-add_executable(searchScaleGANN ${SEARCH_SCALEGANN_SOURCES})
+add_executable(executeDiskPartition ${DISK_PARTITION_APP} ${DISK_PARTITION_SOURCES} ${DISKANN_SOURCES})
+add_executable(executeDiskMerge ${DISK_MERGE_APP} ${DISK_MERGE_SOURCES} ${DISKANN_SOURCES})
+# add_executable(executeMerge ${MERGE_SOURCES} ${DISKANN_SOURCES})
+add_executable(searchScaleGANN ${SEARCH_SCALEGANN_APP} ${SEARCH_SOURCES})
+add_executable(searchCAGRA ${SEARCH_CAGRA_APP} ${SEARCH_SOURCES})
+add_executable(searchGGNN ${SEARCH_GGNN_APP} ${SEARCH_SOURCES})
 
 # set_target_properties(my_program PROPERTIES
 #     CUDA_SEPARABLE_COMPILATION ON
@@ -77,7 +99,7 @@ target_link_libraries(executeDiskPartition
     mkl_rt
     m
 )
-target_link_libraries(executeMerge
+target_link_libraries(executeDiskMerge
     PRIVATE
     cudart
     dl
@@ -87,7 +109,37 @@ target_link_libraries(executeMerge
     mkl_rt
     m
 )
+# target_link_libraries(executeMerge
+#     PRIVATE
+#     cudart
+#     dl
+#     benchmark
+#     pthread
+#     fmt
+#     mkl_rt
+#     m
+# )
 target_link_libraries(searchScaleGANN
+    PRIVATE
+    cudart
+    dl
+    benchmark
+    pthread
+    fmt
+    mkl_rt
+    m
+)
+target_link_libraries(searchCAGRA
+    PRIVATE
+    cudart
+    dl
+    benchmark
+    pthread
+    fmt
+    mkl_rt
+    m
+)
+target_link_libraries(searchGGNN
     PRIVATE
     cudart
     dl
