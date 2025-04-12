@@ -136,6 +136,11 @@ void search(const uint32_t k, const uint32_t L,
             // #pragma omp parallel for schedule(static)
             for (uint32_t iter = 0; iter< neighbors.size(); iter++){
                 uint32_t nb_id = neighbors[iter];
+                if (nb_id >= npts)
+                {
+                   printf("index id: %d; nd idx: %d; nb_id: %zu, npts: %d\n", n, iter, nb_id, npts);
+                }
+                
                 assert(nb_id < npts);
 
                 if(visited.count(nb_id) == 0 || ((visited.count(nb_id) > 0) && (visited[nb_id]==false))){

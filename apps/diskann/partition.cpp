@@ -1,0 +1,61 @@
+#include <string>
+#include <vector>
+#include <chrono>
+#include <filesystem>
+#include <iostream>
+#include <algorithm>
+#include <variant>
+#include <cassert>
+#include <omp.h>
+#include <mkl.h>
+
+#include "../../src/partition/partition.h"
+#include "../../src/partition/disk_partition.h"
+#include "../../src/utils/fileUtils.h"
+
+
+#define GPU_MEMORY 16
+#define BUILD_DEG 32
+#define DUPLICATION_FACTOR 2
+#define PARTITION_NUM 8
+#define EPSILON 2
+#define MAX_ITERATION 15
+
+
+void partition(const std::string file_path, std::string baseFolder){
+    uint32_t num_threads = omp_get_num_procs();
+    printf("Using %d threads\n", num_threads);
+    omp_set_num_threads(num_threads);
+    mkl_set_num_threads(num_threads);
+
+    auto startTime = std::chrono::high_resolution_clock::now();
+
+    double sampling_rate = 0.05;
+    uint32_t memBudget = GPU_MEMORY;
+    uint32_t degree = BUILD_DEG;
+    size_t k_base = DUPLICATION_FACTOR;
+    uint32_t max_iters = MAX_ITERATION; // Vamana is 1
+
+    uint32_t suffixType = suffixToType(file_path);
+    if(suffixType == 0){ // float
+        diskANN_partitions_with_ram_budget<float>(file_path, sampling_rate, (double)memBudget,
+            (size_t)degree, baseFolder.c_str(), (size_t)k_base);
+    } else if (suffixType == 2) { // uint8_t
+        diskANN_partitions_with_ram_budget<uint8_t>(file_path, sampling_rate, (double)memBudget,
+            (size_t)degree, baseFolder.c_str(), (size_t)k_base);
+    }
+
+    auto endTime = std::chrono::high_resolution_clock::now();
+    auto overallDuration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
+
+    printf("DiskANN disk partition duration: %lld milliseconds\n", overallDuration.count());
+}
+
+
+int main() {
+    std::string file_path = "/home/lanlu/scaleGANN/dataset/sift100M/base.100M.u8bin";
+    std::string baseFolder = "/home/lanlu/scaleGANN/dataset/sift100M/DiskANN";
+    partition(file_path, baseFolder);
+    return 0;
+}
+

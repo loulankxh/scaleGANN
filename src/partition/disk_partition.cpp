@@ -61,7 +61,7 @@ void diskANN_shard_data_into_clusters_with_ram_budget(const std::string data_fil
     std::vector<std::ofstream> shard_data_writer(num_centers);
     std::vector<std::ofstream> shard_idmap_writer(num_centers);
     uint32_t dummy_size = 0;
-    uint32_t const_one = 1;
+    // uint32_t const_one = 1;
 
     for (size_t i = 0; i < num_centers; i++)
     {   
@@ -75,7 +75,7 @@ void diskANN_shard_data_into_clusters_with_ram_budget(const std::string data_fil
         shard_data_writer[i].write((char *)&dummy_size, sizeof(uint32_t));
         shard_data_writer[i].write((char *)&basedim32, sizeof(uint32_t));
         shard_idmap_writer[i].write((char *)&dummy_size, sizeof(uint32_t));
-        shard_idmap_writer[i].write((char *)&const_one, sizeof(uint32_t));
+        // shard_idmap_writer[i].write((char *)&const_one, sizeof(uint32_t));
         shard_counts[i] = 0;
     }
 
@@ -316,14 +316,14 @@ void scaleGANN_shard_data_into_clusters_with_ram_budget(const std::string data_f
 
                 float dist = distance_matrix[p * num_centers + (uint32_t)shard_id];
                 // printf("node id: %d, block id: %d, firstRoundDsit: %f, cur dist: %f, epsilon: %f\n", p, block, distance_matrix[p * num_centers + first_round_center], dist, epsilon);
-                // if ((dist < epsilon * distance_matrix[p * num_centers + first_round_center]) 
-                //     || (dist < epsilon * (1 + (float)1 / (block + 1)) * shard_radius[shard_id])){
                 if (dist < epsilon * distance_matrix[p * num_centers + first_round_center]){
+                    if(dist < epsilon * (1 + (float)1 / (block + 1)) * shard_radius[shard_id]){
                         shard_counts_second_round[shard_id]++;
                         uint32_t original_point_map_id = (uint32_t)(start_id + p);
                         uint32_t current_id = (shard_counts[shard_id]++) - shard_counts_until_this_block[shard_id];
                         shard_to_ids[shard_id][current_id] = original_point_map_id;
                         assigned_count++;
+                    }
                 } else{
                     // printf("node id: %d, block id: %d, firstRoundDsit: %f, cur dist: %f, epsilon: %f\n", p, block, distance_matrix[p * num_centers + first_round_center], dist, epsilon);
                     break;
@@ -638,8 +638,8 @@ void scaleGANN_partitions_with_ram_budget(const std::string data_file, const dou
     diskann::cout << "Saving global k-center pivots" << std::endl;
     diskann::save_bin<float>(output_file.c_str(), pivot_data, (size_t)num_parts, train_dim);
 
-    // scaleGANN_shard_data_into_clusters_with_ram_budget<T>(data_file, pivot_data, num_parts, train_dim, k_base, size_limit, prefix_path, epsilon);
-    SOGAIC_shard_data_into_clusters_with_ram_budget<T>(data_file, pivot_data, num_parts, train_dim, k_base, size_limit, prefix_path, epsilon);
+    scaleGANN_shard_data_into_clusters_with_ram_budget<T>(data_file, pivot_data, num_parts, train_dim, k_base, size_limit, prefix_path, epsilon);
+    // SOGAIC_shard_data_into_clusters_with_ram_budget<T>(data_file, pivot_data, num_parts, train_dim, k_base, size_limit, prefix_path, epsilon);
     delete[] pivot_data;
     delete[] train_data_float;
 }

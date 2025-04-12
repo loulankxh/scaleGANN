@@ -9,19 +9,21 @@
 #include <omp.h>
 #include <mkl.h>
 
-#include "../src/merge/disk_merge.h"
+#include "../../src/merge/disk_merge.h"
 
 #define MERGE_DEG 32
 #define BUILD_DEG 32
 
 void mergeDisk(std::string base_folder, const std::string merge_index_path,
-        const uint64_t nshards, uint32_t merge_degree,
+        const uint64_t nshards, uint32_t max_degree,
         const std::string index_name){
     std::string output_index_file = merge_index_path + "/" + index_name;
-    scaleGANN_merge(base_folder,
-                nshards, merge_degree, BUILD_DEG,
-                output_index_file,
-                index_name);
+    std::string medoids_file = merge_index_path + "/" + index_name + "_medoids.bin";
+    std::string labels_to_medoids_file = merge_index_path + "/" + index_name + "_lable_to_medoids.bin";
+    DiskANN_merge(base_folder, index_name, base_folder,
+        nshards, max_degree,
+        output_index_file, medoids_file, false,
+        labels_to_medoids_file);
 }
 
 // There can be multiple index of different construction parameters in a folder
@@ -39,7 +41,7 @@ void mergeDisk_allIndexInFolder(const std::string baseFolder, const std::string 
 
     std::vector<std::filesystem::path> subfolders;
     for (const auto& entry : std::filesystem::directory_iterator(baseFolder)) {
-        if (entry.is_directory() && entry.path().filename().string().find("partition")==0) {
+        if (entry.is_directory() && entry.path().filename().string().find("partition")==0 && entry.path().filename().string().find(".data")==std::string::npos) {
             subfolders.push_back(entry.path());
         }
     }
@@ -82,9 +84,8 @@ void mergeDisk_allIndexInFolder(const std::string baseFolder, const std::string 
 }
 
 int main() {
-    // nvcc ../partition/partition.cpp ../partition/disk_partition.cpp ../partition/kmeans.cpp ../partition/kmeans.cu ../merge/merge.cpp ../merge/merge.cu ../utils/indexIO.cpp ../utils/datasetIO.cpp ../utils/distance.cpp gpuManagement.cpp scheduler.cpp -I/home/lanlu/raft/cpp/include/ -I/home/lanlu/miniconda3/envs/rapids_raft/targets/x86_64-linux/include -I/home/lanlu/miniconda3/envs/rapids_raft/include -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids/libcudacxx -I/home/lanlu/raft/cpp/build/_deps/nlohmann_json-src/include -I/home/lanlu/raft/cpp/build/_deps/benchmark-src/include -lcudart -ldl -lbenchmark -lpthread -lfmt -L/home/lanlu/raft/cpp/build/_deps/benchmark-build/src -Xcompiler -fopenmp -o testMerge
-    std::string baseFolder = "/home/lanlu/scaleGANN/dataset/sift100M/D32_N8_epsilon1.2/";
-    std::string mergeFolder = "/home/lanlu/scaleGANN/dataset/sift100M/D32_N8_epsilon1.2/mergedIndex";
+    std::string baseFolder = "/home/lanlu/scaleGANN/dataset/sift100M/DiskANN/";
+    std::string mergeFolder = "/home/lanlu/scaleGANN/dataset/sift100M/DiskANN/mergedIndex";
     mergeDisk_allIndexInFolder(baseFolder, mergeFolder);
     return 0;
 }

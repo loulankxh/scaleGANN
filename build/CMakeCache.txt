@@ -14,6 +14,14 @@
 # EXTERNAL cache entries
 ########################
 
+//The directory containing a CMake configuration file for Boost.
+Boost_DIR:PATH=/home/lanlu/miniconda3/envs/rapids_raft/lib/cmake/Boost-1.85.0
+
+//Path to a file.
+Boost_INCLUDE_DIR:PATH=/home/lanlu/miniconda3/envs/rapids_raft/include
+
+Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE:STRING=/home/lanlu/miniconda3/envs/rapids_raft/lib/libboost_program_options.so.1.85.0
+
 //Path to a program.
 CMAKE_ADDR2LINE:FILEPATH=/home/lanlu/miniconda3/envs/rapids_raft/bin/x86_64-conda-linux-gnu-addr2line
 
@@ -219,11 +227,19 @@ ScaleGANN_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 ScaleGANN_SOURCE_DIR:STATIC=/home/lanlu/scaleGANN
 
+//The directory containing a CMake configuration file for boost_headers.
+boost_headers_DIR:PATH=/home/lanlu/miniconda3/envs/rapids_raft/lib/cmake/boost_headers-1.85.0
+
+//The directory containing a CMake configuration file for boost_program_options.
+boost_program_options_DIR:PATH=/home/lanlu/miniconda3/envs/rapids_raft/lib/cmake/boost_program_options-1.85.0
+
 
 ########################
 # INTERNAL cache entries
 ########################
 
+//ADVANCED property for variable: Boost_DIR
+Boost_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_ADDR2LINE
 CMAKE_ADDR2LINE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_AR
@@ -367,6 +383,12 @@ CMAKE_TAPI-ADVANCED:INTERNAL=1
 CMAKE_UNAME:INTERNAL=/usr/bin/uname
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
+//Details about finding Boost
+FIND_PACKAGE_MESSAGE_DETAILS_Boost:INTERNAL=[/home/lanlu/miniconda3/envs/rapids_raft/lib/cmake/Boost-1.85.0/BoostConfig.cmake][cfound components: program_options ][v1.85.0()]
 //linker supports push/pop state
 _CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED:INTERNAL=TRUE
+//ADVANCED property for variable: boost_headers_DIR
+boost_headers_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_program_options_DIR
+boost_program_options_DIR-ADVANCED:INTERNAL=1
 

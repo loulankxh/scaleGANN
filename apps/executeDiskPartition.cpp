@@ -18,7 +18,7 @@
 #define BUILD_DEG 32
 #define DUPLICATION_FACTOR 2
 #define PARTITION_NUM 8
-#define EPSILON 2
+#define EPSILON 1.2
 #define MAX_ITERATION 15
 
 
@@ -59,7 +59,7 @@ int main() {
     // nvcc ../partition/partition.cpp ../partition/disk_partition.cpp ../partition/kmeans.cpp ../partition/kmeans.cu ../merge/merge.cpp ../merge/merge.cu ../utils/indexIO.cpp ../utils/datasetIO.cpp ../utils/distance.cpp scheduler.cpp gpuManagement.cpp -I/home/lanlu/raft/cpp/include/ -I/home/lanlu/miniconda3/envs/rapids_raft/targets/x86_64-linux/include -I/home/lanlu/miniconda3/envs/rapids_raft/include -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids/libcudacxx -I/home/lanlu/raft/cpp/build/_deps/nlohmann_json-src/include -I/home/lanlu/raft/cpp/build/_deps/benchmark-src/include -lcudart -ldl -lbenchmark -lpthread -lfmt -L/home/lanlu/raft/cpp/build/_deps/benchmark-build/src -Xcompiler -fopenmp -o testPartition
     std::string file_path = "/home/lanlu/scaleGANN/dataset/sift100M/base.100M.u8bin";
     // _SOGAIC
-    std::string baseFolder = "/home/lanlu/scaleGANN/dataset/sift100M/D32_N8_SOGAIC";
+    std::string baseFolder = "/home/lanlu/scaleGANN/dataset/sift100M/D32_N8_epsilon1.2";
     partitionDisk_kmeans(file_path, baseFolder);
     return 0;
 }

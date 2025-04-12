@@ -9,20 +9,46 @@
 #include "../DiskANN/include/neighbor.h"
 
 
+void readIndex_DiskANN(std::string index_file, std::vector<std::vector<uint32_t>>& index){
+    std::ifstream reader(index_file.c_str(), std::ios::binary);
+
+    size_t expected_file_size;
+    reader.read((char *)&expected_file_size, sizeof(uint64_t));
+    uint32_t input_width;
+    reader.read((char *)&input_width, sizeof(uint32_t));
+    uint64_t vamana_index_frozen = 0;
+    reader.read((char *)&vamana_index_frozen, sizeof(uint64_t));
+    uint32_t medoid;
+    reader.read((char *)&medoid, sizeof(uint32_t));
+
+    size_t read_data_size =
+        sizeof(uint64_t) + sizeof(uint32_t) + sizeof(uint32_t) + sizeof(uint64_t);
+    index.resize(0);
+    uint32_t nnbrs = 0;
+    while (read_data_size < expected_file_size){
+        reader.read((char *)&nnbrs, sizeof(uint32_t));
+        std::vector<uint32_t> shard_nhood(nnbrs);
+        reader.read((char *)shard_nhood.data(), nnbrs * sizeof(uint32_t));
+        index.emplace_back(shard_nhood);
+
+        read_data_size += (sizeof(uint32_t) + nnbrs * sizeof(uint32_t));
+    }
+}
+
+
 template <typename T>
 void search(){
     std::string data_file = "/home/lanlu/raft/python/raft-ann-bench/src/datasets/sift100M/base.100M.u8bin";
     std::vector<std::vector<T>> data;
-    std::string index_file = "/home/lanlu/scaleGANN/dataset/sift100M/D32_N8_epsilon1.2/mergedIndex/raft_cagra.graph_degree32.intermediate_graph_degree64.graph_build_algoNN_DESCENT";
+    std::string index_file = "/home/lanlu/scaleGANN/dataset/sift100M/DiskANN/mergedIndex/R32_L64.ibin";
     std::vector<std::vector<uint32_t>> index;
     std::string query_file = "/home/lanlu/raft/python/raft-ann-bench/src/datasets/sift100M/query.public.10K.u8bin";
     std::vector<std::vector<T>> query;
     std::string truth_file = "/home/lanlu/raft/python/raft-ann-bench/src/datasets/sift100M/groundtruth.neighbors.ibin";
     std::vector<std::vector<uint32_t>> groundTruth;
-    read<T>(data_file, data, index_file, index, query_file, query, truth_file, groundTruth);
+    readExceptIndex<T>(data_file, data, query_file, query, truth_file, groundTruth);
+    readIndex_DiskANN(index_file, index);
 
-    printf("rows: %d, Deg: %d\n", index.size(), index[0].size());
-    printf("testing data: %d\n", index[84967358][0]);
 
     auto s_time = std::chrono::high_resolution_clock::now();
     uint32_t k = 10;
@@ -50,7 +76,6 @@ void search(){
 
 
 
-// nvcc searchScaleGANN.cpp search.cpp ../utils/indexIO.cpp ../utils/datasetIO.cpp ../utils/distance.cpp  -I/home/lanlu/raft/cpp/include/ -I/home/lanlu/miniconda3/envs/rapids_raft/targets/x86_64-linux/include -I/home/lanlu/miniconda3/envs/rapids_raft/include -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids/libcudacxx -I/home/lanlu/raft/cpp/build/_deps/nlohmann_json-src/include -I/home/lanlu/raft/cpp/build/_deps/benchmark-src/include -lcudart -ldl -lbenchmark -lpthread -lfmt -L/home/lanlu/raft/cpp/build/_deps/benchmark-build/src -Xcompiler -fopenmp -o testOurDesign
 int main(){
     search<uint8_t>();
 }

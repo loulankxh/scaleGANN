@@ -10,6 +10,8 @@ set(CMAKE_CUDA_STANDARD 17)
 # set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -Xcompiler=-fopenmp -Xcompiler=-mavx2 -Xcompiler=-mfma -Xcompiler=-msse4.2")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx2 -mfma -msse2 -ftree-vectorize -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -fopenmp -fopenmp-simd -funroll-loops -Wfatal-errors -DUSE_AVX2")
 
+find_package(Boost REQUIRED COMPONENTS program_options)
+
 include_directories(
     /home/lanlu/raft/cpp/include/
     /home/lanlu/miniconda3/envs/rapids_raft/targets/x86_64-linux/include
@@ -19,6 +21,7 @@ include_directories(
     /home/lanlu/raft/cpp/build/_deps/nlohmann_json-src/include
     /home/lanlu/raft/cpp/build/_deps/benchmark-src/include
     /home/lanlu/scaleGANN/DiskANN/include
+    ${Boost_INCLUDE_DIRS}
 )
 
 link_directories(
@@ -27,17 +30,29 @@ link_directories(
 
 
 set(DISKANN_SRC_PATH ${CMAKE_CURRENT_SOURCE_DIR}/DiskANN/src)
-set(DISKANN_SOURCES
-abstract_data_store.cpp ann_exception.cpp disk_utils.cpp 
-distance.cpp index.cpp in_mem_graph_store.cpp in_mem_data_store.cpp
-linux_aligned_file_reader.cpp math_utils.cpp natural_number_map.cpp
-in_mem_data_store.cpp in_mem_graph_store.cpp
-natural_number_set.cpp memory_mapper.cpp partition.cpp pq.cpp
-pq_flash_index.cpp scratch.cpp logger.cpp utils.cpp filter_utils.cpp index_factory.cpp abstract_index.cpp pq_l2_distance.cpp pq_data_store.cpp)
-list(TRANSFORM DISKANN_SOURCES PREPEND ${DISKANN_SRC_PATH}/)
-
 set(SCALEGANN_SRC_PATH ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(SCALEGANN_APP_PATH ${CMAKE_CURRENT_SOURCE_DIR}/apps)
+
+
+set(DISKANN_SOURCES
+    abstract_data_store.cpp ann_exception.cpp disk_utils.cpp 
+    distance.cpp index.cpp in_mem_graph_store.cpp in_mem_data_store.cpp
+    linux_aligned_file_reader.cpp math_utils.cpp natural_number_map.cpp
+    in_mem_data_store.cpp in_mem_graph_store.cpp
+    natural_number_set.cpp memory_mapper.cpp partition.cpp pq.cpp
+    pq_flash_index.cpp scratch.cpp logger.cpp utils.cpp filter_utils.cpp index_factory.cpp abstract_index.cpp pq_l2_distance.cpp pq_data_store.cpp)
+list(TRANSFORM DISKANN_SOURCES PREPEND ${DISKANN_SRC_PATH}/)
+set(DISKANN_PARTITION
+    diskann/partition.cpp)
+list(TRANSFORM DISKANN_PARTITION  PREPEND ${SCALEGANN_APP_PATH}/)
+set(DISKANN_BUILD
+    diskann/build.cpp)
+list(TRANSFORM DISKANN_BUILD  PREPEND ${SCALEGANN_APP_PATH}/)
+set(DISKANN_MERGE
+    diskann/merge.cpp)
+list(TRANSFORM DISKANN_MERGE  PREPEND ${SCALEGANN_APP_PATH}/)
+
+
 
 set(DISK_PARTITION_SOURCES 
     partition/partition.cpp partition/disk_partition.cpp partition/kmeans.cpp partition/kmeans.cu
@@ -75,6 +90,13 @@ list(TRANSFORM SEARCH_CAGRA_APP  PREPEND ${SCALEGANN_APP_PATH}/)
 set(SEARCH_GGNN_APP
     searchGGNN.cpp)
 list(TRANSFORM SEARCH_GGNN_APP  PREPEND ${SCALEGANN_APP_PATH}/)
+set(SEARCH_DISKANN_APP
+    searchDiskANN.cpp)
+list(TRANSFORM SEARCH_DISKANN_APP  PREPEND ${SCALEGANN_APP_PATH}/)
+
+add_executable(diskannPartition ${DISKANN_PARTITION} ${DISK_PARTITION_SOURCES} ${DISKANN_SOURCES})
+add_executable(diskannBuild ${DISKANN_BUILD} ${DISKANN_SOURCES})
+add_executable(diskannMerge ${DISKANN_MERGE} ${DISK_MERGE_SOURCES} ${DISKANN_SOURCES})
 
 add_executable(executeDiskPartition ${DISK_PARTITION_APP} ${DISK_PARTITION_SOURCES} ${DISKANN_SOURCES})
 add_executable(executeDiskMerge ${DISK_MERGE_APP} ${DISK_MERGE_SOURCES} ${DISKANN_SOURCES})
@@ -82,11 +104,46 @@ add_executable(executeDiskMerge ${DISK_MERGE_APP} ${DISK_MERGE_SOURCES} ${DISKAN
 add_executable(searchScaleGANN ${SEARCH_SCALEGANN_APP} ${SEARCH_SOURCES})
 add_executable(searchCAGRA ${SEARCH_CAGRA_APP} ${SEARCH_SOURCES})
 add_executable(searchGGNN ${SEARCH_GGNN_APP} ${SEARCH_SOURCES})
+add_executable(searchDiskANN ${SEARCH_DISKANN_APP} ${SEARCH_SOURCES})
 
 # set_target_properties(my_program PROPERTIES
 #     CUDA_SEPARABLE_COMPILATION ON
 #     CUDA_ARCHITECTURES "60"  # 设置 GPU 架构，例如 60 表示 sm_60
 # )
+
+target_link_libraries(diskannPartition
+    PRIVATE
+    cudart
+    dl
+    benchmark
+    pthread
+    fmt
+    mkl_rt
+    m
+    Boost::program_options
+)
+target_link_libraries(diskannBuild
+    PRIVATE
+    cudart
+    dl
+    benchmark
+    pthread
+    fmt
+    mkl_rt
+    m
+    Boost::program_options
+)
+target_link_libraries(diskannMerge
+    PRIVATE
+    cudart
+    dl
+    benchmark
+    pthread
+    fmt
+    mkl_rt
+    m
+    Boost::program_options
+)
 
 
 target_link_libraries(executeDiskPartition
@@ -140,6 +197,16 @@ target_link_libraries(searchCAGRA
     m
 )
 target_link_libraries(searchGGNN
+    PRIVATE
+    cudart
+    dl
+    benchmark
+    pthread
+    fmt
+    mkl_rt
+    m
+)
+target_link_libraries(searchDiskANN
     PRIVATE
     cudart
     dl
