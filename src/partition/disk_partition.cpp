@@ -17,7 +17,8 @@
 #include "AtomicWrapper.hpp"
 
 #define SLACK_FACTOR 1.1
-#define MAX_SAMPLE 8388608 // 1 << 23
+// #define MAX_SAMPLE 8388608 // 1 << 23
+#define MAX_SAMPLE_FOR_KMEANS_TRAINING 256000 // 1 << 23
 // Lan: todo: add a sample maximum upper bound
 #define SAMPLE_RATE 0.005
 #define BLOCK_SIZE 5000000
@@ -67,8 +68,12 @@ void diskANN_shard_data_into_clusters_with_ram_budget(const std::string data_fil
     {   
         std::string partition_dir = prefix_path + "/partition" + std::to_string(i);
         ensure_directory_exists(partition_dir);
-        // Lan: todo: auto data file postfix
-        std::string data_filename = partition_dir + "/data" + ".u8bin";
+        uint32_t dotPos = data_file.find_last_of('.');
+        if (dotPos == std::string::npos) {
+            throw std::invalid_argument("File does not have a valid suffix.");
+        }
+        std::string suffix = data_file.substr(dotPos + 1);
+        std::string data_filename = partition_dir + "/data." + suffix;
         std::string idmap_filename = partition_dir + "/idmap.ibin";
         shard_data_writer[i] = std::ofstream(data_filename.c_str(), std::ios::binary);
         shard_idmap_writer[i] = std::ofstream(idmap_filename.c_str(), std::ios::binary);
@@ -162,8 +167,13 @@ void scaleGANN_shard_data_into_clusters_with_ram_budget(const std::string data_f
     {   
         std::string partition_dir = prefix_path + "/partition" + std::to_string(i);
         ensure_directory_exists(partition_dir);
-        // Lan: Todo: auto data file postfix
-        std::string data_filename = partition_dir + "/data" + ".u8bin";
+        
+        uint32_t dotPos = data_file.find_last_of('.');
+        if (dotPos == std::string::npos) {
+            throw std::invalid_argument("File does not have a valid suffix.");
+        }
+        std::string suffix = data_file.substr(dotPos + 1);
+        std::string data_filename = partition_dir + "/data." + suffix;
         std::string idmap_filename = partition_dir + "/idmap.ibin";
         shard_data_writer[i] = std::ofstream(data_filename.c_str(), std::ios::binary);
         shard_idmap_writer[i] = std::ofstream(idmap_filename.c_str(), std::ios::binary);
@@ -220,36 +230,8 @@ void scaleGANN_shard_data_into_clusters_with_ram_budget(const std::string data_f
         diskann::convert_types<T, float>(block_data_T.get(), block_data_float.get(), cur_blk_size, dim);
 
 
-        // math_utils::compute_closest_centers(block_data_float.get(), cur_blk_size, dim, pivots, num_centers, num_centers,
-        //                                     block_closest_centers.get());
         math_utils::compute_closest_centers_return_distance(block_data_float.get(), cur_blk_size, dim, pivots, num_centers, num_centers,
                                             block_closest_centers.get(), distance_matrix, NULL, NULL);
-
-        // #pragma omp parallel for schedule(static)
-        // for (size_t p = 0; p < cur_blk_size; p++)
-        // {   
-        //     uint32_t assigned_count = 0;
-        //     for (size_t p1 = 0; p1 < num_centers; p1++)
-        //     {   
-        //         // balance the size of each cluster
-        //         if (assigned_count >= k_base) {
-        //             break;
-        //         }
-
-        //         size_t shard_id = block_closest_centers[p * num_centers + p1];
-        //         uint32_t original_point_map_id = (uint32_t)(start_id + p);
-
-        //         uint32_t partition_size_id = shard_counts[shard_id].load(); // omp_get_num_procs: inaccuracy upper bound by concurrency after pragma & atomic
-        //         if ((partition_size_id >= size_limit) && ((num_centers - p1) > (k_base - assigned_count))) {
-        //             continue;
-        //         }
-
-        //         // Lan: todo: reduce duplication
-        //         uint32_t current_id = (shard_counts[shard_id]++) - shard_counts_until_this_block[shard_id];
-        //         shard_to_ids[shard_id][current_id] = original_point_map_id; 
-        //         assigned_count++;
-        //     }
-        // }
 
         // Round 1 assignment: assign a point to its closest center
         #pragma omp parallel for schedule(static)
@@ -396,8 +378,13 @@ void SOGAIC_shard_data_into_clusters_with_ram_budget(const std::string data_file
     {   
         std::string partition_dir = prefix_path + "/partition" + std::to_string(i);
         ensure_directory_exists(partition_dir);
-        // Lan: Todo: auto data file postfix
-        std::string data_filename = partition_dir + "/data" + ".u8bin";
+
+        uint32_t dotPos = data_file.find_last_of('.');
+        if (dotPos == std::string::npos) {
+            throw std::invalid_argument("File does not have a valid suffix.");
+        }
+        std::string suffix = data_file.substr(dotPos + 1);
+        std::string data_filename = partition_dir + "/data." + suffix;
         std::string idmap_filename = partition_dir + "/idmap.ibin";
         shard_data_writer[i] = std::ofstream(data_filename.c_str(), std::ios::binary);
         shard_idmap_writer[i] = std::ofstream(idmap_filename.c_str(), std::ios::binary);
@@ -511,7 +498,7 @@ void SOGAIC_shard_data_into_clusters_with_ram_budget(const std::string data_file
 
 
 template <typename T>
-void diskANN_partitions_with_ram_budget(const std::string data_file, const double sampling_rate, double ram_budget,
+void diskANN_partitions_with_ram_budget(const std::string data_file, double sampling_rate, double ram_budget,
     size_t graph_degree, const std::string prefix_path, size_t k_base){
     size_t train_dim;
     size_t num_train;
@@ -520,6 +507,14 @@ void diskANN_partitions_with_ram_budget(const std::string data_file, const doubl
 
     int num_parts = 3;
     bool fit_in_ram = false;
+    
+    std::ifstream head_reader(data_file.c_str(), std::ios::binary);
+    uint32_t npts32;
+    uint32_t dim32;
+    head_reader.read((char *)&npts32, sizeof(uint32_t));
+    head_reader.read((char *)&dim32, sizeof(uint32_t));
+    sampling_rate=((double)MAX_SAMPLE_FOR_KMEANS_TRAINING / (double) npts32);
+    printf("Adjusting DiskANN sampling rate to %f\n", sampling_rate);
 
     gen_random_slice<T>(data_file, sampling_rate, train_data_float, num_train, train_dim);
 
@@ -652,11 +647,11 @@ template void diskANN_shard_data_into_clusters_with_ram_budget<float>(const std:
 template void diskANN_shard_data_into_clusters_with_ram_budget<uint8_t>(const std::string data_file, float *pivots, const size_t num_centers,
     const size_t dim, const size_t k_base, std::string prefix_path);
 
-template void diskANN_partitions_with_ram_budget<float>(const std::string data_file, const double sampling_rate, double ram_budget,
+template void diskANN_partitions_with_ram_budget<float>(const std::string data_file, double sampling_rate, double ram_budget,
     size_t graph_degree, const std::string prefix_path, size_t k_base);
 // template void diskANN_partitions_with_ram_budget<uint32_t>(const std::string data_file, const double sampling_rate, double ram_budget,
 //     size_t graph_degree, const std::string prefix_path, size_t k_base);
-template void diskANN_partitions_with_ram_budget<uint8_t>(const std::string data_file, const double sampling_rate, double ram_budget,
+template void diskANN_partitions_with_ram_budget<uint8_t>(const std::string data_file, double sampling_rate, double ram_budget,
     size_t graph_degree, const std::string prefix_path, size_t k_base);
 
 

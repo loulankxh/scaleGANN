@@ -3,21 +3,24 @@
 #include <iostream>
 #include <fstream>
 #include <chrono>
+#include <omp.h>
+#include <boost/program_options.hpp>
+#include <mkl.h>
 
 #include "../src/utils/fileUtils.h"
 #include "../src/search/search.hpp"
 #include "../DiskANN/include/neighbor.h"
+#include "../../DiskANN/include/program_options_utils.hpp"
+
+namespace po = boost::program_options;
 
 
 template <typename T>
-void search(){
-    std::string data_file = "/home/lanlu/raft/python/raft-ann-bench/src/datasets/sift100M/base.100M.u8bin";
+void search(std::string data_file, std::string index_file, std::string query_file, std::string truth_file,
+            uint32_t k, uint32_t L){
     std::vector<std::vector<T>> data;
-    std::string index_file = "/home/lanlu/scaleGANN/dataset/sift100M/D32_N8_epsilon1.2/mergedIndex/raft_cagra.graph_degree32.intermediate_graph_degree64.graph_build_algoNN_DESCENT";
     std::vector<std::vector<uint32_t>> index;
-    std::string query_file = "/home/lanlu/raft/python/raft-ann-bench/src/datasets/sift100M/query.public.10K.u8bin";
     std::vector<std::vector<T>> query;
-    std::string truth_file = "/home/lanlu/raft/python/raft-ann-bench/src/datasets/sift100M/groundtruth.neighbors.ibin";
     std::vector<std::vector<uint32_t>> groundTruth;
     read<T>(data_file, data, index_file, index, query_file, query, truth_file, groundTruth);
 
@@ -25,8 +28,6 @@ void search(){
     printf("testing data: %d\n", index[84967358][0]);
 
     auto s_time = std::chrono::high_resolution_clock::now();
-    uint32_t k = 10;
-    uint32_t L = 128;
     uint32_t total_visited = 0;
     uint32_t total_distance_cmp = 0;
     long long totalLatency = 0;
@@ -50,7 +51,59 @@ void search(){
 
 
 
-// nvcc searchScaleGANN.cpp search.cpp ../utils/indexIO.cpp ../utils/datasetIO.cpp ../utils/distance.cpp  -I/home/lanlu/raft/cpp/include/ -I/home/lanlu/miniconda3/envs/rapids_raft/targets/x86_64-linux/include -I/home/lanlu/miniconda3/envs/rapids_raft/include -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids/libcudacxx -I/home/lanlu/raft/cpp/build/_deps/nlohmann_json-src/include -I/home/lanlu/raft/cpp/build/_deps/benchmark-src/include -lcudart -ldl -lbenchmark -lpthread -lfmt -L/home/lanlu/raft/cpp/build/_deps/benchmark-build/src -Xcompiler -fopenmp -o testOurDesign
-int main(){
-    search<uint8_t>();
+int main(int argc, char **argv){
+    std::string data_file, index_file, query_file, truth_file;
+    uint32_t k, L, num_threads;
+
+    po::options_description desc{
+        program_options_utils::make_program_description("search_scaleGANN", "Search ScaleGANN index.")};
+    try
+    {
+        desc.add_options()("help,h", "Print information on arguments");
+        po::options_description required_configs("Required");
+        required_configs.add_options()("data_file", po::value<std::string>(&data_file)->required(),
+                                       "Dataset path.");
+        required_configs.add_options()("index_file", po::value<std::string>(&index_file)->required(),
+                                       "Index path.");
+        required_configs.add_options()("query_file", po::value<std::string>(&query_file)->required(),
+                                       "Query file path.");
+        required_configs.add_options()("truth_file", po::value<std::string>(&truth_file)->required(),
+                                       "Groundtruth file path.");
+        required_configs.add_options()("top_k,K", po::value<uint32_t>(&k)->required(),
+                                       "Top-k.");
+        required_configs.add_options()("L", po::value<uint32_t>(&L)->required(),
+                                       "Search candidate list size.");
+        
+        po::options_description optional_configs("Optional");
+        optional_configs.add_options()("num_threads,T",
+                                        po::value<uint32_t>(&num_threads)->default_value(omp_get_num_procs()),
+                                        program_options_utils::NUMBER_THREADS_DESCRIPTION);                               
+
+        desc.add(required_configs).add(optional_configs);
+
+        po::variables_map vm;
+        po::store(po::parse_command_line(argc, argv, desc), vm);
+        if (vm.count("help"))
+        {
+            std::cout << desc;
+            return 0;
+        }
+        po::notify(vm);
+    }
+    catch (const std::exception &ex)
+    {
+        std::cerr << ex.what() << '\n';
+        return -1;
+    }
+
+    omp_set_num_threads(num_threads);
+    mkl_set_num_threads(num_threads);
+    printf("Using %d threads\n", num_threads);
+
+    uint32_t suffixType = suffixToType(data_file);
+    if(suffixType == 0){ // float
+        search<float>(data_file, index_file, query_file, truth_file, k, L);
+    } else if (suffixType == 2) { // uint8_t
+        search<uint8_t>(data_file, index_file, query_file, truth_file, k, L);
+    }
 }

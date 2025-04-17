@@ -30,6 +30,7 @@ link_directories(
 
 
 set(DISKANN_SRC_PATH ${CMAKE_CURRENT_SOURCE_DIR}/DiskANN/src)
+set(DISKANN_APP_PATH ${CMAKE_CURRENT_SOURCE_DIR}/DiskANN/apps)
 set(SCALEGANN_SRC_PATH ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(SCALEGANN_APP_PATH ${CMAKE_CURRENT_SOURCE_DIR}/apps)
 
@@ -51,6 +52,12 @@ list(TRANSFORM DISKANN_BUILD  PREPEND ${SCALEGANN_APP_PATH}/)
 set(DISKANN_MERGE
     diskann/merge.cpp)
 list(TRANSFORM DISKANN_MERGE  PREPEND ${SCALEGANN_APP_PATH}/)
+set(DISKANN_COMPUTE_GT
+    utils/compute_groundtruth.cpp)
+list(TRANSFORM DISKANN_COMPUTE_GT  PREPEND ${DISKANN_APP_PATH}/)
+set(DISKANN_MEMORY_INDEX
+    build_memory_index.cpp)
+list(TRANSFORM DISKANN_MEMORY_INDEX  PREPEND ${DISKANN_APP_PATH}/)
 
 
 
@@ -94,9 +101,14 @@ set(SEARCH_DISKANN_APP
     searchDiskANN.cpp)
 list(TRANSFORM SEARCH_DISKANN_APP  PREPEND ${SCALEGANN_APP_PATH}/)
 
+
+
+
 add_executable(diskannPartition ${DISKANN_PARTITION} ${DISK_PARTITION_SOURCES} ${DISKANN_SOURCES})
 add_executable(diskannBuild ${DISKANN_BUILD} ${DISKANN_SOURCES})
 add_executable(diskannMerge ${DISKANN_MERGE} ${DISK_MERGE_SOURCES} ${DISKANN_SOURCES})
+add_executable(diskannComputeGT ${DISKANN_COMPUTE_GT} ${DISKANN_SOURCES})
+add_executable(diskannMemoryIndex ${DISKANN_MEMORY_INDEX} ${DISKANN_SOURCES})
 
 add_executable(executeDiskPartition ${DISK_PARTITION_APP} ${DISK_PARTITION_SOURCES} ${DISKANN_SOURCES})
 add_executable(executeDiskMerge ${DISK_MERGE_APP} ${DISK_MERGE_SOURCES} ${DISKANN_SOURCES})
@@ -144,6 +156,28 @@ target_link_libraries(diskannMerge
     m
     Boost::program_options
 )
+target_link_libraries(diskannComputeGT
+    PRIVATE
+    cudart
+    dl
+    benchmark
+    pthread
+    fmt
+    mkl_rt
+    m
+    Boost::program_options
+)
+target_link_libraries(diskannMemoryIndex
+    PRIVATE
+    cudart
+    dl
+    benchmark
+    pthread
+    fmt
+    mkl_rt
+    m
+    Boost::program_options
+)
 
 
 target_link_libraries(executeDiskPartition
@@ -155,6 +189,7 @@ target_link_libraries(executeDiskPartition
     fmt
     mkl_rt
     m
+    Boost::program_options
 )
 target_link_libraries(executeDiskMerge
     PRIVATE
@@ -165,6 +200,7 @@ target_link_libraries(executeDiskMerge
     fmt
     mkl_rt
     m
+    Boost::program_options
 )
 # target_link_libraries(executeMerge
 #     PRIVATE
@@ -185,6 +221,7 @@ target_link_libraries(searchScaleGANN
     fmt
     mkl_rt
     m
+    Boost::program_options
 )
 target_link_libraries(searchCAGRA
     PRIVATE
@@ -195,6 +232,7 @@ target_link_libraries(searchCAGRA
     fmt
     mkl_rt
     m
+    Boost::program_options
 )
 target_link_libraries(searchGGNN
     PRIVATE
@@ -205,6 +243,7 @@ target_link_libraries(searchGGNN
     fmt
     mkl_rt
     m
+    Boost::program_options
 )
 target_link_libraries(searchDiskANN
     PRIVATE
@@ -215,6 +254,7 @@ target_link_libraries(searchDiskANN
     fmt
     mkl_rt
     m
+    Boost::program_options
 )
 # set(COMMON_LIBS
 #     cudart

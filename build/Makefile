@@ -156,6 +156,32 @@ diskannMerge/fast:
 .PHONY : diskannMerge/fast
 
 #=============================================================================
+# Target rules for targets named diskannComputeGT
+
+# Build rule for target.
+diskannComputeGT: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 diskannComputeGT
+.PHONY : diskannComputeGT
+
+# fast build rule for target.
+diskannComputeGT/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/build
+.PHONY : diskannComputeGT/fast
+
+#=============================================================================
+# Target rules for targets named diskannMemoryIndex
+
+# Build rule for target.
+diskannMemoryIndex: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 diskannMemoryIndex
+.PHONY : diskannMemoryIndex
+
+# fast build rule for target.
+diskannMemoryIndex/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/build
+.PHONY : diskannMemoryIndex/fast
+
+#=============================================================================
 # Target rules for targets named executeDiskPartition
 
 # Build rule for target.
@@ -233,6 +259,54 @@ searchDiskANN/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchDiskANN.dir/build.make CMakeFiles/searchDiskANN.dir/build
 .PHONY : searchDiskANN/fast
 
+DiskANN/apps/build_memory_index.o: DiskANN/apps/build_memory_index.cpp.o
+.PHONY : DiskANN/apps/build_memory_index.o
+
+# target to build an object file
+DiskANN/apps/build_memory_index.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/apps/build_memory_index.cpp.o
+.PHONY : DiskANN/apps/build_memory_index.cpp.o
+
+DiskANN/apps/build_memory_index.i: DiskANN/apps/build_memory_index.cpp.i
+.PHONY : DiskANN/apps/build_memory_index.i
+
+# target to preprocess a source file
+DiskANN/apps/build_memory_index.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/apps/build_memory_index.cpp.i
+.PHONY : DiskANN/apps/build_memory_index.cpp.i
+
+DiskANN/apps/build_memory_index.s: DiskANN/apps/build_memory_index.cpp.s
+.PHONY : DiskANN/apps/build_memory_index.s
+
+# target to generate assembly for a file
+DiskANN/apps/build_memory_index.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/apps/build_memory_index.cpp.s
+.PHONY : DiskANN/apps/build_memory_index.cpp.s
+
+DiskANN/apps/utils/compute_groundtruth.o: DiskANN/apps/utils/compute_groundtruth.cpp.o
+.PHONY : DiskANN/apps/utils/compute_groundtruth.o
+
+# target to build an object file
+DiskANN/apps/utils/compute_groundtruth.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/apps/utils/compute_groundtruth.cpp.o
+.PHONY : DiskANN/apps/utils/compute_groundtruth.cpp.o
+
+DiskANN/apps/utils/compute_groundtruth.i: DiskANN/apps/utils/compute_groundtruth.cpp.i
+.PHONY : DiskANN/apps/utils/compute_groundtruth.i
+
+# target to preprocess a source file
+DiskANN/apps/utils/compute_groundtruth.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/apps/utils/compute_groundtruth.cpp.i
+.PHONY : DiskANN/apps/utils/compute_groundtruth.cpp.i
+
+DiskANN/apps/utils/compute_groundtruth.s: DiskANN/apps/utils/compute_groundtruth.cpp.s
+.PHONY : DiskANN/apps/utils/compute_groundtruth.s
+
+# target to generate assembly for a file
+DiskANN/apps/utils/compute_groundtruth.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/apps/utils/compute_groundtruth.cpp.s
+.PHONY : DiskANN/apps/utils/compute_groundtruth.cpp.s
+
 DiskANN/src/abstract_data_store.o: DiskANN/src/abstract_data_store.cpp.o
 .PHONY : DiskANN/src/abstract_data_store.o
 
@@ -241,6 +315,8 @@ DiskANN/src/abstract_data_store.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/abstract_data_store.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/abstract_data_store.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/abstract_data_store.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/abstract_data_store.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/abstract_data_store.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/abstract_data_store.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/abstract_data_store.cpp.o
 .PHONY : DiskANN/src/abstract_data_store.cpp.o
@@ -253,6 +329,8 @@ DiskANN/src/abstract_data_store.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/abstract_data_store.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/abstract_data_store.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/abstract_data_store.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/abstract_data_store.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/abstract_data_store.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/abstract_data_store.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/abstract_data_store.cpp.i
 .PHONY : DiskANN/src/abstract_data_store.cpp.i
@@ -265,6 +343,8 @@ DiskANN/src/abstract_data_store.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/abstract_data_store.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/abstract_data_store.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/abstract_data_store.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/abstract_data_store.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/abstract_data_store.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/abstract_data_store.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/abstract_data_store.cpp.s
 .PHONY : DiskANN/src/abstract_data_store.cpp.s
@@ -277,6 +357,8 @@ DiskANN/src/abstract_index.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/abstract_index.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/abstract_index.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/abstract_index.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/abstract_index.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/abstract_index.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/abstract_index.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/abstract_index.cpp.o
 .PHONY : DiskANN/src/abstract_index.cpp.o
@@ -289,6 +371,8 @@ DiskANN/src/abstract_index.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/abstract_index.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/abstract_index.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/abstract_index.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/abstract_index.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/abstract_index.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/abstract_index.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/abstract_index.cpp.i
 .PHONY : DiskANN/src/abstract_index.cpp.i
@@ -301,6 +385,8 @@ DiskANN/src/abstract_index.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/abstract_index.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/abstract_index.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/abstract_index.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/abstract_index.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/abstract_index.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/abstract_index.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/abstract_index.cpp.s
 .PHONY : DiskANN/src/abstract_index.cpp.s
@@ -313,6 +399,8 @@ DiskANN/src/ann_exception.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/ann_exception.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/ann_exception.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/ann_exception.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/ann_exception.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/ann_exception.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/ann_exception.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/ann_exception.cpp.o
 .PHONY : DiskANN/src/ann_exception.cpp.o
@@ -325,6 +413,8 @@ DiskANN/src/ann_exception.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/ann_exception.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/ann_exception.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/ann_exception.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/ann_exception.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/ann_exception.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/ann_exception.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/ann_exception.cpp.i
 .PHONY : DiskANN/src/ann_exception.cpp.i
@@ -337,6 +427,8 @@ DiskANN/src/ann_exception.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/ann_exception.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/ann_exception.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/ann_exception.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/ann_exception.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/ann_exception.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/ann_exception.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/ann_exception.cpp.s
 .PHONY : DiskANN/src/ann_exception.cpp.s
@@ -349,6 +441,8 @@ DiskANN/src/disk_utils.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/disk_utils.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/disk_utils.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/disk_utils.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/disk_utils.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/disk_utils.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/disk_utils.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/disk_utils.cpp.o
 .PHONY : DiskANN/src/disk_utils.cpp.o
@@ -361,6 +455,8 @@ DiskANN/src/disk_utils.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/disk_utils.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/disk_utils.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/disk_utils.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/disk_utils.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/disk_utils.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/disk_utils.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/disk_utils.cpp.i
 .PHONY : DiskANN/src/disk_utils.cpp.i
@@ -373,6 +469,8 @@ DiskANN/src/disk_utils.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/disk_utils.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/disk_utils.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/disk_utils.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/disk_utils.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/disk_utils.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/disk_utils.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/disk_utils.cpp.s
 .PHONY : DiskANN/src/disk_utils.cpp.s
@@ -385,6 +483,8 @@ DiskANN/src/distance.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/distance.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/distance.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/distance.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/distance.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/distance.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/distance.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/distance.cpp.o
 .PHONY : DiskANN/src/distance.cpp.o
@@ -397,6 +497,8 @@ DiskANN/src/distance.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/distance.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/distance.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/distance.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/distance.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/distance.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/distance.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/distance.cpp.i
 .PHONY : DiskANN/src/distance.cpp.i
@@ -409,6 +511,8 @@ DiskANN/src/distance.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/distance.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/distance.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/distance.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/distance.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/distance.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/distance.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/distance.cpp.s
 .PHONY : DiskANN/src/distance.cpp.s
@@ -421,6 +525,8 @@ DiskANN/src/filter_utils.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/filter_utils.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/filter_utils.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/filter_utils.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/filter_utils.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/filter_utils.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/filter_utils.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/filter_utils.cpp.o
 .PHONY : DiskANN/src/filter_utils.cpp.o
@@ -433,6 +539,8 @@ DiskANN/src/filter_utils.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/filter_utils.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/filter_utils.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/filter_utils.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/filter_utils.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/filter_utils.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/filter_utils.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/filter_utils.cpp.i
 .PHONY : DiskANN/src/filter_utils.cpp.i
@@ -445,6 +553,8 @@ DiskANN/src/filter_utils.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/filter_utils.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/filter_utils.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/filter_utils.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/filter_utils.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/filter_utils.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/filter_utils.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/filter_utils.cpp.s
 .PHONY : DiskANN/src/filter_utils.cpp.s
@@ -457,6 +567,8 @@ DiskANN/src/in_mem_data_store.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/in_mem_data_store.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/in_mem_data_store.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/in_mem_data_store.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/in_mem_data_store.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/in_mem_data_store.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/in_mem_data_store.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/in_mem_data_store.cpp.o
 .PHONY : DiskANN/src/in_mem_data_store.cpp.o
@@ -469,6 +581,8 @@ DiskANN/src/in_mem_data_store.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/in_mem_data_store.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/in_mem_data_store.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/in_mem_data_store.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/in_mem_data_store.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/in_mem_data_store.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/in_mem_data_store.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/in_mem_data_store.cpp.i
 .PHONY : DiskANN/src/in_mem_data_store.cpp.i
@@ -481,6 +595,8 @@ DiskANN/src/in_mem_data_store.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/in_mem_data_store.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/in_mem_data_store.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/in_mem_data_store.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/in_mem_data_store.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/in_mem_data_store.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/in_mem_data_store.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/in_mem_data_store.cpp.s
 .PHONY : DiskANN/src/in_mem_data_store.cpp.s
@@ -493,6 +609,8 @@ DiskANN/src/in_mem_graph_store.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/in_mem_graph_store.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/in_mem_graph_store.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/in_mem_graph_store.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/in_mem_graph_store.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/in_mem_graph_store.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/in_mem_graph_store.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/in_mem_graph_store.cpp.o
 .PHONY : DiskANN/src/in_mem_graph_store.cpp.o
@@ -505,6 +623,8 @@ DiskANN/src/in_mem_graph_store.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/in_mem_graph_store.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/in_mem_graph_store.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/in_mem_graph_store.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/in_mem_graph_store.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/in_mem_graph_store.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/in_mem_graph_store.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/in_mem_graph_store.cpp.i
 .PHONY : DiskANN/src/in_mem_graph_store.cpp.i
@@ -517,6 +637,8 @@ DiskANN/src/in_mem_graph_store.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/in_mem_graph_store.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/in_mem_graph_store.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/in_mem_graph_store.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/in_mem_graph_store.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/in_mem_graph_store.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/in_mem_graph_store.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/in_mem_graph_store.cpp.s
 .PHONY : DiskANN/src/in_mem_graph_store.cpp.s
@@ -529,6 +651,8 @@ DiskANN/src/index.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/index.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/index.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/index.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/index.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/index.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/index.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/index.cpp.o
 .PHONY : DiskANN/src/index.cpp.o
@@ -541,6 +665,8 @@ DiskANN/src/index.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/index.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/index.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/index.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/index.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/index.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/index.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/index.cpp.i
 .PHONY : DiskANN/src/index.cpp.i
@@ -553,6 +679,8 @@ DiskANN/src/index.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/index.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/index.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/index.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/index.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/index.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/index.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/index.cpp.s
 .PHONY : DiskANN/src/index.cpp.s
@@ -565,6 +693,8 @@ DiskANN/src/index_factory.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/index_factory.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/index_factory.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/index_factory.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/index_factory.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/index_factory.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/index_factory.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/index_factory.cpp.o
 .PHONY : DiskANN/src/index_factory.cpp.o
@@ -577,6 +707,8 @@ DiskANN/src/index_factory.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/index_factory.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/index_factory.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/index_factory.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/index_factory.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/index_factory.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/index_factory.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/index_factory.cpp.i
 .PHONY : DiskANN/src/index_factory.cpp.i
@@ -589,6 +721,8 @@ DiskANN/src/index_factory.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/index_factory.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/index_factory.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/index_factory.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/index_factory.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/index_factory.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/index_factory.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/index_factory.cpp.s
 .PHONY : DiskANN/src/index_factory.cpp.s
@@ -601,6 +735,8 @@ DiskANN/src/linux_aligned_file_reader.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/linux_aligned_file_reader.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/linux_aligned_file_reader.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/linux_aligned_file_reader.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/linux_aligned_file_reader.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/linux_aligned_file_reader.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/linux_aligned_file_reader.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/linux_aligned_file_reader.cpp.o
 .PHONY : DiskANN/src/linux_aligned_file_reader.cpp.o
@@ -613,6 +749,8 @@ DiskANN/src/linux_aligned_file_reader.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/linux_aligned_file_reader.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/linux_aligned_file_reader.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/linux_aligned_file_reader.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/linux_aligned_file_reader.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/linux_aligned_file_reader.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/linux_aligned_file_reader.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/linux_aligned_file_reader.cpp.i
 .PHONY : DiskANN/src/linux_aligned_file_reader.cpp.i
@@ -625,6 +763,8 @@ DiskANN/src/linux_aligned_file_reader.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/linux_aligned_file_reader.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/linux_aligned_file_reader.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/linux_aligned_file_reader.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/linux_aligned_file_reader.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/linux_aligned_file_reader.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/linux_aligned_file_reader.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/linux_aligned_file_reader.cpp.s
 .PHONY : DiskANN/src/linux_aligned_file_reader.cpp.s
@@ -637,6 +777,8 @@ DiskANN/src/logger.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/logger.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/logger.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/logger.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/logger.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/logger.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/logger.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/logger.cpp.o
 .PHONY : DiskANN/src/logger.cpp.o
@@ -649,6 +791,8 @@ DiskANN/src/logger.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/logger.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/logger.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/logger.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/logger.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/logger.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/logger.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/logger.cpp.i
 .PHONY : DiskANN/src/logger.cpp.i
@@ -661,6 +805,8 @@ DiskANN/src/logger.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/logger.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/logger.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/logger.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/logger.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/logger.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/logger.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/logger.cpp.s
 .PHONY : DiskANN/src/logger.cpp.s
@@ -673,6 +819,8 @@ DiskANN/src/math_utils.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/math_utils.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/math_utils.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/math_utils.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/math_utils.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/math_utils.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/math_utils.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/math_utils.cpp.o
 .PHONY : DiskANN/src/math_utils.cpp.o
@@ -685,6 +833,8 @@ DiskANN/src/math_utils.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/math_utils.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/math_utils.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/math_utils.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/math_utils.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/math_utils.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/math_utils.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/math_utils.cpp.i
 .PHONY : DiskANN/src/math_utils.cpp.i
@@ -697,6 +847,8 @@ DiskANN/src/math_utils.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/math_utils.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/math_utils.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/math_utils.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/math_utils.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/math_utils.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/math_utils.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/math_utils.cpp.s
 .PHONY : DiskANN/src/math_utils.cpp.s
@@ -709,6 +861,8 @@ DiskANN/src/memory_mapper.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/memory_mapper.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/memory_mapper.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/memory_mapper.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/memory_mapper.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/memory_mapper.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/memory_mapper.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/memory_mapper.cpp.o
 .PHONY : DiskANN/src/memory_mapper.cpp.o
@@ -721,6 +875,8 @@ DiskANN/src/memory_mapper.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/memory_mapper.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/memory_mapper.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/memory_mapper.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/memory_mapper.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/memory_mapper.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/memory_mapper.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/memory_mapper.cpp.i
 .PHONY : DiskANN/src/memory_mapper.cpp.i
@@ -733,6 +889,8 @@ DiskANN/src/memory_mapper.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/memory_mapper.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/memory_mapper.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/memory_mapper.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/memory_mapper.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/memory_mapper.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/memory_mapper.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/memory_mapper.cpp.s
 .PHONY : DiskANN/src/memory_mapper.cpp.s
@@ -745,6 +903,8 @@ DiskANN/src/natural_number_map.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/natural_number_map.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/natural_number_map.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/natural_number_map.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/natural_number_map.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/natural_number_map.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/natural_number_map.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/natural_number_map.cpp.o
 .PHONY : DiskANN/src/natural_number_map.cpp.o
@@ -757,6 +917,8 @@ DiskANN/src/natural_number_map.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/natural_number_map.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/natural_number_map.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/natural_number_map.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/natural_number_map.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/natural_number_map.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/natural_number_map.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/natural_number_map.cpp.i
 .PHONY : DiskANN/src/natural_number_map.cpp.i
@@ -769,6 +931,8 @@ DiskANN/src/natural_number_map.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/natural_number_map.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/natural_number_map.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/natural_number_map.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/natural_number_map.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/natural_number_map.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/natural_number_map.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/natural_number_map.cpp.s
 .PHONY : DiskANN/src/natural_number_map.cpp.s
@@ -781,6 +945,8 @@ DiskANN/src/natural_number_set.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/natural_number_set.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/natural_number_set.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/natural_number_set.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/natural_number_set.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/natural_number_set.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/natural_number_set.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/natural_number_set.cpp.o
 .PHONY : DiskANN/src/natural_number_set.cpp.o
@@ -793,6 +959,8 @@ DiskANN/src/natural_number_set.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/natural_number_set.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/natural_number_set.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/natural_number_set.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/natural_number_set.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/natural_number_set.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/natural_number_set.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/natural_number_set.cpp.i
 .PHONY : DiskANN/src/natural_number_set.cpp.i
@@ -805,6 +973,8 @@ DiskANN/src/natural_number_set.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/natural_number_set.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/natural_number_set.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/natural_number_set.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/natural_number_set.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/natural_number_set.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/natural_number_set.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/natural_number_set.cpp.s
 .PHONY : DiskANN/src/natural_number_set.cpp.s
@@ -817,6 +987,8 @@ DiskANN/src/partition.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/partition.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/partition.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/partition.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/partition.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/partition.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/partition.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/partition.cpp.o
 .PHONY : DiskANN/src/partition.cpp.o
@@ -829,6 +1001,8 @@ DiskANN/src/partition.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/partition.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/partition.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/partition.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/partition.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/partition.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/partition.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/partition.cpp.i
 .PHONY : DiskANN/src/partition.cpp.i
@@ -841,6 +1015,8 @@ DiskANN/src/partition.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/partition.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/partition.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/partition.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/partition.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/partition.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/partition.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/partition.cpp.s
 .PHONY : DiskANN/src/partition.cpp.s
@@ -853,6 +1029,8 @@ DiskANN/src/pq.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/pq.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/pq.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/pq.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/pq.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/pq.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/pq.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/pq.cpp.o
 .PHONY : DiskANN/src/pq.cpp.o
@@ -865,6 +1043,8 @@ DiskANN/src/pq.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/pq.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/pq.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/pq.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/pq.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/pq.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/pq.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/pq.cpp.i
 .PHONY : DiskANN/src/pq.cpp.i
@@ -877,6 +1057,8 @@ DiskANN/src/pq.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/pq.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/pq.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/pq.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/pq.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/pq.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/pq.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/pq.cpp.s
 .PHONY : DiskANN/src/pq.cpp.s
@@ -889,6 +1071,8 @@ DiskANN/src/pq_data_store.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/pq_data_store.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/pq_data_store.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/pq_data_store.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/pq_data_store.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/pq_data_store.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/pq_data_store.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/pq_data_store.cpp.o
 .PHONY : DiskANN/src/pq_data_store.cpp.o
@@ -901,6 +1085,8 @@ DiskANN/src/pq_data_store.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/pq_data_store.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/pq_data_store.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/pq_data_store.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/pq_data_store.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/pq_data_store.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/pq_data_store.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/pq_data_store.cpp.i
 .PHONY : DiskANN/src/pq_data_store.cpp.i
@@ -913,6 +1099,8 @@ DiskANN/src/pq_data_store.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/pq_data_store.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/pq_data_store.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/pq_data_store.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/pq_data_store.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/pq_data_store.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/pq_data_store.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/pq_data_store.cpp.s
 .PHONY : DiskANN/src/pq_data_store.cpp.s
@@ -925,6 +1113,8 @@ DiskANN/src/pq_flash_index.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/pq_flash_index.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/pq_flash_index.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/pq_flash_index.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/pq_flash_index.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/pq_flash_index.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/pq_flash_index.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/pq_flash_index.cpp.o
 .PHONY : DiskANN/src/pq_flash_index.cpp.o
@@ -937,6 +1127,8 @@ DiskANN/src/pq_flash_index.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/pq_flash_index.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/pq_flash_index.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/pq_flash_index.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/pq_flash_index.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/pq_flash_index.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/pq_flash_index.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/pq_flash_index.cpp.i
 .PHONY : DiskANN/src/pq_flash_index.cpp.i
@@ -949,6 +1141,8 @@ DiskANN/src/pq_flash_index.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/pq_flash_index.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/pq_flash_index.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/pq_flash_index.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/pq_flash_index.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/pq_flash_index.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/pq_flash_index.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/pq_flash_index.cpp.s
 .PHONY : DiskANN/src/pq_flash_index.cpp.s
@@ -961,6 +1155,8 @@ DiskANN/src/pq_l2_distance.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/pq_l2_distance.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/pq_l2_distance.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/pq_l2_distance.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/pq_l2_distance.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/pq_l2_distance.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/pq_l2_distance.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/pq_l2_distance.cpp.o
 .PHONY : DiskANN/src/pq_l2_distance.cpp.o
@@ -973,6 +1169,8 @@ DiskANN/src/pq_l2_distance.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/pq_l2_distance.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/pq_l2_distance.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/pq_l2_distance.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/pq_l2_distance.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/pq_l2_distance.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/pq_l2_distance.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/pq_l2_distance.cpp.i
 .PHONY : DiskANN/src/pq_l2_distance.cpp.i
@@ -985,6 +1183,8 @@ DiskANN/src/pq_l2_distance.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/pq_l2_distance.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/pq_l2_distance.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/pq_l2_distance.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/pq_l2_distance.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/pq_l2_distance.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/pq_l2_distance.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/pq_l2_distance.cpp.s
 .PHONY : DiskANN/src/pq_l2_distance.cpp.s
@@ -997,6 +1197,8 @@ DiskANN/src/scratch.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/scratch.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/scratch.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/scratch.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/scratch.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/scratch.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/scratch.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/scratch.cpp.o
 .PHONY : DiskANN/src/scratch.cpp.o
@@ -1009,6 +1211,8 @@ DiskANN/src/scratch.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/scratch.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/scratch.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/scratch.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/scratch.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/scratch.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/scratch.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/scratch.cpp.i
 .PHONY : DiskANN/src/scratch.cpp.i
@@ -1021,6 +1225,8 @@ DiskANN/src/scratch.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/scratch.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/scratch.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/scratch.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/scratch.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/scratch.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/scratch.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/scratch.cpp.s
 .PHONY : DiskANN/src/scratch.cpp.s
@@ -1033,6 +1239,8 @@ DiskANN/src/utils.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/utils.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/utils.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/utils.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/utils.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/utils.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/utils.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/utils.cpp.o
 .PHONY : DiskANN/src/utils.cpp.o
@@ -1045,6 +1253,8 @@ DiskANN/src/utils.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/utils.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/utils.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/utils.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/utils.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/utils.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/utils.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/utils.cpp.i
 .PHONY : DiskANN/src/utils.cpp.i
@@ -1057,6 +1267,8 @@ DiskANN/src/utils.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/DiskANN/src/utils.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannBuild.dir/build.make CMakeFiles/diskannBuild.dir/DiskANN/src/utils.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMerge.dir/build.make CMakeFiles/diskannMerge.dir/DiskANN/src/utils.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannComputeGT.dir/build.make CMakeFiles/diskannComputeGT.dir/DiskANN/src/utils.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannMemoryIndex.dir/build.make CMakeFiles/diskannMemoryIndex.dir/DiskANN/src/utils.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/DiskANN/src/utils.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/DiskANN/src/utils.cpp.s
 .PHONY : DiskANN/src/utils.cpp.s
@@ -1583,6 +1795,8 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... diskannBuild"
+	@echo "... diskannComputeGT"
+	@echo "... diskannMemoryIndex"
 	@echo "... diskannMerge"
 	@echo "... diskannPartition"
 	@echo "... executeDiskMerge"
@@ -1591,6 +1805,12 @@ help:
 	@echo "... searchDiskANN"
 	@echo "... searchGGNN"
 	@echo "... searchScaleGANN"
+	@echo "... DiskANN/apps/build_memory_index.o"
+	@echo "... DiskANN/apps/build_memory_index.i"
+	@echo "... DiskANN/apps/build_memory_index.s"
+	@echo "... DiskANN/apps/utils/compute_groundtruth.o"
+	@echo "... DiskANN/apps/utils/compute_groundtruth.i"
+	@echo "... DiskANN/apps/utils/compute_groundtruth.s"
 	@echo "... DiskANN/src/abstract_data_store.o"
 	@echo "... DiskANN/src/abstract_data_store.i"
 	@echo "... DiskANN/src/abstract_data_store.s"

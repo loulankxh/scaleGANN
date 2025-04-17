@@ -7,12 +7,13 @@
 #include <variant>
 #include <cassert>
 #include <omp.h>
+#include <boost/program_options.hpp>
 #include <mkl.h>
 
 #include "../../src/merge/disk_merge.h"
+#include "../../DiskANN/include/program_options_utils.hpp"
 
-#define MERGE_DEG 32
-#define BUILD_DEG 32
+namespace po = boost::program_options;
 
 void mergeDisk(std::string base_folder, const std::string merge_index_path,
         const uint64_t nshards, uint32_t max_degree,
@@ -27,7 +28,8 @@ void mergeDisk(std::string base_folder, const std::string merge_index_path,
 }
 
 // There can be multiple index of different construction parameters in a folder
-void mergeDisk_allIndexInFolder(const std::string baseFolder, const std::string mergeIndexPath){
+void mergeDisk_allIndexInFolder(const std::string baseFolder, const std::string mergeIndexPath,
+                    uint32_t merge_degree){
     
     auto startTime = std::chrono::high_resolution_clock::now();
 
@@ -64,7 +66,7 @@ void mergeDisk_allIndexInFolder(const std::string baseFolder, const std::string 
             std::string indexName = file.path().filename().string();
             
             std::vector<std::vector<uint32_t>> mergedIndex;
-            mergeDisk(baseFolder, mergeIndexPath, shardNum, MERGE_DEG, indexName);
+            mergeDisk(baseFolder, mergeIndexPath, shardNum, merge_degree, indexName);
 
             auto indexMergeTime = std::chrono::high_resolution_clock::now();
             auto indexMergeDuration = std::chrono::duration_cast<std::chrono::milliseconds>(indexMergeTime - lastIndexMerge);
@@ -83,10 +85,49 @@ void mergeDisk_allIndexInFolder(const std::string baseFolder, const std::string 
     printf("overall duration: %lld milliseconds\n", overallDuration.count());
 }
 
-int main() {
-    std::string baseFolder = "/home/lanlu/scaleGANN/dataset/sift100M/DiskANN/";
-    std::string mergeFolder = "/home/lanlu/scaleGANN/dataset/sift100M/DiskANN/mergedIndex";
-    mergeDisk_allIndexInFolder(baseFolder, mergeFolder);
+int main(int argc, char **argv) {
+    std::string base_folder, mergeFolder;
+    uint32_t merge_deg, num_threads;;
+
+    po::options_description desc{
+        program_options_utils::make_program_description("merge_disk_shard_index", "Merge shard indices from disk.")};
+    try
+    {
+        desc.add_options()("help,h", "Print information on arguments");
+        po::options_description required_configs("Required");
+        required_configs.add_options()("base_folder", po::value<std::string>(&base_folder)->required(),
+                                       "Folder path where all the partioned data shards are stored.");
+        required_configs.add_options()("degree,R", po::value<uint32_t>(&merge_deg)->required(),
+                                       "Expected degree of the merged index.");
+        
+        po::options_description optional_configs("Optional");
+        optional_configs.add_options()("num_threads,T",
+                                        po::value<uint32_t>(&num_threads)->default_value(omp_get_num_procs()),
+                                        program_options_utils::NUMBER_THREADS_DESCRIPTION);                               
+
+        desc.add(required_configs).add(optional_configs);
+
+        po::variables_map vm;
+        po::store(po::parse_command_line(argc, argv, desc), vm);
+        if (vm.count("help"))
+        {
+            std::cout << desc;
+            return 0;
+        }
+        po::notify(vm);
+    }
+    catch (const std::exception &ex)
+    {
+        std::cerr << ex.what() << '\n';
+        return -1;
+    }
+
+    omp_set_num_threads(num_threads);
+    mkl_set_num_threads(num_threads);
+    printf("Using %d threads\n", num_threads);
+    mergeFolder = base_folder + "/mergedIndex";
+
+    mergeDisk_allIndexInFolder(base_folder, mergeFolder, merge_deg);
     return 0;
 }
 

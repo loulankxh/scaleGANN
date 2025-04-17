@@ -1,6 +1,8 @@
 /home/lanlu/scaleGANN/build/CMakeFiles/diskannPartition.dir
 /home/lanlu/scaleGANN/build/CMakeFiles/diskannBuild.dir
 /home/lanlu/scaleGANN/build/CMakeFiles/diskannMerge.dir
+/home/lanlu/scaleGANN/build/CMakeFiles/diskannComputeGT.dir
+/home/lanlu/scaleGANN/build/CMakeFiles/diskannMemoryIndex.dir
 /home/lanlu/scaleGANN/build/CMakeFiles/executeDiskPartition.dir
 /home/lanlu/scaleGANN/build/CMakeFiles/executeDiskMerge.dir
 /home/lanlu/scaleGANN/build/CMakeFiles/searchScaleGANN.dir

@@ -13,10 +13,16 @@
 #include <chrono>
 #include <set>
 #include <map>
+#include <omp.h>
+#include <boost/program_options.hpp>
+#include <mkl.h>
 
 #include "../src/utils/fileUtils.h"
 #include "../src/search/search.hpp"
 #include "../DiskANN/include/neighbor.h"
+#include "../../DiskANN/include/program_options_utils.hpp"
+
+namespace po = boost::program_options;
 
 void mergeResultCAGRA(std::vector<diskann::NeighborPriorityQueue>& mergedResult,
         std::vector<std::vector<uint32_t>>& result,
@@ -57,36 +63,29 @@ void getResultId(std::vector<diskann::NeighborPriorityQueue>& mergedResult,
 
 
 template <typename T>
-void testNaiveCAGRA(){
-    uint32_t shard_num = 10;
-
-    std::string data_file = "/home/lanlu/raft/python/raft-ann-bench/src/datasets/sift100M/base.100M.u8bin";
+void searchNaiveCAGRA(std::string data_file, std::string query_file, std::string truth_file, std::string index_dir, std::string index_name,
+                    uint32_t k, uint32_t L, uint32_t shard_num){
     std::vector<std::vector<T>> data;
-    std::string query_file = "/home/lanlu/raft/python/raft-ann-bench/src/datasets/sift100M/query.public.10K.u8bin";
     std::vector<std::vector<T>> query;
-    std::string truth_file = "/home/lanlu/raft/python/raft-ann-bench/src/datasets/sift100M/groundtruth.neighbors.ibin";
     std::vector<std::vector<uint32_t>> groundTruth;
 
-    readExceptIndex(data_file, data, query_file, query, truth_file, groundTruth);
+    readExceptIndex<T>(data_file, data, query_file, query, truth_file, groundTruth);
 
     printf("finishing loading except index\n");
 
-    
-    uint32_t k = 1;
-    uint32_t L = 50;
+
     uint32_t total_visited = 0;
     uint32_t total_distance_cmp = 0;
     long long totalLatency = 0;
 
     uint32_t offset = 0;
-    std::string index_dir = "/home/lanlu/raft/python/raft-ann-bench/src/datasets/sift100M/indexNaiveShard/";
     long long totalSearchDuration = 0;
     long long totalMergeDuration = 0;
     uint32_t n_queries = query.size();
     std::vector<diskann::NeighborPriorityQueue> mergedResult(n_queries, diskann::NeighborPriorityQueue(k));
     std::vector<std::vector<uint32_t>> final_result(n_queries);
     for (uint32_t iter = 0 ; iter < shard_num; iter++){
-        std::string index_file = index_dir + "index" + std::to_string(iter) + "/raft_cagra.graph_degree32.intermediate_graph_degree32.graph_build_algoNN_DESCENT";
+        std::string index_file = index_dir + "/partition" + std::to_string(iter) + "/index/" + index_name;
 
         std::vector<std::vector<uint32_t>> index;
         readIndex(index_file, index);
@@ -97,7 +96,7 @@ void testNaiveCAGRA(){
         std::vector<std::vector<float>> distances;
         printf("Starting search\n");
 
-        searchNaiveCAGRA<uint8_t>(k, L, offset, data, index, query, result, distances, &total_visited, &total_distance_cmp, &totalLatency);
+        searchNaiveCAGRA<T>(k, L, offset, data, index, query, result, distances, &total_visited, &total_distance_cmp, &totalLatency);
         offset += index.size();
 
         auto e_time = std::chrono::high_resolution_clock::now();
@@ -134,14 +133,10 @@ void testNaiveCAGRA(){
 }
 
 template <typename T>
-void testCAGRA(){
-    uint32_t shard_num = 9;
-
-    std::string data_file = "/home/lanlu/raft/python/raft-ann-bench/src/datasets/sift100M/base.100M.u8bin";
+void searchCAGRA(std::string data_file, std::string query_file, std::string truth_file, std::string index_dir, std::string index_name,
+                uint32_t k, uint32_t L, uint32_t shard_num){
     std::vector<std::vector<T>> data;
-    std::string query_file = "/home/lanlu/raft/python/raft-ann-bench/src/datasets/sift100M/query.public.10K.u8bin";
     std::vector<std::vector<T>> query;
-    std::string truth_file = "/home/lanlu/raft/python/raft-ann-bench/src/datasets/sift100M/groundtruth.neighbors.ibin";
     std::vector<std::vector<uint32_t>> groundTruth;
 
     readExceptIndex(data_file, data, query_file, query, truth_file, groundTruth);
@@ -149,26 +144,22 @@ void testCAGRA(){
     printf("finishing loading except index\n");
 
     
-    uint32_t k = 100;
-    uint32_t L = 128;
     uint32_t total_visited = 0;
     uint32_t total_distance_cmp = 0;
     long long totalLatency = 0;
 
 
-    std::string index_dir = "/home/lanlu/raft/python/raft-ann-bench/src/datasets/sift100M/indexLessDeg/";
-    std::string idxMapFolder = "../../dataset/sift100M/partitionsTest/";
     long long totalSearchDuration = 0;
     long long totalMergeDuration = 0;
     uint32_t n_queries = query.size();
     std::vector<diskann::NeighborPriorityQueue> mergedResult(n_queries, diskann::NeighborPriorityQueue(k));
     std::vector<std::vector<uint32_t>> final_result(n_queries);
     for (uint32_t iter = 0 ; iter < shard_num; iter++){
-        std::string index_file = index_dir + "index" + std::to_string(iter) + "/raft_cagra.graph_degree21.intermediate_graph_degree21.graph_build_algoNN_DESCENT";
+        std::string index_file = index_dir + "/partition" + std::to_string(iter) + "/index/" + index_name;
         std::vector<std::vector<uint32_t>> index;
         readIndex(index_file, index);
 
-        std::string idx_file = idxMapFolder + "idmap" + std::to_string(iter) + ".ibin";
+        std::string idx_file = index_dir + "/partition" + std::to_string(iter) + "/idmap.ibin";
         uint32_t header[2];
         readMetadata(idx_file, header);
         std::vector<std::vector<uint32_t>> idx_vec(header[0], std::vector<uint32_t>(header[1]));
@@ -219,8 +210,64 @@ void testCAGRA(){
 }
 
 
-// nvcc searchCAGRA.cpp search.cpp ../utils/indexIO.cpp ../utils/datasetIO.cpp ../utils/distance.cpp  -I/home/lanlu/raft/cpp/include/ -I/home/lanlu/miniconda3/envs/rapids_raft/targets/x86_64-linux/include -I/home/lanlu/miniconda3/envs/rapids_raft/include -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids/libcudacxx -I/home/lanlu/raft/cpp/build/_deps/nlohmann_json-src/include -I/home/lanlu/raft/cpp/build/_deps/benchmark-src/include -lcudart -ldl -lbenchmark -lpthread -lfmt -L/home/lanlu/raft/cpp/build/_deps/benchmark-build/src -Xcompiler -fopenmp -o testCAGRA
-int main(){
-    // testCAGRA<uint8_t>();
-    testNaiveCAGRA<uint8_t>();
+int main(int argc, char **argv){
+    std::string data_file, query_file, truth_file, index_dir, index_name;
+    uint32_t k, L, num_threads;
+    uint32_t shard_num;
+
+    po::options_description desc{
+        program_options_utils::make_program_description("search_cagra", "Search CAGRA index.")};
+    try
+    {
+        desc.add_options()("help,h", "Print information on arguments");
+        po::options_description required_configs("Required");
+        required_configs.add_options()("data_file", po::value<std::string>(&data_file)->required(),
+                                       "Dataset path.");
+        required_configs.add_options()("query_file", po::value<std::string>(&query_file)->required(),
+                                       "Query file path.");
+        required_configs.add_options()("truth_file", po::value<std::string>(&truth_file)->required(),
+                                       "Groundtruth file path.");
+        required_configs.add_options()("index_dir", po::value<std::string>(&index_dir)->required(),
+                                       "Index folder path where shard inices are stored.");
+        required_configs.add_options()("index_name", po::value<std::string>(&index_name)->required(),
+                                       "File name of each shard index.");
+        required_configs.add_options()("top_k,K", po::value<uint32_t>(&k)->required(),
+                                       "Top-k.");
+        required_configs.add_options()("L", po::value<uint32_t>(&L)->required(),
+                                       "Search candidate list size");
+        required_configs.add_options()("shard_num,N", po::value<uint32_t>(&shard_num)->required(),
+                                       "Number of shards.");
+        
+        po::options_description optional_configs("Optional");
+        optional_configs.add_options()("num_threads,T",
+                                        po::value<uint32_t>(&num_threads)->default_value(omp_get_num_procs()),
+                                        program_options_utils::NUMBER_THREADS_DESCRIPTION);                               
+
+        desc.add(required_configs).add(optional_configs);
+
+        po::variables_map vm;
+        po::store(po::parse_command_line(argc, argv, desc), vm);
+        if (vm.count("help"))
+        {
+            std::cout << desc;
+            return 0;
+        }
+        po::notify(vm);
+    }
+    catch (const std::exception &ex)
+    {
+        std::cerr << ex.what() << '\n';
+        return -1;
+    }
+
+    omp_set_num_threads(num_threads);
+    mkl_set_num_threads(num_threads);
+    printf("Using %d threads\n", num_threads);
+
+    uint32_t suffixType = suffixToType(data_file);
+    if(suffixType == 0){ // float
+        searchNaiveCAGRA<float>(data_file, query_file, truth_file, index_dir, index_name, k, L, shard_num);
+    } else if (suffixType == 2) { // uint8_t
+        searchNaiveCAGRA<uint8_t>(data_file, query_file, truth_file, index_dir, index_name, k, L, shard_num);
+    }
 }

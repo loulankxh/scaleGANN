@@ -2,6 +2,8 @@
 #include <filesystem>
 #include <chrono>
 #include <boost/program_options.hpp>
+#include <mkl.h>
+#include <sys/resource.h>
 
 #include "../../src/utils/fileUtils.h"
 #include "../../DiskANN/include/disk_utils.h"
@@ -9,6 +11,12 @@
 #include "../../DiskANN/include/program_options_utils.hpp"
 
 namespace po = boost::program_options;
+
+inline size_t getProcessPeakRSS() {
+    struct rusage rusage;
+    getrusage(RUSAGE_SELF, &rusage);
+    return (size_t) rusage.ru_maxrss /1024L;
+  }
 
 
 template <typename T>
@@ -34,10 +42,8 @@ int main(int argc, char **argv){
     uint32_t partition_num, R, L;
     uint32_t num_threads, disk_PQ, build_PQ;
 
-
-
     po::options_description desc{
-        program_options_utils::make_program_description("build_disk_index", "Build a disk-based index.")};
+        program_options_utils::make_program_description("build_disk_shard_index", "Build a disk-based index.")};
     try
     {
         desc.add_options()("help,h", "Print information on arguments");
@@ -48,11 +54,11 @@ int main(int argc, char **argv){
                                        program_options_utils::DISTANCE_FUNCTION_DESCRIPTION);
         required_configs.add_options()("base_folder", po::value<std::string>(&base_folder)->required(),
                                        "Base folder for storing all the partitions.");
-        required_configs.add_options()("partition_num,N", po::value<uint32_t>(&partition_num)->default_value(100),
+        required_configs.add_options()("partition_num,N", po::value<uint32_t>(&partition_num)->required(),
                                        "Number of shards we have.");
-        required_configs.add_options()("degree,R", po::value<uint32_t>(&R)->default_value(100),
+        required_configs.add_options()("degree,R", po::value<uint32_t>(&R)->required(),
                                        program_options_utils::MAX_BUILD_DEGREE);
-        required_configs.add_options()("Lbuild,L", po::value<uint32_t>(&L)->default_value(100),
+        required_configs.add_options()("Lbuild,L", po::value<uint32_t>(&L)->required(),
                                        program_options_utils::GRAPH_BUILD_COMPLEXITY);
 
         po::options_description optional_configs("Optional");
@@ -85,6 +91,9 @@ int main(int argc, char **argv){
         return -1;
     }
 
+    omp_set_num_threads(num_threads);
+    mkl_set_num_threads(num_threads);
+    printf("Using %d threads\n", num_threads);
 
     if (data_type == "float") data_postfix = ".fbin";
     else if (data_type == "uint8") data_postfix = ".u8bin";
@@ -152,4 +161,8 @@ int main(int argc, char **argv){
     auto overallDuration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
 
     printf("DiskANN build duration: %lld milliseconds\n", overallDuration.count());
+
+    size_t memory_usage=getProcessPeakRSS();
+    printf("Maximum memory usage is %zu\n", memory_usage);
 }
+

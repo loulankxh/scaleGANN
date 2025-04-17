@@ -3,11 +3,16 @@
 #include <iostream>
 #include <fstream>
 #include <chrono>
+#include <omp.h>
+#include <boost/program_options.hpp>
+#include <mkl.h>
 
 #include "../src/utils/fileUtils.h"
 #include "../src/search/search.hpp"
 #include "../DiskANN/include/neighbor.h"
+#include "../../DiskANN/include/program_options_utils.hpp"
 
+namespace po = boost::program_options;
 
 void readIndex_DiskANN(std::string index_file, std::vector<std::vector<uint32_t>>& index){
     std::ifstream reader(index_file.c_str(), std::ios::binary);
@@ -37,22 +42,17 @@ void readIndex_DiskANN(std::string index_file, std::vector<std::vector<uint32_t>
 
 
 template <typename T>
-void search(){
-    std::string data_file = "/home/lanlu/raft/python/raft-ann-bench/src/datasets/sift100M/base.100M.u8bin";
+void search(std::string data_file, std::string index_file, std::string query_file, std::string truth_file,
+            uint32_t k, uint32_t L){
     std::vector<std::vector<T>> data;
-    std::string index_file = "/home/lanlu/scaleGANN/dataset/sift100M/DiskANN/mergedIndex/R32_L64.ibin";
     std::vector<std::vector<uint32_t>> index;
-    std::string query_file = "/home/lanlu/raft/python/raft-ann-bench/src/datasets/sift100M/query.public.10K.u8bin";
     std::vector<std::vector<T>> query;
-    std::string truth_file = "/home/lanlu/raft/python/raft-ann-bench/src/datasets/sift100M/groundtruth.neighbors.ibin";
     std::vector<std::vector<uint32_t>> groundTruth;
     readExceptIndex<T>(data_file, data, query_file, query, truth_file, groundTruth);
     readIndex_DiskANN(index_file, index);
 
 
     auto s_time = std::chrono::high_resolution_clock::now();
-    uint32_t k = 10;
-    uint32_t L = 128;
     uint32_t total_visited = 0;
     uint32_t total_distance_cmp = 0;
     long long totalLatency = 0;
@@ -76,6 +76,60 @@ void search(){
 
 
 
-int main(){
-    search<uint8_t>();
+int main(int argc, char **argv){
+    std::string data_file, index_file, query_file, truth_file;
+    uint32_t k, L, num_threads;
+
+    po::options_description desc{
+        program_options_utils::make_program_description("search_diskann", "Search DiskANN index.")};
+    try
+    {
+        desc.add_options()("help,h", "Print information on arguments");
+        po::options_description required_configs("Required");
+        required_configs.add_options()("data_file", po::value<std::string>(&data_file)->required(),
+                                       "Dataset path.");
+        required_configs.add_options()("index_file", po::value<std::string>(&index_file)->required(),
+                                       "Index path.");
+        required_configs.add_options()("query_file", po::value<std::string>(&query_file)->required(),
+                                       "Query file path.");
+        required_configs.add_options()("truth_file", po::value<std::string>(&truth_file)->required(),
+                                       "Groundtruth file path.");
+        required_configs.add_options()("top_k,K", po::value<uint32_t>(&k)->required(),
+                                       "Top-k.");
+        required_configs.add_options()("L", po::value<uint32_t>(&L)->required(),
+                                       "Search candidate list size.");
+        
+        po::options_description optional_configs("Optional");
+        optional_configs.add_options()("num_threads,T",
+                                        po::value<uint32_t>(&num_threads)->default_value(omp_get_num_procs()),
+                                        program_options_utils::NUMBER_THREADS_DESCRIPTION);                               
+
+        desc.add(required_configs).add(optional_configs);
+
+        po::variables_map vm;
+        po::store(po::parse_command_line(argc, argv, desc), vm);
+        if (vm.count("help"))
+        {
+            std::cout << desc;
+            return 0;
+        }
+        po::notify(vm);
+    }
+    catch (const std::exception &ex)
+    {
+        std::cerr << ex.what() << '\n';
+        return -1;
+    }
+
+    omp_set_num_threads(num_threads);
+    mkl_set_num_threads(num_threads);
+    printf("Using %d threads\n", num_threads);
+
+    uint32_t suffixType = suffixToType(data_file);
+    if(suffixType == 0){ // float
+        search<float>(data_file, index_file, query_file, truth_file, k, L);
+    } else if (suffixType == 2) { // uint8_t
+        search<uint8_t>(data_file, index_file, query_file, truth_file, k, L);
+    }
+
 }

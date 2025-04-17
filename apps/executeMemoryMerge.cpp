@@ -14,14 +14,8 @@
 #include "../src/utils/fileUtils.h"
 
 
-#define DUPLICATION_FACTOR 2
-#define PARTITION_NUM 8
-#define MERGE_DEG 32
-
-
-void mergeIndex(const std::string indexName, std::string baseFolder,
-        const std::string& datasetPath,
-        uint32_t folderNum,
+void mergeIndex(const std::string indexName, std::string baseFolder, 
+        const std::string& datasetPath, uint32_t folderNum, uint32_t merge_deg,
         std::vector<std::vector<uint32_t>>& merged_index,
         bool isGPU = 0){
 
@@ -40,7 +34,7 @@ void mergeIndex(const std::string indexName, std::string baseFolder,
 
     auto startTime = std::chrono::high_resolution_clock::now(); 
 
-    uint32_t deg = MERGE_DEG;
+    uint32_t deg = merge_deg;
     initGpuLocks();
     initEvents();
     #pragma omp parallel for schedule(static)
@@ -104,8 +98,8 @@ void mergeIndex(const std::string indexName, std::string baseFolder,
 
 
 
-void mergeAllIndexInFolder(std::string baseFolder,
-    std::string datasetPath){
+void mergeAllIndexInFolder(std::string baseFolder, std::string datasetPath,
+                        uint32_t merge_deg){
     auto startTime = std::chrono::high_resolution_clock::now();
 
     std::vector<std::filesystem::path> subfolders;
@@ -166,10 +160,54 @@ void mergeAllIndexInFolder(std::string baseFolder,
 }
 
 int main() {
-    // nvcc ../partition/partition.cpp ../partition/disk_partition.cpp ../partition/kmeans.cpp ../partition/kmeans.cu ../merge/merge.cpp ../merge/merge.cu ../utils/indexIO.cpp ../utils/datasetIO.cpp ../utils/distance.cpp gpuManagement.cpp scheduler.cpp -I/home/lanlu/raft/cpp/include/ -I/home/lanlu/miniconda3/envs/rapids_raft/targets/x86_64-linux/include -I/home/lanlu/miniconda3/envs/rapids_raft/include -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids/libcudacxx -I/home/lanlu/raft/cpp/build/_deps/nlohmann_json-src/include -I/home/lanlu/raft/cpp/build/_deps/benchmark-src/include -lcudart -ldl -lbenchmark -lpthread -lfmt -L/home/lanlu/raft/cpp/build/_deps/benchmark-build/src -Xcompiler -fopenmp -o testMerge
-    std::string baseFolder = "/home/lanlu/scaleGANN/dataset/sift100M/D32_N8_epsilon1.2/";
-    std::string datasetPath = "/home/lanlu/scaleGANN/dataset/sift100M/base.100M.u8bin";
-    mergeAllIndexInFolder(baseFolder, datasetPath);
+    std::string data_path, base_folder, merge_folder;
+    uint32_t merge_deg, num_threads;
+
+    po::options_description desc{
+        program_options_utils::make_program_description("scaleGANN_merge_disk_index", "Merge shard indices from disk to get merged index of original vector dataset.")};
+    try
+    {
+        desc.add_options()("help,h", "Print information on arguments");
+        po::options_description required_configs("Required");
+        required_configs.add_options()("data_path", po::value<std::string>(&data_path)->required(),
+                                       "Path of verctor dataset.");
+        required_configs.add_options()("base_folder", po::value<std::string>(&base_folder)->required(),
+                                       "Folder path where all the partioned data shards are stored.");
+        required_configs.add_options()("merge_degree,R", po::value<uint32_t>(&merge_deg)->required(),
+                                       "Expected degree of the merged index.");
+
+
+        po::options_description optional_configs("Optional");
+        optional_configs.add_options()("num_threads,T",
+                                        po::value<uint32_t>(&num_threads)->default_value(omp_get_num_procs()),
+                                        "Number of threads used.");
+
+        desc.add(required_configs).add(optional_configs);
+
+
+        po::variables_map vm;
+        po::store(po::parse_command_line(argc, argv, desc), vm);
+        if (vm.count("help"))
+        {
+            std::cout << desc;
+            return 0;
+        }
+        po::notify(vm);
+    }
+    catch (const std::exception &ex)
+    {
+        std::cerr << ex.what() << '\n';
+        return -1;
+    }
+
+    omp_set_num_threads(num_threads);
+    mkl_set_num_threads(num_threads);
+    printf("Using %d threads\n", num_threads);
+    printf("Merge degree is %d\n", merge_deg);
+
+    merge_folder = base_folder + "/mergedIndex";
+
+    mergeAllIndexInFolder(base_folder, data_path, merge_deg);
     return 0;
 }
 

@@ -13,10 +13,16 @@
 #include <chrono>
 #include <set>
 #include <map>
+#include <omp.h>
+#include <boost/program_options.hpp>
+#include <mkl.h>
 
 #include "../src/utils/fileUtils.h"
 #include "../src/search/search.hpp"
 #include "../DiskANN/include/neighbor.h"
+#include "../../DiskANN/include/program_options_utils.hpp"
+
+namespace po = boost::program_options;
 
 void mergeResultGGNN(std::vector<diskann::NeighborPriorityQueue>& mergedResult,
         std::vector<std::vector<uint32_t>>& result,
@@ -31,12 +37,9 @@ void mergeResultGGNN(std::vector<diskann::NeighborPriorityQueue>& mergedResult,
         uint32_t resNum = result[i].size();
         assert(resNum == distances[i].size());
 
-        // if(i == 9999) printf("Query %d merge: ");
         for (uint32_t j = 0; j < resNum; j++){
-            // if(i == 9999)  printf("%d--%f ", result[i][j]+offset, distances[i][j]);
             mergedResult[i].insert(diskann::Neighbor((result[i][j]+offset), distances[i][j]));
         }
-        // if(i == 9999) printf("\n");
     }
 }
 
@@ -61,43 +64,34 @@ void getResultId(std::vector<diskann::NeighborPriorityQueue>& mergedResult,
 
 
 template <typename T>
-void testGGNN(){
-    uint32_t shard_num = 100;
-    uint32_t N_shard = 1000000;
-    uint32_t Layer = 4;
-    uint32_t SegmentSize = 32;
-    uint32_t KBuild = 20;
+void searchGGNN(std::string data_file, std::string query_file, std::string truth_file, std::string index_dir,
+                uint32_t k, uint32_t L,
+                uint32_t shard_num, uint32_t N_shard, uint32_t Layer, uint32_t SegmentSize, uint32_t KBuild){
     std::vector<uint32_t> Ns;
     std::vector<uint32_t> Ns_offsets;
     std::vector<uint32_t> STs_offsets;
 
-    std::string data_file = "/home/lanlu/raft/python/raft-ann-bench/src/datasets/sift100M/base.100M.u8bin";
     std::vector<std::vector<T>> data;
-    std::string query_file = "/home/lanlu/raft/python/raft-ann-bench/src/datasets/sift100M/query.public.10K.u8bin";
     std::vector<std::vector<T>> query;
-    std::string truth_file = "/home/lanlu/raft/python/raft-ann-bench/src/datasets/sift100M/groundtruth.neighbors.ibin";
     std::vector<std::vector<uint32_t>> groundTruth;
 
-    readExceptIndex(data_file, data, query_file, query, truth_file, groundTruth);
+    readExceptIndex<T>(data_file, data, query_file, query, truth_file, groundTruth);
 
     printf("finishing loading except index\n");
 
     
-    uint32_t k = 10;
-    uint32_t L = 50;
     uint32_t total_visited = 0;
     uint32_t total_distance_cmp = 0;
     long long totalLatency = 0;
 
 
-    std::string test_dir = "/home/lanlu/ggnn/build_local/";
     long long totalSearchDuration = 0;
     long long totalMergeDuration = 0;
     uint32_t n_queries = query.size();
     std::vector<diskann::NeighborPriorityQueue> mergedResult(n_queries, diskann::NeighborPriorityQueue(k));
     std::vector<std::vector<uint32_t>> final_result(n_queries);
     for (uint32_t iter = 0 ; iter < shard_num; iter++){
-        std::string test_file = test_dir + "part_" + std::to_string(iter) + ".ggnn";
+        std::string index_shard_file = index_dir + "/part_" + std::to_string(iter) + ".ggnn";
         Ns.clear();
         Ns_offsets.clear();
         STs_offsets.clear();
@@ -107,7 +101,7 @@ void testGGNN(){
         uint32_t ST_all = 0;
         std::vector<std::vector<uint32_t>> index;
         std::vector<uint32_t> translation;
-        loadGGNNOneIndex<uint32_t, float>(test_file, N_shard, Layer, SegmentSize, KBuild, G, N_all, ST_all, Ns, Ns_offsets, STs_offsets, index, translation);
+        loadGGNNOneIndex<uint32_t, float>(index_shard_file, N_shard, Layer, SegmentSize, KBuild, G, N_all, ST_all, Ns, Ns_offsets, STs_offsets, index, translation);
 
         printf("loading index shard %d\n", iter);
 
@@ -161,7 +155,75 @@ void testGGNN(){
 }
 
 
-// nvcc searchGGNN.cpp search.cpp ../utils/indexIO.cpp ../utils/datasetIO.cpp ../utils/distance.cpp  -I/home/lanlu/raft/cpp/include/ -I/home/lanlu/miniconda3/envs/rapids_raft/targets/x86_64-linux/include -I/home/lanlu/miniconda3/envs/rapids_raft/include -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids -I/home/lanlu/miniconda3/envs/rapids_raft/include/rapids/libcudacxx -I/home/lanlu/raft/cpp/build/_deps/nlohmann_json-src/include -I/home/lanlu/raft/cpp/build/_deps/benchmark-src/include -lcudart -ldl -lbenchmark -lpthread -lfmt -L/home/lanlu/raft/cpp/build/_deps/benchmark-build/src -Xcompiler -fopenmp -o testGGNN
-int main(){
-    testGGNN<uint8_t>();
+int main(int argc, char **argv){
+    // std::string index_dir = "/home/lanlu/ggnn/build_local/";
+    std::string data_file, query_file, truth_file, index_dir;
+    uint32_t k, L, num_threads;
+    // uint32_t shard_num = 100, uint32_t N_shard = 1000000, uint32_t KBuild = 20;
+    uint32_t shard_num, N_shard, Layer, SegmentSize, KBuild;
+
+    po::options_description desc{
+        program_options_utils::make_program_description("search_ggnn", "Search GGNN index.")};
+    try
+    {
+        desc.add_options()("help,h", "Print information on arguments");
+        po::options_description required_configs("Required");
+        required_configs.add_options()("data_file", po::value<std::string>(&data_file)->required(),
+                                       "Dataset path.");
+        required_configs.add_options()("query_file", po::value<std::string>(&query_file)->required(),
+                                       "Query file path.");
+        required_configs.add_options()("truth_file", po::value<std::string>(&truth_file)->required(),
+                                       "Groundtruth file path.");
+        required_configs.add_options()("index_dir", po::value<std::string>(&index_dir)->required(),
+                                       "Index folder path where shard inices are stored.");
+        required_configs.add_options()("top_k,K", po::value<uint32_t>(&k)->required(),
+                                       "Top-k.");
+        required_configs.add_options()("L", po::value<uint32_t>(&L)->required(),
+                                       "Search candidate list size.");
+        required_configs.add_options()("shard_num,N", po::value<uint32_t>(&shard_num)->required(),
+                                       "Number of shards.");
+        required_configs.add_options()("shard_size,S", po::value<uint32_t>(&N_shard)->required(),
+                                       "Number of points in each shard.");
+        required_configs.add_options()("KBuild,R", po::value<uint32_t>(&KBuild)->required(),
+                                       "Build degree of the graph index.");   
+        
+        po::options_description optional_configs("Optional");
+        optional_configs.add_options()("num_threads,T",
+                                        po::value<uint32_t>(&num_threads)->default_value(omp_get_num_procs()),
+                                        program_options_utils::NUMBER_THREADS_DESCRIPTION);
+        optional_configs.add_options()("Layer", po::value<uint32_t>(&Layer)->default_value(4),
+                                        "Number layers in the index.");
+        optional_configs.add_options()("Segment_size", po::value<uint32_t>(&SegmentSize)->default_value(32),
+                                       "Build segment size.");
+                            
+
+        desc.add(required_configs).add(optional_configs);
+
+        po::variables_map vm;
+        po::store(po::parse_command_line(argc, argv, desc), vm);
+        if (vm.count("help"))
+        {
+            std::cout << desc;
+            return 0;
+        }
+        po::notify(vm);
+    }
+    catch (const std::exception &ex)
+    {
+        std::cerr << ex.what() << '\n';
+        return -1;
+    }
+
+    omp_set_num_threads(num_threads);
+    mkl_set_num_threads(num_threads);
+    printf("Using %d threads\n", num_threads);
+
+    uint32_t suffixType = suffixToType(data_file);
+    if(suffixType == 0){ // float
+        searchGGNN<float>(data_file, query_file, truth_file, index_dir, k, L,
+                    shard_num, N_shard, Layer, SegmentSize, KBuild);
+    } else if (suffixType == 2) { // uint8_t
+        searchGGNN<uint8_t>(data_file, query_file, truth_file, index_dir, k, L,
+                    shard_num, N_shard, Layer, SegmentSize, KBuild);
+    }
 }

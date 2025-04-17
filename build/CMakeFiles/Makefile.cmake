@@ -58,6 +58,8 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/diskannPartition.dir/DependInfo.cmake"
   "CMakeFiles/diskannBuild.dir/DependInfo.cmake"
   "CMakeFiles/diskannMerge.dir/DependInfo.cmake"
+  "CMakeFiles/diskannComputeGT.dir/DependInfo.cmake"
+  "CMakeFiles/diskannMemoryIndex.dir/DependInfo.cmake"
   "CMakeFiles/executeDiskPartition.dir/DependInfo.cmake"
   "CMakeFiles/executeDiskMerge.dir/DependInfo.cmake"
   "CMakeFiles/searchScaleGANN.dir/DependInfo.cmake"
