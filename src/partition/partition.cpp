@@ -20,18 +20,19 @@
 #include "../utils/distance.h"
 #include "AtomicWrapper.hpp"
 
-
 #define SLACK_FACTOR 1.15
 #define MAX_SAMPLE 8388608 // 1 << 23
 #define SAMPLE_RATE 0.05
 
 template <typename T> // T: type of data in each dimension, like uint_8, uint 32, float, ...
-size_t estimate_memory_consumption(size_t npts, uint32_t ndim, uint32_t degree){
+size_t estimate_memory_consumption(size_t npts, uint32_t ndim, 
+    uint32_t degree, uint32_t inter_degree, uint32_t threads){
     size_t memData = npts * ndim * sizeof(T);
-    // KNN graph -> prunded reordering graph; reverse graph; final merged CAGRA graph
+    // 1. KNN graph (Maximum 3 times); 2. prunded reordering graph & reverse graph; 3. final merged CAGRA graph
     size_t memIndex =  3 * npts * degree * sizeof(uint32_t); // GPU can hold npts < uint32_t
+    if (memData > memIndex) memIndex = memData;
     // Lan: Todo: other data like locks
-    size_t memOther = 10 * npts * sizeof(uint32_t); // locks, ptrs, 2-hop count
+    size_t memOther = 10 * npts * sizeof(uint32_t); // ptrs, 2-hop count
     size_t estimatedConsumption = memData + memIndex + memOther;
     printf("Estimated memory consumption: %zu Bytes\n", estimatedConsumption);
     return estimatedConsumption;
@@ -39,14 +40,15 @@ size_t estimate_memory_consumption(size_t npts, uint32_t ndim, uint32_t degree){
 
 
 template <typename T>
-void get_partition_num(uint32_t memGPU, size_t npts, uint32_t ndim, uint32_t degree, uint32_t duplicate_factor,
+void get_partition_num(uint32_t memGPU, size_t npts, uint32_t ndim, uint32_t degree, 
+                    uint32_t inter_degree, uint32_t threads, uint32_t duplicate_factor,
                     uint32_t* partition_num, uint32_t* size_limt){
-    size_t memConsumption = estimate_memory_consumption<T>(npts, ndim, degree);
+    size_t memConsumption = estimate_memory_consumption<T>(npts, ndim, degree, inter_degree, threads);
     if (( (size_t) memGPU * 1024 * 1024 * 1024) > SLACK_FACTOR * memConsumption) {
         *partition_num = 1;
     } else {
         *partition_num = (uint32_t)(((double) SLACK_FACTOR * duplicate_factor * memConsumption - 1) / ( (size_t) memGPU * 1024 * 1024 * 1024)) + 1; 
-        *size_limt = (uint32_t)(npts * ((double) memGPU * 1024 * 1024 * 1024 / ((double) memConsumption * SLACK_FACTOR)));
+        *size_limt = (uint32_t)(npts * ((double) (memGPU) * 1024 * 1024 * 1024 / ((double) memConsumption * SLACK_FACTOR)));
     }
     printf("Partition number has lower bound %d\n", *partition_num);
     printf("Each partition has size limit: %d\n", *size_limt);
@@ -432,14 +434,16 @@ void get_partitions(uint32_t memGPU, size_t npts, uint32_t ndim, uint32_t max_it
 }
 
 template <typename T> std::vector<std::vector<std::vector<T>>> 
-main_partitions(uint32_t memGPU, size_t npts, uint32_t ndim, uint32_t degree, uint32_t max_iters,
+main_partitions(uint32_t memGPU, size_t npts, uint32_t ndim, uint32_t degree, 
+                    uint32_t inter_degree, uint32_t threads,
+                    uint32_t max_iters,
                     uint32_t duplicate_factor, uint32_t partition_num, 
                     const std::vector<std::vector<T>>& data, 
                     std::vector<std::vector<uint32_t>>& idx_map){
     
     uint32_t partition_lower_bound = 0;
     uint32_t size_limit = 0;
-    get_partition_num<T>(memGPU, npts, ndim, degree, duplicate_factor, &partition_lower_bound, &size_limit);
+    get_partition_num<T>(memGPU, npts, ndim, degree, inter_degree, threads, duplicate_factor, &partition_lower_bound, &size_limit);
     if (partition_lower_bound > partition_num) {
         printf("Needing %d partitions at least, change given partition number %d to %d\n", partition_lower_bound, partition_num, partition_lower_bound);
         partition_num = partition_lower_bound;
@@ -474,9 +478,9 @@ main_partitions(uint32_t memGPU, size_t npts, uint32_t ndim, uint32_t degree, ui
 
 
 
-template void get_partition_num<float>(uint32_t memGPU, size_t npts, uint32_t ndim, uint32_t degree, uint32_t dumplicate_factor, uint32_t* partition_num, uint32_t* size_limt);
-template void get_partition_num<uint32_t>(uint32_t memGPU, size_t npts, uint32_t ndim, uint32_t degree, uint32_t dumplicate_factor, uint32_t* partition_num, uint32_t* size_limt);
-template void get_partition_num<uint8_t>(uint32_t memGPU, size_t npts, uint32_t ndim, uint32_t degree, uint32_t dumplicate_factor, uint32_t* partition_num, uint32_t* size_limt);
+template void get_partition_num<float>(uint32_t memGPU, size_t npts, uint32_t ndim, uint32_t degree, uint32_t inter_degree, uint32_t threads, uint32_t dumplicate_factor, uint32_t* partition_num, uint32_t* size_limt);
+template void get_partition_num<uint32_t>(uint32_t memGPU, size_t npts, uint32_t ndim, uint32_t degree, uint32_t inter_degree, uint32_t threads, uint32_t dumplicate_factor, uint32_t* partition_num, uint32_t* size_limt);
+template void get_partition_num<uint8_t>(uint32_t memGPU, size_t npts, uint32_t ndim, uint32_t degree, uint32_t inter_degree, uint32_t threads, uint32_t dumplicate_factor, uint32_t* partition_num, uint32_t* size_limt);
 
 
 
@@ -498,14 +502,17 @@ template void get_partitions<uint8_t>(uint32_t memGPU, size_t npts, uint32_t ndi
 
 
 template std::vector<std::vector<std::vector<float>>> main_partitions<float>(uint32_t memGPU, 
-            size_t npts, uint32_t ndim, uint32_t degree, uint32_t max_iters, uint32_t duplicate_factor, uint32_t partition_num,
+            size_t npts, uint32_t ndim, uint32_t degree, uint32_t inter_degree, uint32_t threads,
+            uint32_t max_iters, uint32_t duplicate_factor, uint32_t partition_num,
             const std::vector<std::vector<float>>& data,
             std::vector<std::vector<uint32_t>>& idx_map);
 template std::vector<std::vector<std::vector<uint32_t>>> main_partitions<uint32_t>(uint32_t memGPU, 
-            size_t npts, uint32_t ndim, uint32_t degree, uint32_t max_iters, uint32_t duplicate_factor, uint32_t partition_num,
+            size_t npts, uint32_t ndim, uint32_t degree, uint32_t inter_degree, uint32_t threads,
+            uint32_t max_iters, uint32_t duplicate_factor, uint32_t partition_num,
             const std::vector<std::vector<uint32_t>>& data,
             std::vector<std::vector<uint32_t>>& idx_map);
 template std::vector<std::vector<std::vector<uint8_t>>> main_partitions<uint8_t>(uint32_t memGPU, 
-            size_t npts, uint32_t ndim, uint32_t degree, uint32_t max_iters, uint32_t duplicate_factor, uint32_t partition_num,
+            size_t npts, uint32_t ndim, uint32_t degree, uint32_t inter_degree, uint32_t threads,
+            uint32_t max_iters, uint32_t duplicate_factor, uint32_t partition_num,
             const std::vector<std::vector<uint8_t>>& data,
             std::vector<std::vector<uint32_t>>& idx_map);

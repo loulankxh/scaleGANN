@@ -27,7 +27,7 @@ void mergeDisk(std::string base_folder, const std::string merge_index_path,
 }
 
 // There can be multiple index of different construction parameters in a folder
-void mergeDisk_allIndexInFolder(const std::string baseFolder, const std::string mergeIndexPath,
+void mergeDisk_allIndexInFolder(const std::string baseFolder, const std::string mergeIndexPath, std::string index_name,
                             uint32_t merge_deg, uint32_t build_deg){
     
     auto startTime = std::chrono::high_resolution_clock::now();
@@ -59,13 +59,12 @@ void mergeDisk_allIndexInFolder(const std::string baseFolder, const std::string 
     uint32_t iter_count = 0;
     for (const auto& file : std::filesystem::directory_iterator(firstIndexFolder)) {
 
-        if (file.is_regular_file()) {
+        if (file.is_regular_file() && file.path().filename().string() == index_name) {
 
             std::string indexPath = file.path().string();
-            std::string indexName = file.path().filename().string();
             
             std::vector<std::vector<uint32_t>> mergedIndex;
-            mergeDisk(baseFolder, mergeIndexPath, shardNum, merge_deg, build_deg, indexName);
+            mergeDisk(baseFolder, mergeIndexPath, shardNum, merge_deg, build_deg, index_name);
 
             auto indexMergeTime = std::chrono::high_resolution_clock::now();
             auto indexMergeDuration = std::chrono::duration_cast<std::chrono::milliseconds>(indexMergeTime - lastIndexMerge);
@@ -85,7 +84,7 @@ void mergeDisk_allIndexInFolder(const std::string baseFolder, const std::string 
 }
 
 int main(int argc, char **argv) {
-    std::string base_folder, merge_folder;
+    std::string base_folder, merge_folder, index_name;
     uint32_t merge_deg, build_deg, num_threads;
 
     po::options_description desc{
@@ -94,13 +93,13 @@ int main(int argc, char **argv) {
     {
         desc.add_options()("help,h", "Print information on arguments");
         po::options_description required_configs("Required");
-        required_configs.add_options()("merge_folder", po::value<std::string>(&merge_folder)->required(),
-                                       "Folder path where merged index is stored.");
         required_configs.add_options()("base_folder", po::value<std::string>(&base_folder)->required(),
                                        "Folder path where all the partioned data shards are stored.");
+        required_configs.add_options()("index_name", po::value<std::string>(&index_name)->required(),
+                                       "Name of specific index.");
         required_configs.add_options()("merge_degree,R", po::value<uint32_t>(&merge_deg)->required(),
                                        "Expected degree of the merged index.");
-        required_configs.add_options()("build_degree,BR", po::value<uint32_t>(&build_deg)->required(),
+        required_configs.add_options()("build_degree,B", po::value<uint32_t>(&build_deg)->required(),
                                        "Build degree of the each shard index.");
 
 
@@ -133,7 +132,10 @@ int main(int argc, char **argv) {
     printf("Merge degree is %d\n", merge_deg);
     printf("Build degree is %d\n", build_deg);
 
-    mergeDisk_allIndexInFolder(base_folder, merge_folder, merge_deg, build_deg);
+    merge_folder = base_folder + "/mergedIndex";
+    printf("Merge folder is %s\n",merge_folder.c_str());
+
+    mergeDisk_allIndexInFolder(base_folder, merge_folder, index_name, merge_deg, build_deg);
     return 0;
 }
 

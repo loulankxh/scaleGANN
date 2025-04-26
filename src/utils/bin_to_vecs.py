@@ -80,8 +80,8 @@ def fbin_to_fvecs_10GB_chunked(input_file, output_file, chunk_bytes=10 * 1024 * 
     print("✅ Conversion completed.")
 
 if __name__ == "__main__":
-    input_base = "/home/lanlu/scaleGANN/dataset/laion100M/base.100M.fbin"
-    output_base = "/home/lanlu/ggnn/data/laion100M/base.fvecs"
+    input_base = "/home/lanlu/scaleGANN/dataset/laion100M/query.fbin"
+    output_base = "/home/lanlu/scaleGANN/dataset/laion100M/query.fvecs"
     fbin_to_fvecs_10GB_chunked(input_base, output_base)
 
     # input_query = "/home/lanlu/scaleGANN/dataset/simSearchNet1M/FB_ssnpp_public_queries.u8bin"

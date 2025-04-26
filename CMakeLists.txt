@@ -68,6 +68,9 @@ list(TRANSFORM DISK_PARTITION_SOURCES  PREPEND ${SCALEGANN_SRC_PATH}/)
 set(DISK_PARTITION_APP
     executeDiskPartition.cpp)
 list(TRANSFORM DISK_PARTITION_APP  PREPEND ${SCALEGANN_APP_PATH}/)
+set(DISK_DIRECT_PARTITION_APP
+    executeDiskDirectPartition.cpp)
+list(TRANSFORM DISK_DIRECT_PARTITION_APP  PREPEND ${SCALEGANN_APP_PATH}/)
 
 set(DISK_MERGE_SOURCES 
     merge/disk_merge.cpp
@@ -85,7 +88,7 @@ list(TRANSFORM DISK_MERGE_APP  PREPEND ${SCALEGANN_APP_PATH}/)
 
 
 set(SEARCH_SOURCES 
-    search/search.cpp 
+    search/search.cpp search/disk_search.cpp
     utils/indexIO.cpp utils/datasetIO.cpp utils/distance.cpp)
 list(TRANSFORM SEARCH_SOURCES  PREPEND ${SCALEGANN_SRC_PATH}/)
 set(SEARCH_SCALEGANN_APP
@@ -111,8 +114,9 @@ add_executable(diskannComputeGT ${DISKANN_COMPUTE_GT} ${DISKANN_SOURCES})
 add_executable(diskannMemoryIndex ${DISKANN_MEMORY_INDEX} ${DISKANN_SOURCES})
 
 add_executable(executeDiskPartition ${DISK_PARTITION_APP} ${DISK_PARTITION_SOURCES} ${DISKANN_SOURCES})
+add_executable(executeDiskDirectPartition ${DISK_DIRECT_PARTITION_APP} ${DISK_PARTITION_SOURCES} ${DISKANN_SOURCES})
 add_executable(executeDiskMerge ${DISK_MERGE_APP} ${DISK_MERGE_SOURCES} ${DISKANN_SOURCES})
-# add_executable(executeMerge ${MERGE_SOURCES} ${DISKANN_SOURCES})
+add_executable(executeMerge ${MERGE_SOURCES} ${DISKANN_SOURCES})
 add_executable(searchScaleGANN ${SEARCH_SCALEGANN_APP} ${SEARCH_SOURCES})
 add_executable(searchCAGRA ${SEARCH_CAGRA_APP} ${SEARCH_SOURCES})
 add_executable(searchGGNN ${SEARCH_GGNN_APP} ${SEARCH_SOURCES})
@@ -181,6 +185,17 @@ target_link_libraries(diskannMemoryIndex
 
 
 target_link_libraries(executeDiskPartition
+    PRIVATE
+    cudart
+    dl
+    benchmark
+    pthread
+    fmt
+    mkl_rt
+    m
+    Boost::program_options
+)
+target_link_libraries(executeDiskDirectPartition
     PRIVATE
     cudart
     dl

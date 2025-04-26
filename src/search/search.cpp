@@ -18,31 +18,6 @@
 #include "../utils/distance.h"
 #include "../../DiskANN/include/neighbor.h"
 
-template <typename T>
-void read(
-        const std::string data_file, std::vector<std::vector<T>>& data,
-        const std::string index_file, std::vector<std::vector<uint32_t>>& index,
-        const std::string query_file, std::vector<std::vector<T>>& query,
-        const std::string truth_file, std::vector<std::vector<uint32_t>>& groundTruth){
-    
-    readFile<T>(data_file, data);
-    readIndex(index_file, index);
-    read_query<T>(query_file, query);
-    read_groundTruth(truth_file, groundTruth);
-}
-
-template <typename T>
-void readExceptIndex(
-        const std::string data_file, std::vector<std::vector<T>>& data,
-        const std::string query_file, std::vector<std::vector<T>>& query,
-        const std::string truth_file, std::vector<std::vector<uint32_t>>& groundTruth){
-
-    readFile<T>(data_file, data);
-    read_query<T>(query_file, query);
-    read_groundTruth(truth_file, groundTruth);
-}
-
-
 void random_start_points(uint32_t s, uint32_t s_id, uint32_t e_id,
     std::vector<uint32_t>& start){
     
@@ -748,40 +723,6 @@ double get_recall(uint32_t num_queries, uint32_t k,
 
 }
 
-
-
-
-
-
-
-template void read<float>(
-        const std::string data_file, std::vector<std::vector<float>>& data,
-        const std::string index_file, std::vector<std::vector<uint32_t>>& index,
-        const std::string query_file, std::vector<std::vector<float>>& query,
-        const std::string truth_file, std::vector<std::vector<uint32_t>>& groundTruth);
-template void read<uint32_t>(
-        const std::string data_file, std::vector<std::vector<uint32_t>>& data,
-        const std::string index_file, std::vector<std::vector<uint32_t>>& index,
-        const std::string query_file, std::vector<std::vector<uint32_t>>& query,
-        const std::string truth_file, std::vector<std::vector<uint32_t>>& groundTruth);
-template void read<uint8_t>(
-        const std::string data_file, std::vector<std::vector<uint8_t>>& data,
-        const std::string index_file, std::vector<std::vector<uint32_t>>& index,
-        const std::string query_file, std::vector<std::vector<uint8_t>>& query,
-        const std::string truth_file, std::vector<std::vector<uint32_t>>& groundTruth);
-
-template void readExceptIndex<float>(
-        const std::string data_file, std::vector<std::vector<float>>& data,
-        const std::string query_file, std::vector<std::vector<float>>& query,
-        const std::string truth_file, std::vector<std::vector<uint32_t>>& groundTruth);
-template void readExceptIndex<uint32_t>(
-        const std::string data_file, std::vector<std::vector<uint32_t>>& data,
-        const std::string query_file, std::vector<std::vector<uint32_t>>& query,
-        const std::string truth_file, std::vector<std::vector<uint32_t>>& groundTruth);
-template void readExceptIndex<uint8_t>(
-        const std::string data_file, std::vector<std::vector<uint8_t>>& data,
-        const std::string query_file, std::vector<std::vector<uint8_t>>& query,
-        const std::string truth_file, std::vector<std::vector<uint32_t>>& groundTruth);
 
 
 template void search<float>(const uint32_t k, const uint32_t L,

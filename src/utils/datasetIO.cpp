@@ -19,11 +19,11 @@ uint32_t suffixToType(std::string file){
 
     std::string suffix = file.substr(dotPos + 1);
 
-    if (suffix == "fbin") {
+    if (suffix == "fbin" || suffix=="fvecs") {
         return 0;
-    } else if (suffix == "ibin") {
+    } else if (suffix == "ibin" || suffix=="ivecs") {
         return 1;
-    } else if (suffix == "u8bin") {
+    } else if (suffix == "u8bin" || suffix=="bvecs") {
         return 2;
     // } else if (suffix == "i8bin") {
     //     return 3;

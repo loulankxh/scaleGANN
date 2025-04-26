@@ -16,11 +16,9 @@
 #include "partition.h"
 #include "AtomicWrapper.hpp"
 
-#define SLACK_FACTOR 1.1
+// Lan: todo: add a sample maximum upper bound
 // #define MAX_SAMPLE 8388608 // 1 << 23
 #define MAX_SAMPLE_FOR_KMEANS_TRAINING 256000 // 1 << 23
-// Lan: todo: add a sample maximum upper bound
-#define SAMPLE_RATE 0.005
 #define BLOCK_SIZE 5000000
 
 
@@ -38,6 +36,65 @@ bool ensure_directory_exists(const std::string &path) {
     return true;
 }
 
+template <typename T>
+void direct_partitions(const std::string data_file, std::string prefix_path, uint32_t shard_size, uint32_t dataset_size){
+    std::string file_type = "";
+    uint32_t dotPos = data_file.find_last_of('.');
+    if (dotPos == std::string::npos) {
+        throw std::invalid_argument("File does not have a valid suffix.");
+    }
+    std::string suffix = data_file.substr(dotPos + 1);
+    if(suffix.size() >= 4 && suffix.substr(suffix.size() - 4) == "vecs") file_type = "vecs";
+    else if(suffix.size() >= 3 && suffix.substr(suffix.size() - 3) == "bin") file_type = "bin";
+    else throw std::invalid_argument("File does not have a valid suffix.");
+
+
+    cached_ifstream base_reader(data_file, BUFFER_SIZE_FOR_CACHED_IO);
+    uint32_t npts = dataset_size;
+    uint32_t dim;
+    if(file_type == "bin") base_reader.read((char *)&npts, sizeof(uint32_t));
+    base_reader.read((char *)&dim, sizeof(uint32_t));
+    if(file_type == "vecs") base_reader.seekg(0);
+
+    uint32_t shard_num = (uint32_t)((npts - 1) / shard_size) + 1;
+    printf("Directly partition dataset with %d points into %d shards, each with %d points at most\n", npts, shard_num, shard_size);
+
+    std::vector<std::ofstream> shard_data_writer(shard_num);
+    uint32_t actual_shard_size = shard_size;
+    for(uint32_t i = 0; i < shard_num; i++){
+        std::string partition_dir = prefix_path + "/partition" + std::to_string(i);
+        ensure_directory_exists(partition_dir);
+        
+        std::string data_filename = partition_dir + "/data." + suffix;
+        shard_data_writer[i] = std::ofstream(data_filename.c_str(), std::ios::binary);
+        if(file_type == "bin"){
+            if (i == shard_num - 1) actual_shard_size = npts - i * shard_size;
+            shard_data_writer[i].write((char *)&actual_shard_size, sizeof(uint32_t));
+            shard_data_writer[i].write((char *)&dim, sizeof(uint32_t));
+        }
+    }
+
+    std::unique_ptr<T[]> data_T = std::make_unique<T[]>(dim);
+    for(uint32_t i = 0; i < shard_num; i++){
+        uint32_t start_id = i * shard_size;
+        uint32_t end_id= start_id + shard_size;
+        if ( end_id > npts) end_id = npts;
+        
+        for(uint32_t p = start_id; p < end_id; p++){
+            if(file_type == "vecs") {
+                base_reader.read((char *)&dim, sizeof(uint32_t));
+                shard_data_writer[i].write((char *)&dim, sizeof(uint32_t));
+            }
+            base_reader.read((char *)data_T.get(), sizeof(T) * dim);
+            shard_data_writer[i].write((char *)data_T.get(), sizeof(T) * dim);
+        }
+    }
+
+    for(uint32_t i = 0; i < shard_num; i++){
+        shard_data_writer[i].close();
+    }
+
+}
 
 template <typename T>
 void diskANN_shard_data_into_clusters_with_ram_budget(const std::string data_file, float *pivots, const size_t num_centers,
@@ -589,26 +646,26 @@ void diskANN_partitions_with_ram_budget(const std::string data_file, double samp
 
 template <typename T>
 void scaleGANN_partitions_with_ram_budget(const std::string data_file, const double sampling_rate, double ram_budget,
-    size_t graph_degree, const std::string prefix_path, size_t k_base, uint32_t num_parts = 0, float epsilon=2, size_t max_k_means_reps = 15){
-    size_t train_dim;
-    size_t num_train;
-    float *train_data_float;
-
-    gen_random_slice<T>(data_file, sampling_rate, train_data_float, num_train, train_dim);
-    
+        size_t graph_degree, uint32_t inter_degree, uint32_t threads,
+        const std::string prefix_path, size_t k_base, uint32_t num_parts = 0, float epsilon=2, size_t max_k_means_reps = 15){
     size_t read_blk_size = 64 * 1024 * 1024;
     cached_ifstream base_reader(data_file, read_blk_size);
     uint32_t npts32;
     uint32_t basedim32;
     base_reader.read((char *)&npts32, sizeof(uint32_t));
     base_reader.read((char *)&basedim32, sizeof(uint32_t));
-
+    
     // Lan: todo: if partition-num == 1
     uint32_t partition_lower_bound = 0;
     uint32_t size_limit = 0;
-    get_partition_num<T>(ram_budget, npts32, basedim32, graph_degree, k_base, &partition_lower_bound, &size_limit);
+    get_partition_num<T>(ram_budget, npts32, basedim32, graph_degree, inter_degree, threads, k_base, &partition_lower_bound, &size_limit);
     // uint32_t size_limit = (uint32_t) (1 + k_base * npts32 / partition_lower_bound);
     num_parts = partition_lower_bound > num_parts ? partition_lower_bound : num_parts;
+
+    size_t train_dim;
+    size_t num_train;
+    float *train_data_float;
+    gen_random_slice<T>(data_file, sampling_rate, train_data_float, num_train, train_dim);
 
     float *pivot_data = nullptr;
     pivot_data = new float[num_parts * train_dim];
@@ -618,16 +675,9 @@ void scaleGANN_partitions_with_ram_budget(const std::string data_file, const dou
     kmeans::kmeanspp_selecting_pivots(train_data_float, num_train, train_dim, pivot_data, num_parts);
     kmeans::run_lloyds(train_data_float, num_train, train_dim, pivot_data, num_parts, max_k_means_reps, NULL, NULL);
 
-
-
     std::string cur_file = std::string(prefix_path);
     ensure_directory_exists(prefix_path);
     std::string output_file;
-
-    // kmeans_partitioning on training data
-
-    //  cur_file = cur_file + "_kmeans_partitioning-" +
-    //  std::to_string(num_parts);
     output_file = cur_file + "/centroids.bin";
 
     diskann::cout << "Saving global k-center pivots" << std::endl;
@@ -638,6 +688,11 @@ void scaleGANN_partitions_with_ram_budget(const std::string data_file, const dou
     delete[] pivot_data;
     delete[] train_data_float;
 }
+
+
+
+template void direct_partitions<float>(const std::string data_file, std::string prefix_path, uint32_t shard_size, uint32_t dataset_size);
+template void direct_partitions<uint8_t>(const std::string data_file, std::string prefix_path, uint32_t shard_size, uint32_t dataset_size);
 
 
 template void diskANN_shard_data_into_clusters_with_ram_budget<float>(const std::string data_file, float *pivots, const size_t num_centers,
@@ -656,6 +711,8 @@ template void diskANN_partitions_with_ram_budget<uint8_t>(const std::string data
 
 
 template void scaleGANN_partitions_with_ram_budget<float>(const std::string data_file, const double sampling_rate, double ram_budget,
-    size_t graph_degree, const std::string prefix_path, size_t k_base, uint32_t num_parts = 0, float epsilon = 2, size_t max_k_means_reps = 15);
+    size_t graph_degree, uint32_t inter_degree, uint32_t threads,
+    const std::string prefix_path, size_t k_base, uint32_t num_parts = 0, float epsilon = 2, size_t max_k_means_reps = 15);
 template void scaleGANN_partitions_with_ram_budget<uint8_t>(const std::string data_file, const double sampling_rate, double ram_budget,
-    size_t graph_degree, const std::string prefix_path, size_t k_base, uint32_t num_parts = 0, float epsilon = 2, size_t max_k_means_reps = 15);
+    size_t graph_degree, uint32_t inter_degree, uint32_t threads,
+    const std::string prefix_path, size_t k_base, uint32_t num_parts = 0, float epsilon = 2, size_t max_k_means_reps = 15);

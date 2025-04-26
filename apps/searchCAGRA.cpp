@@ -19,6 +19,7 @@
 
 #include "../src/utils/fileUtils.h"
 #include "../src/search/search.hpp"
+#include "../src/search/disk_search.h"
 #include "../DiskANN/include/neighbor.h"
 #include "../../DiskANN/include/program_options_utils.hpp"
 
@@ -64,13 +65,13 @@ void getResultId(std::vector<diskann::NeighborPriorityQueue>& mergedResult,
 
 template <typename T>
 void searchNaiveCAGRA(std::string data_file, std::string query_file, std::string truth_file, std::string index_dir, std::string index_name,
-                    uint32_t k, uint32_t L, uint32_t shard_num){
+                    uint32_t k, uint32_t L, uint32_t shard_num, bool use_disk){
     std::vector<std::vector<T>> data;
     std::vector<std::vector<T>> query;
     std::vector<std::vector<uint32_t>> groundTruth;
-
-    readExceptIndex<T>(data_file, data, query_file, query, truth_file, groundTruth);
-
+    if(!use_disk) readFile<T>(data_file, data);
+    read_query<T>(query_file, query);
+    read_groundTruth(truth_file, groundTruth);
     printf("finishing loading except index\n");
 
 
@@ -96,7 +97,10 @@ void searchNaiveCAGRA(std::string data_file, std::string query_file, std::string
         std::vector<std::vector<float>> distances;
         printf("Starting search\n");
 
-        searchNaiveCAGRA<T>(k, L, offset, data, index, query, result, distances, &total_visited, &total_distance_cmp, &totalLatency);
+        if(use_disk)
+            searchNaiveCAGRA_disk<T>(k, L, offset, data_file, index, query, result, distances, &total_visited, &total_distance_cmp, &totalLatency);
+        else
+            searchNaiveCAGRA<T>(k, L, offset, data, index, query, result, distances, &total_visited, &total_distance_cmp, &totalLatency);
         offset += index.size();
 
         auto e_time = std::chrono::high_resolution_clock::now();
@@ -134,13 +138,13 @@ void searchNaiveCAGRA(std::string data_file, std::string query_file, std::string
 
 template <typename T>
 void searchCAGRA(std::string data_file, std::string query_file, std::string truth_file, std::string index_dir, std::string index_name,
-                uint32_t k, uint32_t L, uint32_t shard_num){
+                uint32_t k, uint32_t L, uint32_t shard_num, bool use_disk){
     std::vector<std::vector<T>> data;
     std::vector<std::vector<T>> query;
     std::vector<std::vector<uint32_t>> groundTruth;
-
-    readExceptIndex(data_file, data, query_file, query, truth_file, groundTruth);
-
+    if(!use_disk) readFile<T>(data_file, data);
+    read_query<T>(query_file, query);
+    read_groundTruth(truth_file, groundTruth);
     printf("finishing loading except index\n");
 
     
@@ -172,8 +176,10 @@ void searchCAGRA(std::string data_file, std::string query_file, std::string trut
         std::vector<std::vector<uint32_t>> result;
         std::vector<std::vector<float>> distances;
         printf("Starting search\n");
-
-        searchTranslatedCAGRA<uint8_t>(k, L, data, index, idx_vec, query, result, distances, &total_visited, &total_distance_cmp, &totalLatency);
+        if(use_disk)
+            searchTranslatedCAGRA_disk<uint8_t>(k, L, data_file, index, idx_vec, query, result, distances, &total_visited, &total_distance_cmp, &totalLatency);
+        else 
+            searchTranslatedCAGRA<uint8_t>(k, L, data, index, idx_vec, query, result, distances, &total_visited, &total_distance_cmp, &totalLatency);
 
         auto e_time = std::chrono::high_resolution_clock::now();
         auto searchDuration = (std::chrono::duration_cast<std::chrono::milliseconds>(e_time - s_time)).count();
@@ -214,6 +220,7 @@ int main(int argc, char **argv){
     std::string data_file, query_file, truth_file, index_dir, index_name;
     uint32_t k, L, num_threads;
     uint32_t shard_num;
+    bool use_disk=false;
 
     po::options_description desc{
         program_options_utils::make_program_description("search_cagra", "Search CAGRA index.")};
@@ -233,7 +240,7 @@ int main(int argc, char **argv){
                                        "File name of each shard index.");
         required_configs.add_options()("top_k,K", po::value<uint32_t>(&k)->required(),
                                        "Top-k.");
-        required_configs.add_options()("L", po::value<uint32_t>(&L)->required(),
+        required_configs.add_options()("itop_k,L", po::value<uint32_t>(&L)->required(),
                                        "Search candidate list size");
         required_configs.add_options()("shard_num,N", po::value<uint32_t>(&shard_num)->required(),
                                        "Number of shards.");
@@ -241,7 +248,9 @@ int main(int argc, char **argv){
         po::options_description optional_configs("Optional");
         optional_configs.add_options()("num_threads,T",
                                         po::value<uint32_t>(&num_threads)->default_value(omp_get_num_procs()),
-                                        program_options_utils::NUMBER_THREADS_DESCRIPTION);                               
+                                        program_options_utils::NUMBER_THREADS_DESCRIPTION); 
+        optional_configs.add_options()("use_disk", po::bool_switch()->default_value(false),
+                                       "Load vector data from disk when needed when memory is not enough.");                              
 
         desc.add(required_configs).add(optional_configs);
 
@@ -253,6 +262,8 @@ int main(int argc, char **argv){
             return 0;
         }
         po::notify(vm);
+        if (vm["use_disk"].as<bool>())
+            use_disk = true;
     }
     catch (const std::exception &ex)
     {
@@ -266,8 +277,8 @@ int main(int argc, char **argv){
 
     uint32_t suffixType = suffixToType(data_file);
     if(suffixType == 0){ // float
-        searchNaiveCAGRA<float>(data_file, query_file, truth_file, index_dir, index_name, k, L, shard_num);
+        searchNaiveCAGRA<float>(data_file, query_file, truth_file, index_dir, index_name, k, L, shard_num, use_disk);
     } else if (suffixType == 2) { // uint8_t
-        searchNaiveCAGRA<uint8_t>(data_file, query_file, truth_file, index_dir, index_name, k, L, shard_num);
+        searchNaiveCAGRA<uint8_t>(data_file, query_file, truth_file, index_dir, index_name, k, L, shard_num, use_disk);
     }
 }

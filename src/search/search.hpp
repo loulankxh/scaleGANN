@@ -1,19 +1,8 @@
 #include <string>
 #include <vector>
 
-template <typename T>
-void read(
-        const std::string data_file, std::vector<std::vector<T>>& data,
-        const std::string index_file, std::vector<std::vector<uint32_t>>& index,
-        const std::string query_file, std::vector<std::vector<T>>& query,
-        const std::string truth_file, std::vector<std::vector<uint32_t>>& groundTruth);
-
-template <typename T>
-void readExceptIndex(
-        const std::string data_file, std::vector<std::vector<T>>& data,
-        const std::string query_file, std::vector<std::vector<T>>& query,
-        const std::string truth_file, std::vector<std::vector<uint32_t>>& groundTruth);
-
+void random_start_points(uint32_t s, uint32_t s_id, uint32_t e_id,
+    std::vector<uint32_t>& start);
 
 template <typename T>
 void search(const uint32_t k, const uint32_t L,

@@ -9,6 +9,7 @@
 
 #include "../src/utils/fileUtils.h"
 #include "../src/search/search.hpp"
+#include "../src/search/disk_search.h"
 #include "../DiskANN/include/neighbor.h"
 #include "../../DiskANN/include/program_options_utils.hpp"
 
@@ -17,15 +18,17 @@ namespace po = boost::program_options;
 
 template <typename T>
 void search(std::string data_file, std::string index_file, std::string query_file, std::string truth_file,
-            uint32_t k, uint32_t L){
+            uint32_t k, uint32_t L, bool use_disk){
     std::vector<std::vector<T>> data;
     std::vector<std::vector<uint32_t>> index;
     std::vector<std::vector<T>> query;
     std::vector<std::vector<uint32_t>> groundTruth;
-    read<T>(data_file, data, index_file, index, query_file, query, truth_file, groundTruth);
+    if(!use_disk) readFile<T>(data_file, data);
+    readIndex(index_file, index);
+    read_query<T>(query_file, query);
+    read_groundTruth(truth_file, groundTruth);
 
     printf("rows: %d, Deg: %d\n", index.size(), index[0].size());
-    printf("testing data: %d\n", index[84967358][0]);
 
     auto s_time = std::chrono::high_resolution_clock::now();
     uint32_t total_visited = 0;
@@ -33,7 +36,10 @@ void search(std::string data_file, std::string index_file, std::string query_fil
     long long totalLatency = 0;
     std::vector<std::vector<uint32_t>> result;
     std::vector<std::vector<float>> distances;
-    search<T>(k, L, data, index, query, result, distances, &total_visited, &total_distance_cmp, &totalLatency);
+    if(use_disk)
+        search_disk<T>(k, L, data_file, index, query, result, distances, &total_visited, &total_distance_cmp, &totalLatency);
+    else
+        search<T>(k, L, data, index, query, result, distances, &total_visited, &total_distance_cmp, &totalLatency);
 
     auto e_time = std::chrono::high_resolution_clock::now();
     auto searchDuration = std::chrono::duration_cast<std::chrono::milliseconds>(e_time - s_time);
@@ -54,6 +60,7 @@ void search(std::string data_file, std::string index_file, std::string query_fil
 int main(int argc, char **argv){
     std::string data_file, index_file, query_file, truth_file;
     uint32_t k, L, num_threads;
+    bool use_disk=false;
 
     po::options_description desc{
         program_options_utils::make_program_description("search_scaleGANN", "Search ScaleGANN index.")};
@@ -71,13 +78,15 @@ int main(int argc, char **argv){
                                        "Groundtruth file path.");
         required_configs.add_options()("top_k,K", po::value<uint32_t>(&k)->required(),
                                        "Top-k.");
-        required_configs.add_options()("L", po::value<uint32_t>(&L)->required(),
+        required_configs.add_options()("itop_k,L", po::value<uint32_t>(&L)->required(),
                                        "Search candidate list size.");
         
         po::options_description optional_configs("Optional");
         optional_configs.add_options()("num_threads,T",
                                         po::value<uint32_t>(&num_threads)->default_value(omp_get_num_procs()),
-                                        program_options_utils::NUMBER_THREADS_DESCRIPTION);                               
+                                        program_options_utils::NUMBER_THREADS_DESCRIPTION);
+        optional_configs.add_options()("use_disk", po::bool_switch()->default_value(false),
+                                       "Load vector data from disk when needed when memory is not enough.");                                 
 
         desc.add(required_configs).add(optional_configs);
 
@@ -89,6 +98,8 @@ int main(int argc, char **argv){
             return 0;
         }
         po::notify(vm);
+        if (vm["use_disk"].as<bool>())
+            use_disk = true;
     }
     catch (const std::exception &ex)
     {
@@ -102,8 +113,8 @@ int main(int argc, char **argv){
 
     uint32_t suffixType = suffixToType(data_file);
     if(suffixType == 0){ // float
-        search<float>(data_file, index_file, query_file, truth_file, k, L);
+        search<float>(data_file, index_file, query_file, truth_file, k, L, use_disk);
     } else if (suffixType == 2) { // uint8_t
-        search<uint8_t>(data_file, index_file, query_file, truth_file, k, L);
+        search<uint8_t>(data_file, index_file, query_file, truth_file, k, L, use_disk);
     }
 }
