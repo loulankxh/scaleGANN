@@ -108,10 +108,10 @@ def shuffle_bvecs(input_file, output_file, num_rows, dim):
 
 
 if __name__ == "__main__":
-    input_file = "/home/lanlu/scaleGANN/dataset/sift100M/base.100M.u8bin"
-    output_file = "/home/lanlu/scaleGANN/dataset/sift1M/base.1M.u8bin"
+    input_file = "/home/lanlu/scaleGANN/dataset/simSearchNet100M/FB_ssnpp_database.u8bin"
+    output_file = "/home/lanlu/scaleGANN/dataset/simSearchNet100M/simSearchNet.100M.u8bin"
     million = 1000000
-    num_rows_to_extract = 1 * million
+    num_rows_to_extract = 100 * million
     
     get_subset_u8bin(input_file, output_file, num_rows_to_extract)
 
