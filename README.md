@@ -1,14 +1,13 @@
 # ScaleGANN
 ScaleGANN is a highly efficient, scalable, and cost-effective system for ANNS indexing and querying. It is extendable to cloud-native resources or serverless usages. This Readme file gives instruction on how to build and test ScaleGANN.
 
-# Requirement
-
 # Build
 ## Build Benchmarks
-1. Build CAGRA
-2. Build DiskANN
-3. Build GGNN
+1. Build [CAGRA](https://github.com/rapidsai/raft/blob/branch-24.10/docs/source/build.md)
+2. Build [DiskANN](https://github.com/microsoft/DiskANN/blob/main/README.md)
+3. Build [GGNN](https://github.com/cgtuebingen/ggnn/tree/release_0.5)
 ## Build ScaleGANN
+With all packages required for CAGRA and DiskANN, ScaleGANN is able to be built succesfully.
 ```
 git clone --recurse-submodules https://github.com/loulankxh/scaleGANN.git
 mkdir -p build && cd build
