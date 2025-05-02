@@ -84,13 +84,13 @@ if __name__ == "__main__":
     # output_base = "/home/lanlu/scaleGANN/dataset/laion100M/query.fvecs"
     # fbin_to_fvecs_10GB_chunked(input_base, output_base)
 
-    input_base ="/home/lanlu/scaleGANN/dataset/sift100M/base.100M.u8bin"
-    output_base ="/home/lanlu/scaleGANN/dataset/sift100M/base.100M.bvecs"
-    u8bin_to_bvecs(input_base, output_base)
+    input_base ="/home/lanlu/scaleGANN/dataset/msTuring100M/base.100M.fbin"
+    output_base ="/home/lanlu/scaleGANN/dataset/msTuring100M/base.100M.fvecs"
+    fbin_to_fvecs(input_base, output_base)
 
-    input_query = "/home/lanlu/scaleGANN/dataset/sift100M/query.public.10K.u8bin"
-    output_query = "/home/lanlu/scaleGANN/dataset/sift100M/query.bvecs"
-    u8bin_to_bvecs(input_query, output_query)
+    input_query = "/home/lanlu/scaleGANN/dataset/msTuring100M/query.fbin"
+    output_query = "/home/lanlu/scaleGANN/dataset/msTuring100M/query.fvecs"
+    fbin_to_fvecs(input_query, output_query)
 
     # input_groundtruth = "/home/lanlu/scaleGANN/dataset/simSearchNet1M/groundtruth.neighbors.ibin"
     # output_groundtruth = "/home/lanlu/ggnn/data/simSearchNet1M/groundtruth.ivecs"

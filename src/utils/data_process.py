@@ -34,7 +34,6 @@ def get_subset_fbin(input_file, output_file, num_rows_to_extract):
             for i in range(num_rows_to_extract):
                 row_data = struct.unpack(f'{cols}f', f.read(cols * 4))
                 subset_data[i] = row_data
-                print(i)
 
         with open(output_file, 'wb') as f_out:
             header = np.array([num_rows_to_extract, cols], dtype=np.int32)
@@ -108,12 +107,13 @@ def shuffle_bvecs(input_file, output_file, num_rows, dim):
 
 
 if __name__ == "__main__":
-    input_file = "/home/lanlu/scaleGANN/dataset/simSearchNet100M/FB_ssnpp_database.u8bin"
-    output_file = "/home/lanlu/scaleGANN/dataset/simSearchNet100M/simSearchNet.100M.u8bin"
+    input_file = "/home/lanlu/scaleGANN/dataset/msTuring100M/query100K.fbin"
+    output_file = "/home/lanlu/scaleGANN/dataset/msTuring100M/query.fbin"
     million = 1000000
-    num_rows_to_extract = 100 * million
+    # num_rows_to_extract = 100 * million
+    num_rows_to_extract = 10000
     
-    get_subset_u8bin(input_file, output_file, num_rows_to_extract)
+    get_subset_fbin(input_file, output_file, num_rows_to_extract)
 
     # input_file = "/home/lanlu/ggnn/data/sift100M/base.bvecs"
     # output_file = "/home/lanlu/ggnn/data/sift100M/baseShuffled.bvecs"

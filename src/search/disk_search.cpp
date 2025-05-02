@@ -110,7 +110,7 @@ void search_disk(const uint32_t k, const uint32_t L,
             for (uint32_t iter = 0; iter< neighbors.size(); iter++){
                 uint32_t nb_id = neighbors[iter];
                 
-                if(file_type == "vecs" && nb_id >= npts){ // GGNN Baseline build has bugs
+                if(file_type == "vecs" && nb_id >= npts){ // GGNN Baseline build has bugs in Laion100M
                     continue;             
                 }
                 assert(nb_id < npts);

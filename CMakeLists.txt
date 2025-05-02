@@ -116,16 +116,11 @@ add_executable(diskannMemoryIndex ${DISKANN_MEMORY_INDEX} ${DISKANN_SOURCES})
 add_executable(executeDiskPartition ${DISK_PARTITION_APP} ${DISK_PARTITION_SOURCES} ${DISKANN_SOURCES})
 add_executable(executeDiskDirectPartition ${DISK_DIRECT_PARTITION_APP} ${DISK_PARTITION_SOURCES} ${DISKANN_SOURCES})
 add_executable(executeDiskMerge ${DISK_MERGE_APP} ${DISK_MERGE_SOURCES} ${DISKANN_SOURCES})
-add_executable(executeMerge ${MERGE_SOURCES} ${DISKANN_SOURCES})
+# add_executable(executeMerge ${MERGE_SOURCES} ${DISKANN_SOURCES})
 add_executable(searchScaleGANN ${SEARCH_SCALEGANN_APP} ${SEARCH_SOURCES})
 add_executable(searchCAGRA ${SEARCH_CAGRA_APP} ${SEARCH_SOURCES})
 add_executable(searchGGNN ${SEARCH_GGNN_APP} ${SEARCH_SOURCES})
 add_executable(searchDiskANN ${SEARCH_DISKANN_APP} ${SEARCH_SOURCES})
-
-# set_target_properties(my_program PROPERTIES
-#     CUDA_SEPARABLE_COMPILATION ON
-#     CUDA_ARCHITECTURES "60"  # 设置 GPU 架构，例如 60 表示 sm_60
-# )
 
 target_link_libraries(diskannPartition
     PRIVATE

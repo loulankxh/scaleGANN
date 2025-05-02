@@ -109,10 +109,15 @@ void searchGGNN(std::string data_type,
 
         uint32_t offset = iter * N_shard;
         std::string data_shard_file = data_dir + "/partition" + std::to_string(iter) + "/data";
+        // if(data_type == "float"){
+        //     data_shard_file = data_shard_file + ".fvecs";
+        // } else if(data_type == "uint8"){
+        //     data_shard_file = data_shard_file + ".bvecs";
+        // }
         if(data_type == "float"){
-            data_shard_file = data_shard_file + ".fvecs";
+            data_shard_file = data_shard_file + ".fbin";
         } else if(data_type == "uint8"){
-            data_shard_file = data_shard_file + ".bvecs";
+            data_shard_file = data_shard_file + ".u8bin";
         }
         std::vector<std::vector<T>> segmentedData;
         if(!use_disk){

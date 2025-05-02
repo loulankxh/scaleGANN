@@ -63,5 +63,8 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/executeDiskPartition.dir/DependInfo.cmake"
   "CMakeFiles/executeDiskDirectPartition.dir/DependInfo.cmake"
   "CMakeFiles/executeDiskMerge.dir/DependInfo.cmake"
+  "CMakeFiles/searchScaleGANN.dir/DependInfo.cmake"
+  "CMakeFiles/searchCAGRA.dir/DependInfo.cmake"
   "CMakeFiles/searchGGNN.dir/DependInfo.cmake"
+  "CMakeFiles/searchDiskANN.dir/DependInfo.cmake"
   )

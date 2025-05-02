@@ -29,7 +29,7 @@ size_t estimate_memory_consumption(size_t npts, uint32_t ndim,
     uint32_t degree, uint32_t inter_degree, uint32_t threads){
     size_t memData = npts * ndim * sizeof(T);
     // 1. KNN graph (Maximum 3 times); 2. prunded reordering graph & reverse graph; 3. final merged CAGRA graph
-    size_t memIndex =  3 * npts * degree * sizeof(uint32_t); // GPU can hold npts < uint32_t
+    size_t memIndex =  4 * npts * degree * sizeof(uint32_t); // GPU can hold npts < uint32_t
     if (memData > memIndex) memIndex = memData;
     // Lan: Todo: other data like locks
     size_t memOther = 10 * npts * sizeof(uint32_t); // ptrs, 2-hop count

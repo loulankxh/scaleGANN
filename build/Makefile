@@ -221,6 +221,32 @@ executeDiskMerge/fast:
 .PHONY : executeDiskMerge/fast
 
 #=============================================================================
+# Target rules for targets named searchScaleGANN
+
+# Build rule for target.
+searchScaleGANN: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 searchScaleGANN
+.PHONY : searchScaleGANN
+
+# fast build rule for target.
+searchScaleGANN/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/build
+.PHONY : searchScaleGANN/fast
+
+#=============================================================================
+# Target rules for targets named searchCAGRA
+
+# Build rule for target.
+searchCAGRA: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 searchCAGRA
+.PHONY : searchCAGRA
+
+# fast build rule for target.
+searchCAGRA/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchCAGRA.dir/build.make CMakeFiles/searchCAGRA.dir/build
+.PHONY : searchCAGRA/fast
+
+#=============================================================================
 # Target rules for targets named searchGGNN
 
 # Build rule for target.
@@ -232,6 +258,19 @@ searchGGNN: cmake_check_build_system
 searchGGNN/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchGGNN.dir/build.make CMakeFiles/searchGGNN.dir/build
 .PHONY : searchGGNN/fast
+
+#=============================================================================
+# Target rules for targets named searchDiskANN
+
+# Build rule for target.
+searchDiskANN: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 searchDiskANN
+.PHONY : searchDiskANN
+
+# fast build rule for target.
+searchDiskANN/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchDiskANN.dir/build.make CMakeFiles/searchDiskANN.dir/build
+.PHONY : searchDiskANN/fast
 
 DiskANN/apps/build_memory_index.o: DiskANN/apps/build_memory_index.cpp.o
 .PHONY : DiskANN/apps/build_memory_index.o
@@ -1460,6 +1499,54 @@ apps/executeDiskPartition.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/apps/executeDiskPartition.cpp.s
 .PHONY : apps/executeDiskPartition.cpp.s
 
+apps/searchCAGRA.o: apps/searchCAGRA.cpp.o
+.PHONY : apps/searchCAGRA.o
+
+# target to build an object file
+apps/searchCAGRA.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchCAGRA.dir/build.make CMakeFiles/searchCAGRA.dir/apps/searchCAGRA.cpp.o
+.PHONY : apps/searchCAGRA.cpp.o
+
+apps/searchCAGRA.i: apps/searchCAGRA.cpp.i
+.PHONY : apps/searchCAGRA.i
+
+# target to preprocess a source file
+apps/searchCAGRA.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchCAGRA.dir/build.make CMakeFiles/searchCAGRA.dir/apps/searchCAGRA.cpp.i
+.PHONY : apps/searchCAGRA.cpp.i
+
+apps/searchCAGRA.s: apps/searchCAGRA.cpp.s
+.PHONY : apps/searchCAGRA.s
+
+# target to generate assembly for a file
+apps/searchCAGRA.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchCAGRA.dir/build.make CMakeFiles/searchCAGRA.dir/apps/searchCAGRA.cpp.s
+.PHONY : apps/searchCAGRA.cpp.s
+
+apps/searchDiskANN.o: apps/searchDiskANN.cpp.o
+.PHONY : apps/searchDiskANN.o
+
+# target to build an object file
+apps/searchDiskANN.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchDiskANN.dir/build.make CMakeFiles/searchDiskANN.dir/apps/searchDiskANN.cpp.o
+.PHONY : apps/searchDiskANN.cpp.o
+
+apps/searchDiskANN.i: apps/searchDiskANN.cpp.i
+.PHONY : apps/searchDiskANN.i
+
+# target to preprocess a source file
+apps/searchDiskANN.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchDiskANN.dir/build.make CMakeFiles/searchDiskANN.dir/apps/searchDiskANN.cpp.i
+.PHONY : apps/searchDiskANN.cpp.i
+
+apps/searchDiskANN.s: apps/searchDiskANN.cpp.s
+.PHONY : apps/searchDiskANN.s
+
+# target to generate assembly for a file
+apps/searchDiskANN.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchDiskANN.dir/build.make CMakeFiles/searchDiskANN.dir/apps/searchDiskANN.cpp.s
+.PHONY : apps/searchDiskANN.cpp.s
+
 apps/searchGGNN.o: apps/searchGGNN.cpp.o
 .PHONY : apps/searchGGNN.o
 
@@ -1483,6 +1570,30 @@ apps/searchGGNN.s: apps/searchGGNN.cpp.s
 apps/searchGGNN.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchGGNN.dir/build.make CMakeFiles/searchGGNN.dir/apps/searchGGNN.cpp.s
 .PHONY : apps/searchGGNN.cpp.s
+
+apps/searchScaleGANN.o: apps/searchScaleGANN.cpp.o
+.PHONY : apps/searchScaleGANN.o
+
+# target to build an object file
+apps/searchScaleGANN.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/apps/searchScaleGANN.cpp.o
+.PHONY : apps/searchScaleGANN.cpp.o
+
+apps/searchScaleGANN.i: apps/searchScaleGANN.cpp.i
+.PHONY : apps/searchScaleGANN.i
+
+# target to preprocess a source file
+apps/searchScaleGANN.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/apps/searchScaleGANN.cpp.i
+.PHONY : apps/searchScaleGANN.cpp.i
+
+apps/searchScaleGANN.s: apps/searchScaleGANN.cpp.s
+.PHONY : apps/searchScaleGANN.s
+
+# target to generate assembly for a file
+apps/searchScaleGANN.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/apps/searchScaleGANN.cpp.s
+.PHONY : apps/searchScaleGANN.cpp.s
 
 src/merge/disk_merge.o: src/merge/disk_merge.cpp.o
 .PHONY : src/merge/disk_merge.o
@@ -1636,7 +1747,10 @@ src/search/disk_search.o: src/search/disk_search.cpp.o
 
 # target to build an object file
 src/search/disk_search.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/src/search/disk_search.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchCAGRA.dir/build.make CMakeFiles/searchCAGRA.dir/src/search/disk_search.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchGGNN.dir/build.make CMakeFiles/searchGGNN.dir/src/search/disk_search.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchDiskANN.dir/build.make CMakeFiles/searchDiskANN.dir/src/search/disk_search.cpp.o
 .PHONY : src/search/disk_search.cpp.o
 
 src/search/disk_search.i: src/search/disk_search.cpp.i
@@ -1644,7 +1758,10 @@ src/search/disk_search.i: src/search/disk_search.cpp.i
 
 # target to preprocess a source file
 src/search/disk_search.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/src/search/disk_search.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchCAGRA.dir/build.make CMakeFiles/searchCAGRA.dir/src/search/disk_search.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchGGNN.dir/build.make CMakeFiles/searchGGNN.dir/src/search/disk_search.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchDiskANN.dir/build.make CMakeFiles/searchDiskANN.dir/src/search/disk_search.cpp.i
 .PHONY : src/search/disk_search.cpp.i
 
 src/search/disk_search.s: src/search/disk_search.cpp.s
@@ -1652,7 +1769,10 @@ src/search/disk_search.s: src/search/disk_search.cpp.s
 
 # target to generate assembly for a file
 src/search/disk_search.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/src/search/disk_search.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchCAGRA.dir/build.make CMakeFiles/searchCAGRA.dir/src/search/disk_search.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchGGNN.dir/build.make CMakeFiles/searchGGNN.dir/src/search/disk_search.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchDiskANN.dir/build.make CMakeFiles/searchDiskANN.dir/src/search/disk_search.cpp.s
 .PHONY : src/search/disk_search.cpp.s
 
 src/search/search.o: src/search/search.cpp.o
@@ -1660,7 +1780,10 @@ src/search/search.o: src/search/search.cpp.o
 
 # target to build an object file
 src/search/search.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/src/search/search.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchCAGRA.dir/build.make CMakeFiles/searchCAGRA.dir/src/search/search.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchGGNN.dir/build.make CMakeFiles/searchGGNN.dir/src/search/search.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchDiskANN.dir/build.make CMakeFiles/searchDiskANN.dir/src/search/search.cpp.o
 .PHONY : src/search/search.cpp.o
 
 src/search/search.i: src/search/search.cpp.i
@@ -1668,7 +1791,10 @@ src/search/search.i: src/search/search.cpp.i
 
 # target to preprocess a source file
 src/search/search.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/src/search/search.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchCAGRA.dir/build.make CMakeFiles/searchCAGRA.dir/src/search/search.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchGGNN.dir/build.make CMakeFiles/searchGGNN.dir/src/search/search.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchDiskANN.dir/build.make CMakeFiles/searchDiskANN.dir/src/search/search.cpp.i
 .PHONY : src/search/search.cpp.i
 
 src/search/search.s: src/search/search.cpp.s
@@ -1676,7 +1802,10 @@ src/search/search.s: src/search/search.cpp.s
 
 # target to generate assembly for a file
 src/search/search.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/src/search/search.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchCAGRA.dir/build.make CMakeFiles/searchCAGRA.dir/src/search/search.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchGGNN.dir/build.make CMakeFiles/searchGGNN.dir/src/search/search.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchDiskANN.dir/build.make CMakeFiles/searchDiskANN.dir/src/search/search.cpp.s
 .PHONY : src/search/search.cpp.s
 
 src/utils/datasetIO.o: src/utils/datasetIO.cpp.o
@@ -1689,7 +1818,10 @@ src/utils/datasetIO.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/utils/datasetIO.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskDirectPartition.dir/build.make CMakeFiles/executeDiskDirectPartition.dir/src/utils/datasetIO.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/src/utils/datasetIO.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/src/utils/datasetIO.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchCAGRA.dir/build.make CMakeFiles/searchCAGRA.dir/src/utils/datasetIO.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchGGNN.dir/build.make CMakeFiles/searchGGNN.dir/src/utils/datasetIO.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchDiskANN.dir/build.make CMakeFiles/searchDiskANN.dir/src/utils/datasetIO.cpp.o
 .PHONY : src/utils/datasetIO.cpp.o
 
 src/utils/datasetIO.i: src/utils/datasetIO.cpp.i
@@ -1702,7 +1834,10 @@ src/utils/datasetIO.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/utils/datasetIO.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskDirectPartition.dir/build.make CMakeFiles/executeDiskDirectPartition.dir/src/utils/datasetIO.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/src/utils/datasetIO.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/src/utils/datasetIO.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchCAGRA.dir/build.make CMakeFiles/searchCAGRA.dir/src/utils/datasetIO.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchGGNN.dir/build.make CMakeFiles/searchGGNN.dir/src/utils/datasetIO.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchDiskANN.dir/build.make CMakeFiles/searchDiskANN.dir/src/utils/datasetIO.cpp.i
 .PHONY : src/utils/datasetIO.cpp.i
 
 src/utils/datasetIO.s: src/utils/datasetIO.cpp.s
@@ -1715,7 +1850,10 @@ src/utils/datasetIO.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/utils/datasetIO.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskDirectPartition.dir/build.make CMakeFiles/executeDiskDirectPartition.dir/src/utils/datasetIO.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/src/utils/datasetIO.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/src/utils/datasetIO.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchCAGRA.dir/build.make CMakeFiles/searchCAGRA.dir/src/utils/datasetIO.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchGGNN.dir/build.make CMakeFiles/searchGGNN.dir/src/utils/datasetIO.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchDiskANN.dir/build.make CMakeFiles/searchDiskANN.dir/src/utils/datasetIO.cpp.s
 .PHONY : src/utils/datasetIO.cpp.s
 
 src/utils/distance.o: src/utils/distance.cpp.o
@@ -1726,7 +1864,10 @@ src/utils/distance.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/src/utils/distance.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/utils/distance.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskDirectPartition.dir/build.make CMakeFiles/executeDiskDirectPartition.dir/src/utils/distance.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/src/utils/distance.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchCAGRA.dir/build.make CMakeFiles/searchCAGRA.dir/src/utils/distance.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchGGNN.dir/build.make CMakeFiles/searchGGNN.dir/src/utils/distance.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchDiskANN.dir/build.make CMakeFiles/searchDiskANN.dir/src/utils/distance.cpp.o
 .PHONY : src/utils/distance.cpp.o
 
 src/utils/distance.i: src/utils/distance.cpp.i
@@ -1737,7 +1878,10 @@ src/utils/distance.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/src/utils/distance.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/utils/distance.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskDirectPartition.dir/build.make CMakeFiles/executeDiskDirectPartition.dir/src/utils/distance.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/src/utils/distance.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchCAGRA.dir/build.make CMakeFiles/searchCAGRA.dir/src/utils/distance.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchGGNN.dir/build.make CMakeFiles/searchGGNN.dir/src/utils/distance.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchDiskANN.dir/build.make CMakeFiles/searchDiskANN.dir/src/utils/distance.cpp.i
 .PHONY : src/utils/distance.cpp.i
 
 src/utils/distance.s: src/utils/distance.cpp.s
@@ -1748,7 +1892,10 @@ src/utils/distance.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/diskannPartition.dir/build.make CMakeFiles/diskannPartition.dir/src/utils/distance.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/utils/distance.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskDirectPartition.dir/build.make CMakeFiles/executeDiskDirectPartition.dir/src/utils/distance.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/src/utils/distance.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchCAGRA.dir/build.make CMakeFiles/searchCAGRA.dir/src/utils/distance.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchGGNN.dir/build.make CMakeFiles/searchGGNN.dir/src/utils/distance.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchDiskANN.dir/build.make CMakeFiles/searchDiskANN.dir/src/utils/distance.cpp.s
 .PHONY : src/utils/distance.cpp.s
 
 src/utils/indexIO.o: src/utils/indexIO.cpp.o
@@ -1761,7 +1908,10 @@ src/utils/indexIO.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/utils/indexIO.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskDirectPartition.dir/build.make CMakeFiles/executeDiskDirectPartition.dir/src/utils/indexIO.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/src/utils/indexIO.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/src/utils/indexIO.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchCAGRA.dir/build.make CMakeFiles/searchCAGRA.dir/src/utils/indexIO.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchGGNN.dir/build.make CMakeFiles/searchGGNN.dir/src/utils/indexIO.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchDiskANN.dir/build.make CMakeFiles/searchDiskANN.dir/src/utils/indexIO.cpp.o
 .PHONY : src/utils/indexIO.cpp.o
 
 src/utils/indexIO.i: src/utils/indexIO.cpp.i
@@ -1774,7 +1924,10 @@ src/utils/indexIO.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/utils/indexIO.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskDirectPartition.dir/build.make CMakeFiles/executeDiskDirectPartition.dir/src/utils/indexIO.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/src/utils/indexIO.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/src/utils/indexIO.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchCAGRA.dir/build.make CMakeFiles/searchCAGRA.dir/src/utils/indexIO.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchGGNN.dir/build.make CMakeFiles/searchGGNN.dir/src/utils/indexIO.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchDiskANN.dir/build.make CMakeFiles/searchDiskANN.dir/src/utils/indexIO.cpp.i
 .PHONY : src/utils/indexIO.cpp.i
 
 src/utils/indexIO.s: src/utils/indexIO.cpp.s
@@ -1787,7 +1940,10 @@ src/utils/indexIO.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskPartition.dir/build.make CMakeFiles/executeDiskPartition.dir/src/utils/indexIO.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskDirectPartition.dir/build.make CMakeFiles/executeDiskDirectPartition.dir/src/utils/indexIO.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/executeDiskMerge.dir/build.make CMakeFiles/executeDiskMerge.dir/src/utils/indexIO.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchScaleGANN.dir/build.make CMakeFiles/searchScaleGANN.dir/src/utils/indexIO.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchCAGRA.dir/build.make CMakeFiles/searchCAGRA.dir/src/utils/indexIO.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchGGNN.dir/build.make CMakeFiles/searchGGNN.dir/src/utils/indexIO.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/searchDiskANN.dir/build.make CMakeFiles/searchDiskANN.dir/src/utils/indexIO.cpp.s
 .PHONY : src/utils/indexIO.cpp.s
 
 # Help Target
@@ -1806,7 +1962,10 @@ help:
 	@echo "... executeDiskDirectPartition"
 	@echo "... executeDiskMerge"
 	@echo "... executeDiskPartition"
+	@echo "... searchCAGRA"
+	@echo "... searchDiskANN"
 	@echo "... searchGGNN"
+	@echo "... searchScaleGANN"
 	@echo "... DiskANN/apps/build_memory_index.o"
 	@echo "... DiskANN/apps/build_memory_index.i"
 	@echo "... DiskANN/apps/build_memory_index.s"
@@ -1900,9 +2059,18 @@ help:
 	@echo "... apps/executeDiskPartition.o"
 	@echo "... apps/executeDiskPartition.i"
 	@echo "... apps/executeDiskPartition.s"
+	@echo "... apps/searchCAGRA.o"
+	@echo "... apps/searchCAGRA.i"
+	@echo "... apps/searchCAGRA.s"
+	@echo "... apps/searchDiskANN.o"
+	@echo "... apps/searchDiskANN.i"
+	@echo "... apps/searchDiskANN.s"
 	@echo "... apps/searchGGNN.o"
 	@echo "... apps/searchGGNN.i"
 	@echo "... apps/searchGGNN.s"
+	@echo "... apps/searchScaleGANN.o"
+	@echo "... apps/searchScaleGANN.i"
+	@echo "... apps/searchScaleGANN.s"
 	@echo "... src/merge/disk_merge.o"
 	@echo "... src/merge/disk_merge.i"
 	@echo "... src/merge/disk_merge.s"
