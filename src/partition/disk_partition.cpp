@@ -276,7 +276,7 @@ void scaleGANN_shard_data_into_clusters_with_ram_budget(const std::string data_f
     for (size_t i = 0; i < block_size; i++){
         first_round_assignment[i] = num_centers; // initial: unassiged value
     }
-    
+
     for (size_t block = 0; block < num_blocks; block++)
     {
         size_t start_id = block * block_size;
@@ -804,8 +804,8 @@ void scaleGANN_partitions_with_ram_budget(const std::string data_file, double sa
     // Process Global k-means for kmeans_partitioning Step
     diskann::cout << "Processing global k-means (kmeans_partitioning Step)" << std::endl;
     // Lan: todo: use GPU Kmeans clustering
-    // kmeans::kmeanspp_selecting_pivots(train_data_float, num_train, train_dim, pivot_data, num_parts);
-    // kmeans::run_lloyds(train_data_float, num_train, train_dim, pivot_data, num_parts, max_k_means_reps, NULL, NULL);
+    kmeans::kmeanspp_selecting_pivots(train_data_float, num_train, train_dim, pivot_data, num_parts);
+    kmeans::run_lloyds(train_data_float, num_train, train_dim, pivot_data, num_parts, max_k_means_reps, NULL, NULL);
 
     std::string cur_file = std::string(prefix_path);
     ensure_directory_exists(prefix_path);
