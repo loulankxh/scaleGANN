@@ -17,7 +17,7 @@
 #include "AtomicWrapper.hpp"
 
 // Lan: todo: add a sample maximum upper bound
-// #define MAX_SAMPLE 8388608 // 1 << 23
+#define MAX_SAMPLE 8388608 // 1 << 23
 #define MAX_SAMPLE_FOR_KMEANS_TRAINING 256000 // 1 << 23
 #define BLOCK_SIZE 5000000
 
@@ -276,7 +276,7 @@ void scaleGANN_shard_data_into_clusters_with_ram_budget(const std::string data_f
     for (size_t i = 0; i < block_size; i++){
         first_round_assignment[i] = num_centers; // initial: unassiged value
     }
-
+    
     for (size_t block = 0; block < num_blocks; block++)
     {
         size_t start_id = block * block_size;
@@ -315,7 +315,6 @@ void scaleGANN_shard_data_into_clusters_with_ram_budget(const std::string data_f
                 break;
             }
         }
-
         // Update data distribution based on round 1, update round 2 size limit
         #pragma omp parallel for schedule(static)
         for (size_t cluster = 0; cluster < num_centers; cluster++){
@@ -333,7 +332,6 @@ void scaleGANN_shard_data_into_clusters_with_ram_budget(const std::string data_f
                 size_limit_second_round[cluster] = size_limit - shard_counts_first_round[cluster].load();
             }
         }
-
         // Round 2 assignment: assign points to other centers for duplication, while under reduction rules
         #pragma omp parallel for schedule(static)
         for (size_t p = 0; p < cur_blk_size; p++)
@@ -369,7 +367,6 @@ void scaleGANN_shard_data_into_clusters_with_ram_budget(const std::string data_f
                 }
             }
         }
-
         #pragma omp parallel for schedule(static)
         for (size_t shard_id = 0; shard_id < num_centers; shard_id ++){
             uint32_t shard_size_this_block = (uint32_t)(shard_counts[shard_id].load() - shard_counts_until_this_block[shard_id]);
@@ -777,7 +774,7 @@ void diskANN_partitions_with_ram_budget(const std::string data_file, double samp
 
 
 template <typename T>
-void scaleGANN_partitions_with_ram_budget(const std::string data_file, const double sampling_rate, double ram_budget,
+void scaleGANN_partitions_with_ram_budget(const std::string data_file, double sampling_rate, double ram_budget,
         size_t graph_degree, uint32_t inter_degree, uint32_t threads,
         const std::string prefix_path, size_t k_base, uint32_t num_parts = 0, float epsilon=2, size_t max_k_means_reps = 15){
     size_t read_blk_size = 64 * 1024 * 1024;
@@ -797,6 +794,9 @@ void scaleGANN_partitions_with_ram_budget(const std::string data_file, const dou
     size_t train_dim;
     size_t num_train;
     float *train_data_float;
+    if (sampling_rate > ((double)MAX_SAMPLE / npts32)){
+        sampling_rate = (double)MAX_SAMPLE / npts32;
+    }
     gen_random_slice<T>(data_file, sampling_rate, train_data_float, num_train, train_dim);
 
     float *pivot_data = nullptr;
@@ -804,8 +804,8 @@ void scaleGANN_partitions_with_ram_budget(const std::string data_file, const dou
     // Process Global k-means for kmeans_partitioning Step
     diskann::cout << "Processing global k-means (kmeans_partitioning Step)" << std::endl;
     // Lan: todo: use GPU Kmeans clustering
-    kmeans::kmeanspp_selecting_pivots(train_data_float, num_train, train_dim, pivot_data, num_parts);
-    kmeans::run_lloyds(train_data_float, num_train, train_dim, pivot_data, num_parts, max_k_means_reps, NULL, NULL);
+    // kmeans::kmeanspp_selecting_pivots(train_data_float, num_train, train_dim, pivot_data, num_parts);
+    // kmeans::run_lloyds(train_data_float, num_train, train_dim, pivot_data, num_parts, max_k_means_reps, NULL, NULL);
 
     std::string cur_file = std::string(prefix_path);
     ensure_directory_exists(prefix_path);
@@ -843,9 +843,9 @@ template void diskANN_partitions_with_ram_budget<uint8_t>(const std::string data
     size_t graph_degree, const std::string prefix_path, size_t k_base);
 
 
-template void scaleGANN_partitions_with_ram_budget<float>(const std::string data_file, const double sampling_rate, double ram_budget,
+template void scaleGANN_partitions_with_ram_budget<float>(const std::string data_file, double sampling_rate, double ram_budget,
     size_t graph_degree, uint32_t inter_degree, uint32_t threads,
     const std::string prefix_path, size_t k_base, uint32_t num_parts = 0, float epsilon = 2, size_t max_k_means_reps = 15);
-template void scaleGANN_partitions_with_ram_budget<uint8_t>(const std::string data_file, const double sampling_rate, double ram_budget,
+template void scaleGANN_partitions_with_ram_budget<uint8_t>(const std::string data_file, double sampling_rate, double ram_budget,
     size_t graph_degree, uint32_t inter_degree, uint32_t threads,
     const std::string prefix_path, size_t k_base, uint32_t num_parts = 0, float epsilon = 2, size_t max_k_means_reps = 15);
