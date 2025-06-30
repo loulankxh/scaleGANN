@@ -2,3 +2,4 @@
 [submodule "DiskANN"]
 	path = DiskANN
 	url = https://github.com/loulankxh/DiskANN.git
+	branch = main

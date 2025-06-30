@@ -1,11 +1,11 @@
 #!/bin/bash
 DataPath="/home/lanlu/scaleGANN/dataset/"
-DATASET="sift100M"
-SHARD_FOLDER="/ScaleGANN/no-selective"
+DATASET="sift1B"
+SHARD_FOLDER="/NaiveCAGRA"
 DIM=128
-SHARD_NUM=16
-QueryFile="/home/lanlu/scaleGANN/dataset/sift100M/base.100M.u8bin"
-GTFile="/home/lanlu/scaleGANN/dataset/sift100M/groundtruth.neighbors.ibin"
+SHARD_NUM=100
+QueryFile="/home/lanlu/scaleGANN/dataset/sift1B/query.public.10K.u8bin"
+GTFile="/home/lanlu/scaleGANN/dataset/sift1B/groundtruth.neighbors.ibin"
 
 BUILD_DEG=(64)
 BUILD_INTERMEDIATE_DEG=(128)

@@ -1,10 +1,10 @@
 #!/bin/bash
 
 GPU_ID=1
-DatasetPath="/home/lanlu/scaleGANN/dataset/sift100M"
-DATASET="sift100M"
-SHARD_FOLDER="/ScaleGANN/no-selective"
-N=16
+DatasetPath="/home/lanlu/scaleGANN/dataset/sift1B"
+DATASET="sift1B"
+SHARD_FOLDER="/NaiveCAGRA"
+N=100
 
 
 RAFT_CAGRA="/home/lanlu/miniconda3/envs/rapids_raft/bin/ann/RAFT_CAGRA_ANN_BENCH"
