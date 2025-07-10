@@ -442,7 +442,7 @@ main_partitions(uint32_t memGPU, size_t npts, uint32_t ndim, uint32_t degree,
                     std::vector<std::vector<uint32_t>>& idx_map){
     
     uint32_t partition_lower_bound = 0;
-    uint32_t size_limit = 0;
+    uint32_t size_limit = (uint32_t) npts;
     get_partition_num<T>(memGPU, npts, ndim, degree, inter_degree, threads, duplicate_factor, &partition_lower_bound, &size_limit);
     if (partition_lower_bound > partition_num) {
         printf("Needing %d partitions at least, change given partition number %d to %d\n", partition_lower_bound, partition_num, partition_lower_bound);
