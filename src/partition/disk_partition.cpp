@@ -1039,8 +1039,8 @@ void scaleGANN_partitions_with_ram_budget(const std::string data_file, double sa
     diskann::cout << "Saving global k-center pivots" << std::endl;
     diskann::save_bin<float>(output_file.c_str(), pivot_data, (size_t)num_parts, train_dim);
 
-    scaleGANN_shard_data_into_clusters_with_ram_budget<T>(data_file, pivot_data, num_parts, train_dim, k_base, size_limit, prefix_path, epsilon);
-    // scaleGANN_shard_data_into_clusters_with_ram_budget_rankSequential<T>(data_file, pivot_data, num_parts, train_dim, k_base, size_limit, prefix_path, epsilon);
+    // scaleGANN_shard_data_into_clusters_with_ram_budget<T>(data_file, pivot_data, num_parts, train_dim, k_base, size_limit, prefix_path, epsilon);
+    scaleGANN_shard_data_into_clusters_with_ram_budget_rankSequential<T>(data_file, pivot_data, num_parts, train_dim, k_base, size_limit, prefix_path, epsilon);
     // SOGAIC_shard_data_into_clusters_with_ram_budget<T>(data_file, pivot_data, num_parts, train_dim, k_base, size_limit, prefix_path, epsilon);
     // scaleGANN_non_selective_shard_with_ram_budget<T>(data_file, pivot_data, num_parts, train_dim, k_base, size_limit, prefix_path);
     delete[] pivot_data;

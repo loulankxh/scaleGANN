@@ -23,12 +23,13 @@ void search(std::string data_file, std::string index_file, std::string query_fil
     std::vector<std::vector<uint32_t>> index;
     std::vector<std::vector<T>> query;
     std::vector<std::vector<uint32_t>> groundTruth;
-    if(!use_disk) readFile<T>(data_file, data);
-    readIndex(index_file, index);
+    if(!use_disk) {
+        readFile<T>(data_file, data);
+        readIndex(index_file, index);
+        // printf("rows: %d, Deg: %d\n", index.size(), index[0].size());
+    }
     read_query<T>(query_file, query);
     read_groundTruth(truth_file, groundTruth);
-
-    printf("rows: %d, Deg: %d\n", index.size(), index[0].size());
 
     auto s_time = std::chrono::high_resolution_clock::now();
     uint32_t total_visited = 0;
@@ -36,9 +37,10 @@ void search(std::string data_file, std::string index_file, std::string query_fil
     long long totalLatency = 0;
     std::vector<std::vector<uint32_t>> result;
     std::vector<std::vector<float>> distances;
-    if(use_disk)
-        search_disk<T>(k, L, data_file, index, query, result, distances, &total_visited, &total_distance_cmp, &totalLatency);
-    else
+    if(use_disk){
+        // search_disk<T>(k, L, data_file, index, query, result, distances, &total_visited, &total_distance_cmp, &totalLatency);
+        search_disk_scalegann<T>(k, L, data_file, index_file, query, result, distances, &total_visited, &total_distance_cmp, &totalLatency);
+    } else
         search<T>(k, L, data, index, query, result, distances, &total_visited, &total_distance_cmp, &totalLatency);
 
     auto e_time = std::chrono::high_resolution_clock::now();

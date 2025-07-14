@@ -388,6 +388,7 @@ void loadGGNNOneIndex(const std::string& path,
     file.close();
 
     convertMemoryToIndexGGNN(h_memory, index, translation, N_shard, KBuild, N_all, ST_all);
+    delete[] h_memory;
 }
 
 
